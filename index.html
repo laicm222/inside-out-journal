@@ -16,9 +16,10 @@
             color: #f8fafc; 
             overflow-x: hidden; 
             min-height: 100vh;
+            transition: background 0.8s ease;
         }
 
-        /* 電影大腦總部：極深藍與青藍星空背景 */
+        /* 預設電影大腦總部背景 */
         .movie-hq-bg {
             background: radial-gradient(circle at 50% 20%, rgba(14, 165, 233, 0.25) 0%, transparent 65%),
                         radial-gradient(circle at 85% 75%, rgba(3, 105, 161, 0.22) 0%, transparent 55%),
@@ -96,7 +97,6 @@
             transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
         }
 
-        /* 玻璃頂部弧線反射高光 */
         .movie-glass-sphere::before {
             content: "";
             position: absolute;
@@ -151,17 +151,20 @@
         }
     </style>
 </head>
-<body class="movie-hq-bg flex flex-col min-h-screen">
+<body id="bodyBg" class="movie-hq-bg flex flex-col min-h-screen">
 
-    <!-- 頂部導航列（第一行為標題，第二行放按鈕） -->
+    <!-- 頂部導航列 -->
     <header class="bg-slate-950/90 backdrop-blur-md border-b border-sky-900/40 px-6 py-4 space-y-3 sticky top-0 z-50 shadow-2xl">
-        <!-- 第一行：大字標題打橫橫跨 -->
-        <div class="text-center md:text-left">
+        <div class="text-center md:text-left flex flex-col md:flex-row md:items-center md:justify-between">
             <span class="text-2xl md:text-3xl font-black bg-gradient-to-r from-yellow-400 via-sky-300 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_2px_10px_rgba(56,189,248,0.4)]">
                 Inside Out 記憶總部
             </span>
+            <!-- 🎲 隨機時光倒流回憶機按鈕 -->
+            <button onclick="triggerFlashbackRoulette()" class="mt-2 md:mt-0 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/50 px-4 py-1.5 rounded-xl text-xs font-bold flex items-center justify-center space-x-2 transition shadow-md">
+                <i class="ph ph-shuffle text-base animate-spin"></i>
+                <span>🎲 隨機抽一顆記憶重溫</span>
+            </button>
         </div>
-        <!-- 第二行：功能按鈕 -->
         <div class="flex items-center justify-center md:justify-start space-x-4">
             <button onclick="openBackupModal()" class="bg-slate-900/80 hover:bg-slate-800 text-sky-200 px-4 py-2 rounded-xl text-xs md:text-sm font-medium flex items-center space-x-2 border border-sky-900/50 transition shadow-md">
                 <i class="ph ph-database text-lg text-sky-400"></i>
@@ -169,7 +172,7 @@
             </button>
             <button onclick="openModal()" class="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-slate-950 px-5 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center space-x-2 shadow-lg shadow-sky-500/25 transition">
                 <i class="ph ph-plus-circle text-lg"></i>
-                <span>新增記憶球</span>
+                <span>詳細新增記憶球</span>
             </button>
         </div>
     </header>
@@ -177,15 +180,36 @@
     <!-- 主要內容區 -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 space-y-8">
         
+        <!-- ✨ 快速心情投入框 (Quick Mood Drop) -->
+        <section class="bg-slate-900/80 border border-sky-500/30 p-5 rounded-3xl backdrop-blur-md shadow-xl space-y-3">
+            <h3 class="text-sm font-bold text-sky-300 flex items-center space-x-2">
+                <i class="ph ph-sparkle text-lg text-yellow-400"></i>
+                <span>此時此刻，你的大腦總部發生咗咩事？（快速投遞記憶球）</span>
+            </h3>
+            <form onsubmit="quickSaveMemory(event)" class="flex flex-col sm:flex-row gap-3">
+                <input type="text" id=" quickTitle" required placeholder="例如：食到好好味嘅抹茶雪糕 / 剛剛開會俾老細問到口啞啞..." class="flex-1 bg-slate-950 border border-sky-900/60 rounded-xl px-4 py-2.5 text-xs md:text-sm text-slate-100 placeholder-sky-400/40 focus:outline-none focus:border-sky-400">
+                <select id="quickEmotion" class="bg-slate-950 border border-sky-900/60 text-sky-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-sky-400">
+                    <option value="開心">💛 開心 / 快樂</option>
+                    <option value="平靜">💛 平靜 / 滿足</option>
+                    <option value="興奮">💛 興奮 / 期待</option>
+                    <option value="悲傷">💙 難過 / 悲傷</option>
+                    <option value="焦慮">🔵 焦慮 / 緊張</option>
+                    <option value="生氣">🔴 生氣 / 煩躁</option>
+                </select>
+                <button type="submit" class="bg-yellow-400 hover:bg-yellow-300 text-slate-950 px-5 py-2.5 rounded-xl text-xs font-bold transition shadow-md flex items-center justify-center space-x-1">
+                    <i class="ph ph-paper-plane-tilt text-base"></i>
+                    <span>瞬間投遞</span>
+                </button>
+            </form>
+        </section>
+
         <!-- 搜尋列與多重類型篩選區 -->
         <div class="flex flex-col sm:flex-row gap-3 items-center justify-between bg-slate-900/60 border border-sky-900/40 p-4 rounded-2xl backdrop-blur-md">
-            <!-- 搜尋關鍵字 -->
             <div class="relative w-full sm:w-80">
                 <i class="ph ph-magnifying-glass absolute left-4 top-3 text-sky-400 text-lg"></i>
                 <input type="text" id="searchInput" oninput="filterMemories()" placeholder="搜尋記憶標題、觸發事件..." class="w-full bg-slate-950 border border-sky-900/60 rounded-xl pl-11 pr-4 py-2 text-slate-100 placeholder-sky-400/40 focus:outline-none focus:border-sky-400 text-xs md:text-sm">
             </div>
 
-            <!-- 🎯 多重事件 / 情緒 / 核心記憶類別篩選器 -->
             <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
                 <span class="text-xs text-sky-300 font-bold flex items-center space-x-1">
                     <i class="ph ph-funnel text-sky-400"></i>
@@ -203,7 +227,17 @@
             </div>
         </div>
 
-        <!-- 🌐 全頁打散隨機漂浮記憶宇宙（手機版最少 3 個一行，全頁隨機漂浮） -->
+        <!-- 🏷️ 常見觸發標籤雲 (Trigger Tag Cloud) -->
+        <div class="flex flex-wrap items-center gap-2 px-1 text-xs">
+            <span class="text-sky-400 font-bold"><i class="ph ph-tag"></i> 常用觸發標籤：</span>
+            <button onclick="filterByTag('工作')" class="px-3 py-1 bg-slate-900 hover:bg-sky-950 border border-sky-900/60 text-sky-200 rounded-lg transition">#工作壓力</button>
+            <button onclick="filterByTag('朋友')" class="px-3 py-1 bg-slate-900 hover:bg-sky-950 border border-sky-900/60 text-sky-200 rounded-lg transition">#朋友聚會</button>
+            <button onclick="filterByTag('旅行')" class="px-3 py-1 bg-slate-900 hover:bg-sky-950 border border-sky-900/60 text-sky-200 rounded-lg transition">#旅行探索</button>
+            <button onclick="filterByTag('日常')" class="px-3 py-1 bg-slate-900 hover:bg-sky-950 border border-sky-900/60 text-sky-200 rounded-lg transition">#日常瑣事</button>
+            <button onclick="resetTagFilter()" class="px-3 py-1 bg-slate-800 text-slate-400 hover:text-white rounded-lg transition">清除標籤</button>
+        </div>
+
+        <!-- 🌐 全頁打散隨機漂浮記憶宇宙 -->
         <section class="space-y-3 bg-slate-950/40 p-4 sm:p-6 rounded-3xl border border-sky-900/30">
             <h2 class="text-md sm:text-lg font-bold text-sky-300 flex items-center space-x-2 drop-shadow-[0_0_8px_rgba(56,189,248,0.3)] px-2">
                 <i class="ph ph-planet text-sky-400"></i>
@@ -212,7 +246,7 @@
             <div id="floatingUniverse" class="floating-universe-grid"></div>
         </section>
 
-        <!-- 📊 統計數據面板 (移至下方) -->
+        <!-- 📊 統計數據與情緒身心聯動分析面板 -->
         <section class="space-y-4 pt-4 border-t border-sky-900/40">
             <div class="flex flex-col sm:flex-row gap-4 items-center justify-between bg-slate-900/60 border border-sky-900/40 p-4 rounded-2xl backdrop-blur-md">
                 <h3 class="text-md font-bold text-sky-200 flex items-center space-x-2">
@@ -259,6 +293,17 @@
                         <div id="statFear" class="text-xl font-black text-cyan-300">0 顆</div>
                     </div>
                 </div>
+            </div>
+
+            <!-- 🧠 觸發源關聯與身心連動分析卡片 -->
+            <div class="bg-slate-900/80 border border-sky-900/50 p-5 rounded-3xl backdrop-blur-md space-y-3">
+                <h4 class="text-xs font-bold text-sky-300 flex items-center space-x-2">
+                    <i class="ph ph-brain text-base text-sky-400"></i>
+                    <span>身心覺察洞察 (Mind-Body Pattern Insights)</span>
+                </h4>
+                <p id="insightText" class="text-xs text-slate-300 leading-relaxed">
+                    載入中... 系統正在分析你最近的情緒與身體感官連動關係。
+                </p>
             </div>
         </section>
     </main>
@@ -327,7 +372,7 @@
         </div>
     </div>
 
-    <!-- 新增記憶 Modal -->
+    <!-- 新進詳細記憶 Modal -->
     <div id="memoryModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
         <div class="bg-slate-950 border border-sky-900/60 rounded-3xl max-w-xl w-full p-6 space-y-6 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-slate-800 pb-4">
@@ -570,16 +615,32 @@
             return "rgba(253,224,71,0.65)";
         }
 
+        // 動態情緒流光背景切換
+        function updateAmbientBackground(filterType) {
+            const body = document.getElementById('bodyBg');
+            if (filterType === 'joy') {
+                body.style.background = "radial-gradient(circle at 50% 20%, rgba(250, 204, 21, 0.28) 0%, transparent 65%), #030712";
+            } else if (filterType === 'sad') {
+                body.style.background = "radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.28) 0%, transparent 65%), #030712";
+            } else if (filterType === 'anger') {
+                body.style.background = "radial-gradient(circle at 50% 20%, rgba(239, 68, 68, 0.28) 0%, transparent 65%), #030712";
+            } else if (filterType === 'fear') {
+                body.style.background = "radial-gradient(circle at 50% 20%, rgba(103, 232, 249, 0.28) 0%, transparent 65%), #030712";
+            } else {
+                body.style.background = "radial-gradient(circle at 50% 20%, rgba(14, 165, 233, 0.25) 0%, transparent 65%), radial-gradient(circle at 85% 75%, rgba(3, 105, 161, 0.22) 0%, transparent 55%), #030712";
+            }
+        }
+
         function getFilteredMemories() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const typeFilter = document.getElementById('typeFilterSelect').value;
 
+            updateAmbientBackground(typeFilter);
+
             return memories.filter(m => {
-                // 關鍵字搜尋
                 const matchQuery = m.title.toLowerCase().includes(query) || (m.trigger && m.trigger.toLowerCase().includes(query));
                 if (!matchQuery) return false;
 
-                // 多重類型與情緒事件篩選
                 if (typeFilter === 'all') return true;
                 if (typeFilter === 'core') return m.isCore;
                 if (typeFilter === 'flashback') return m.isFlashback;
@@ -612,18 +673,39 @@
             });
 
             let joyCount = 0, sadCount = 0, angerCount = 0, fearCount = 0;
+            let somaticsMap = {};
 
             timeFiltered.forEach(m => {
                 if (m.emotions.some(e => ["開心", "快樂", "興奮", "感恩", "滿足", "平靜", "自豪"].includes(e))) joyCount++;
                 if (m.emotions.some(e => ["悲傷", "難過", "失望", "孤單", "內疚", "迷失"].includes(e))) sadCount++;
                 if (m.emotions.some(e => ["生氣", "憤怒", "煩躁", "受冒犯"].includes(e))) angerCount++;
                 if (m.emotions.some(e => ["驚慌", "緊張", "擔憂", "焦慮", "害怕"].includes(e))) fearCount++;
+
+                if (m.somatics) {
+                    m.somatics.forEach(s => {
+                        somaticsMap[s] = (somaticsMap[s] || 0) + 1;
+                    });
+                }
             });
 
             document.getElementById('statJoy').innerText = `${joyCount} 顆`;
             document.getElementById('statSad').innerText = `${sadCount} 顆`;
             document.getElementById('statAnger').innerText = `${angerCount} 顆`;
             document.getElementById('statFear').innerText = `${fearCount} 顆`;
+
+            // 計算身心洞察分析
+            let topSomatic = "無明顯身體反應";
+            let maxCount = 0;
+            for (let [s, c] of Object.entries(somaticsMap)) {
+                if (c > maxCount) { maxCount = c; topSomatic = s; }
+            }
+
+            const insightEl = document.getElementById('insightText');
+            if (timeFiltered.length > 0) {
+                insightEl.innerHTML = `💡 在目前所選時間範圍內，你總共記錄了 <b>${timeFiltered.length}</b> 個情緒事件。其中最常出現的身心感官反應是 <span class="text-sky-300 font-bold">「${topSomatic}」</span>（出現 ${maxCount} 次）。這通常代表當特定事件觸發時，你的身體會率先透過這個部位向你發出訊號。`;
+            } else {
+                insightEl.innerText = "目前沒有足夠的資料來產生洞察分析。";
+            }
         }
 
         function renderMemories() {
@@ -644,7 +726,6 @@
         }
 
         function createMemoryNode(m, index) {
-            // 包裹層：控制整顆球連同標題與日期的全頁隨機漂浮
             const floatClass = index % 4 === 0 ? "floating-space-1" : index % 4 === 1 ? "floating-space-2" : index % 4 === 2 ? "floating-space-3" : "floating-space-4";
             
             const wrapper = document.createElement('div');
@@ -682,6 +763,58 @@
 
             wrapper.onclick = () => openDetailModal(m);
             return wrapper;
+        }
+
+        // ✨ 快速投遞心情功能
+        function quickSaveMemory(e) {
+            e.preventDefault();
+            const title = document.getElementById('quickTitle').value;
+            const emotion = document.getElementById('quickEmotion').value;
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            const newMemory = {
+                id: Date.now(),
+                title: title,
+                date: todayStr,
+                trigger: "快速心情記錄",
+                emotions: [emotion],
+                somatics: ["呼吸平穩", "面帶微笑"],
+                photo: null,
+                isCore: false,
+                isFlashback: false,
+                isJustAdded: true
+            };
+
+            memories.unshift(newMemory);
+            renderMemories();
+            document.getElementById('quickTitle').value = '';
+
+            const negativeEmotions = ["生氣", "憤怒", "煩躁", "難過", "悲傷", "焦慮", "緊張"];
+            if (negativeEmotions.includes(emotion)) {
+                const randomQuote = encouragementQuotes[Math.floor(Math.random() * encouragementQuotes.length)];
+                document.getElementById('encouragementText').innerText = randomQuote;
+                document.getElementById('encouragementModal').classList.remove('hidden');
+                document.getElementById('encouragementModal').classList.add('flex');
+            }
+        }
+
+        // 🎲 隨機時光倒流回憶機
+        function triggerFlashbackRoulette() {
+            if (memories.length === 0) return;
+            const randomMem = memories[Math.floor(Math.random() * memories.length)];
+            openDetailModal(randomMem);
+        }
+
+        // 🏷️ 標籤過濾
+        function filterByTag(tag) {
+            document.getElementById('searchInput').value = tag;
+            renderMemories();
+        }
+
+        function resetTagFilter() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('typeFilterSelect').value = 'all';
+            renderMemories();
         }
 
         function openDetailModal(m) {

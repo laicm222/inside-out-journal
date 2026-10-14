@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inside Out Journal</title>
+    <title>Inside Out 記憶總部</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -17,57 +17,116 @@
             min-height: 100vh;
         }
 
-        /* 弧形不規則夢幻記憶架管道 */
+        /* 弧形波浪不規則層格管道 */
         .curved-shelf-track {
             position: relative;
-            background: linear-gradient(90deg, rgba(15,28,60,0.9), rgba(24,43,88,0.95), rgba(15,28,60,0.9));
-            border-radius: 9999px;
-            box-shadow: inset 0 6px 12px rgba(0,0,0,0.9), 0 0 30px rgba(56,189,248,0.15);
-            border: 2px solid rgba(56, 189, 248, 0.3);
-            padding: 28px 40px;
-            margin: 30px 0;
+            background: linear-gradient(180deg, rgba(15,28,60,0.6) 0%, rgba(24,43,88,0.8) 50%, rgba(10,20,45,0.9) 100%);
+            border-radius: 40px;
+            box-shadow: inset 0 4px 20px rgba(0,0,0,0.8), 0 0 30px rgba(56,189,248,0.15);
+            border: 2px solid rgba(56, 189, 248, 0.25);
+            padding: 40px 48px;
+            margin: 20px 0 40px;
             display: flex;
-            gap: 48px;
+            gap: 40px;
             overflow-x: auto;
             align-items: center;
+            min-height: 190px;
         }
 
-        /* 記憶球高低錯落位移，營造夢幻立體感 */
-        .memory-item:nth-child(even) { transform: translateY(-16px); }
-        .memory-item:nth-child(odd) { transform: translateY(16px); }
-        .memory-item:nth-child(3n) { transform: translateY(-8px); }
+        /* 管道弧度背軌線 */
+        .curved-shelf-track::before {
+            content: '';
+            position: absolute;
+            left: 0; right: 0; top: 50%;
+            height: 60px;
+            border-top: 3px solid rgba(56, 189, 248, 0.2);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translateY(-50%);
+        }
 
-        /* 🔮 超夢幻立體半透明水晶球 */
+        /* 記憶球高低波浪不規則位移 */
+        .memory-item:nth-child(5n+1) { transform: translateY(-22px); }
+        .memory-item:nth-child(5n+2) { transform: translateY(12px); }
+        .memory-item:nth-child(5n+3) { transform: translateY(-8px); }
+        .memory-item:nth-child(5n+4) { transform: translateY(24px); }
+        .memory-item:nth-child(5n+5) { transform: translateY(-16px); }
+
+        /* 🔮 超夢幻透透半透明水晶球 */
         .memory-sphere {
-            width: 88px;
-            height: 88px;
+            width: 92px;
+            height: 92px;
             border-radius: 50%;
             position: relative;
             cursor: pointer;
-            box-shadow: inset -10px -10px 22px rgba(0,0,0,0.8), inset 10px 10px 22px rgba(255,255,255,0.7), 0 12px 30px rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            /* 透光水晶質感陰影：高光與暗影組合 */
+            box-shadow: 
+                inset -6px -6px 14px rgba(0,0,0,0.6),
+                inset 6px 6px 14px rgba(255,255,255,0.7),
+                inset 0 0 20px rgba(255,255,255,0.3),
+                0 10px 25px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
             flex-shrink: 0;
+            overflow: hidden;
         }
-        .memory-sphere:hover { transform: scale(1.15) translateY(-8px); filter: brightness(1.25); }
+        .memory-sphere:hover { 
+            transform: scale(1.18) translateY(-10px) !important; 
+            filter: brightness(1.25);
+            box-shadow: 
+                inset -6px -6px 14px rgba(0,0,0,0.4),
+                inset 6px 6px 18px rgba(255,255,255,0.9),
+                0 0 30px rgba(56,189,248,0.6);
+        }
+
+        /* 相片 Preview 容器（透光浮雕感） */
+        .sphere-photo-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            opacity: 0.75;
+            mix-blend-mode: overlay;
+            filter: contrast(1.1) brightness(1.1);
+        }
+
+        /* 水晶球頂部高光亮點 */
+        .memory-sphere::after {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 20%;
+            width: 30%;
+            height: 20%;
+            background: rgba(255, 255, 255, 0.65);
+            border-radius: 50%;
+            transform: rotate(-30deg);
+            filter: blur(1px);
+            pointer-events: none;
+        }
 
         /* 🌟 核心記憶球金色夢幻光暈 */
         .core-glow {
-            box-shadow: inset -10px -10px 22px rgba(0,0,0,0.7), inset 10px 10px 22px rgba(255,255,255,0.9), 0 0 35px #facc15, 0 0 70px rgba(250,204,21,0.6);
-            border: 3px solid #fef08a;
+            box-shadow: 
+                inset -6px -6px 14px rgba(0,0,0,0.5),
+                inset 6px 6px 18px rgba(255,255,255,0.9),
+                0 0 35px #facc15, 0 0 70px rgba(250,204,21,0.5);
+            border: 2px solid #fef08a;
             animation: pulse-gold 2s infinite alternate;
         }
         @keyframes pulse-gold {
-            0% { box-shadow: inset -10px -10px 22px rgba(0,0,0,0.7), 0 0 25px #facc15; }
-            100% { box-shadow: inset -10px -10px 22px rgba(0,0,0,0.7), 0 0 50px #fde047, 0 0 90px rgba(253,224,71,0.8); }
+            0% { box-shadow: inset -6px -6px 14px rgba(0,0,0,0.5), 0 0 20px #facc15; }
+            100% { box-shadow: inset -6px -6px 14px rgba(0,0,0,0.5), 0 0 45px #fde047, 0 0 85px rgba(253,224,71,0.7); }
         }
 
         /* ⚡ 閃回記憶藍電光流動效果 */
         .flashback-effect {
             border: 2px dashed #38bdf8;
-            box-shadow: inset -10px -10px 22px rgba(0,0,0,0.8), 0 0 30px rgba(56, 189, 248, 0.8);
+            box-shadow: inset -6px -6px 14px rgba(0,0,0,0.6), 0 0 28px rgba(56, 189, 248, 0.8);
         }
 
         /* ✨ 記憶球飛入軌道動畫 */
@@ -174,6 +233,15 @@
                     <textarea id="mTrigger" rows="2" placeholder="發生咗咩事令你有呢種感覺..." class="w-full bg-[#030712] border border-slate-800 rounded-xl px-4 py-2.5 text-slate-100 focus:outline-none focus:border-sky-400"></textarea>
                 </div>
 
+                <!-- 相片 Preview 上傳 -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">📷 記憶相片 Preview (選擇圖片，映照入水晶球內部)</label>
+                    <input type="file" id="mPhoto" accept="image/*" onchange="previewImage(event)" class="w-full bg-[#030712] border border-slate-800 rounded-xl px-4 py-2 text-xs text-slate-400 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-sky-500/20 file:text-sky-300 hover:file:bg-sky-500/30">
+                    <div id="photoPreviewContainer" class="mt-2 hidden">
+                        <img id="imgPreview" class="w-16 h-16 rounded-full object-cover border-2 border-sky-400 mx-auto shadow-md">
+                    </div>
+                </div>
+
                 <!-- 5大情緒家族分類 -->
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-slate-300">情緒分類與佔比</label>
@@ -251,14 +319,16 @@
     </div>
 
     <script>
+        let currentPhotoBase64 = "";
+
         let memories = [
-            { id: 1, title: "DSE 放榜當日", date: "2026-10-14", trigger: "考到期望分數，與同學拍照道別。", emotions: ["快樂", "悲傷"], somatics: ["心跳加速", "眼眶發熱"], isCore: true, isFlashback: false },
-            { id: 2, title: "初次到東京旅行", date: "2026-10-10", trigger: "順利抵達機場並成功 Check-in。", emotions: ["興奮", "焦慮"], somatics: ["呼吸急促"], isCore: false, isFlashback: false },
+            { id: 1, title: "DSE 放榜當日", date: "2026-10-14", trigger: "考到期望分數，與同學拍照道別。", emotions: ["快樂", "悲傷"], somatics: ["心跳加速", "眼眶發熱"], isCore: true, isFlashback: false, photo: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=150&auto=format&fit=crop&q=80" },
+            { id: 2, title: "初次到東京旅行", date: "2026-10-10", trigger: "順利抵達機場並成功 Check-in。", emotions: ["興奮", "焦慮"], somatics: ["呼吸急促"], isCore: false, isFlashback: false, photo: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=150&auto=format&fit=crop&q=80" },
             { id: 3, title: "小學開學日回憶", date: "2026-09-25", trigger: "執拾舊物見到舊校服。", emotions: ["緊張", "悲傷"], somatics: ["胃部翻騰"], isCore: false, isFlashback: true },
             { id: 4, title: "寵物過世的道別", date: "2025-10-05", trigger: "陪伴多年的貓貓安詳離去。", emotions: ["悲傷", "孤獨"], somatics: ["眼眶發熱", "肌肉緊繃"], isCore: true, isFlashback: false },
             { id: 5, title: "工作專案獲得讚賞", date: "2026-09-15", trigger: "連續加班兩星期後簡報成功。", emotions: ["快樂", "自豪"], somatics: ["心跳加速"], isCore: true, isFlashback: false },
             { id: 6, title: "地鐵被無禮推撞", date: "2026-09-10", trigger: "上班高峰期被硬擠。", emotions: ["憤怒", "煩躁"], somatics: ["肌肉緊繃"], isCore: false, isFlashback: false },
-            { id: 7, title: "颱風天在家喝熱可可", date: "2026-08-20", trigger: "出面狂風暴雨，躲在被窩看電影。", emotions: ["平靜", "快樂"], somatics: [], isCore: false, isFlashback: false },
+            { id: 7, title: "颱風天在家喝熱可可", date: "2026-08-20", trigger: "出面狂風暴雨，躲在被窩看電影。", emotions: ["平靜", "快樂"], somatics: [], isCore: false, isFlashback: false, photo: "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=150&auto=format&fit=crop&q=80" },
             { id: 8, title: "公開演講前 5 分鐘", date: "2026-08-05", trigger: "站在舞台側幕等候上台。", emotions: ["緊張", "焦慮"], somatics: ["心跳加速", "呼吸急促"], isCore: false, isFlashback: false },
             { id: 9, title: "見到朋友換新跑車", date: "2026-07-28", trigger: "聚會時看到朋友曬新車。", emotions: ["焦慮", "悲傷"], somatics: ["胃部翻騰"], isCore: false, isFlashback: false },
             { id: 10, title: "深夜想起舊廣播歌", date: "2026-07-15", trigger: "深夜聽歌突然想起舊時光。", emotions: ["悲傷", "快樂"], somatics: ["眼眶發熱"], isCore: false, isFlashback: true },
@@ -289,10 +359,9 @@
 
             memories.forEach((m, index) => {
                 const node = createMemoryNode(m);
-                // 如果係剛新增嘅第一粒記憶（最新果粒），加上飛入軌道動畫特效
                 if (index === 0 && m.isJustAdded) {
                     node.classList.add('fly-animation');
-                    delete m.isJustAdded; // 動畫播完一次後清除標記
+                    delete m.isJustAdded;
                 }
                 allEl.appendChild(node);
             });
@@ -321,16 +390,21 @@
                 badge = "⚡";
             }
 
-            let bgGrad = "radial-gradient(circle at 35% 35%, #fde047 0%, #ca8a04 80%)";
+            // 半透明玻璃水晶色彩度 (含 alpha 通道 alpha=0.55 ~ 0.75)
+            let bgGrad = "radial-gradient(circle at 35% 35%, rgba(253, 224, 71, 0.75) 0%, rgba(202, 138, 4, 0.55) 85%)";
             let faceIcon = "😊";
-            if (m.emotions.includes("悲傷")) { bgGrad = "radial-gradient(circle at 35% 35%, #38bdf8 0%, #0369a1 80%)"; faceIcon = "😢"; }
-            else if (m.emotions.includes("憤怒") || m.emotions.includes("煩躁")) { bgGrad = "radial-gradient(circle at 35% 35%, #f87171 0%, #b91c1c 80%)"; faceIcon = "😡"; }
-            else if (m.emotions.includes("緊張") || m.emotions.includes("焦慮") || m.emotions.includes("害怕")) { bgGrad = "radial-gradient(circle at 35% 35%, #c084fc 0%, #6b21a8 80%)"; faceIcon = "😰"; }
-            else if (m.emotions.includes("興奮") || m.emotions.includes("自豪")) { bgGrad = "radial-gradient(circle at 35% 35%, #4ade80 0%, #15803d 80%)"; faceIcon = "🤩"; }
+            if (m.emotions.includes("悲傷")) { bgGrad = "radial-gradient(circle at 35% 35%, rgba(56, 189, 248, 0.75) 0%, rgba(3, 105, 161, 0.55) 85%)"; faceIcon = "😢"; }
+            else if (m.emotions.includes("憤怒") || m.emotions.includes("煩躁")) { bgGrad = "radial-gradient(circle at 35% 35%, rgba(248, 113, 113, 0.75) 0%, rgba(185, 28, 28, 0.55) 85%)"; faceIcon = "😡"; }
+            else if (m.emotions.includes("緊張") || m.emotions.includes("焦慮") || m.emotions.includes("害怕")) { bgGrad = "radial-gradient(circle at 35% 35%, rgba(192, 132, 252, 0.75) 0%, rgba(107, 33, 168, 0.55) 85%)"; faceIcon = "😰"; }
+            else if (m.emotions.includes("興奮") || m.emotions.includes("自豪")) { bgGrad = "radial-gradient(circle at 35% 35%, rgba(74, 222, 128, 0.75) 0%, rgba(21, 128, 61, 0.55) 85%)"; faceIcon = "🤩"; }
+
+            let innerContent = m.photo 
+                ? `<img src="${m.photo}" class="sphere-photo-preview"><span class="absolute text-xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] z-10">${badge}</span>`
+                : `<span class="text-2xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] z-10">${badge || faceIcon}</span>`;
 
             div.innerHTML = `
                 <div class="${sphereClass}" style="background: ${bgGrad};">
-                    <span class="text-2xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">${badge || faceIcon}</span>
+                    ${innerContent}
                 </div>
                 <div class="text-center mt-2">
                     <div class="text-xs font-bold text-slate-200 w-24 truncate">${m.title}</div>
@@ -338,6 +412,19 @@
                 </div>
             `;
             return div;
+        }
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentPhotoBase64 = e.target.result;
+                    document.getElementById('imgPreview').src = currentPhotoBase64;
+                    document.getElementById('photoPreviewContainer').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
         function openModal() { document.getElementById('memoryModal').classList.remove('hidden'); document.getElementById('memoryModal').classList.add('flex'); }
@@ -362,6 +449,7 @@
                 emotions: selectedEmotions.length ? selectedEmotions : ["平靜"],
                 somatics: selectedSomatics,
                 isCore, isFlashback,
+                photo: currentPhotoBase64 || null,
                 isJustAdded: true,
                 isJustAddedAnim: true
             };
@@ -370,6 +458,8 @@
             renderMemories();
             closeModal();
             document.getElementById('memoryForm').reset();
+            document.getElementById('photoPreviewContainer').classList.add('hidden');
+            currentPhotoBase64 = "";
 
             // 檢查負面情緒並彈出心靈鼓勵
             const negativeEmotions = ["悲傷", "委屈", "孤獨", "憤怒", "煩躁", "不甘心", "焦慮", "害怕", "緊張"];

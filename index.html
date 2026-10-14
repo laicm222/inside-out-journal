@@ -27,45 +27,51 @@
             min-height: 100vh;
         }
 
-        /* 🎈 螢幕全屏隨機漂浮動畫 (Floating Orbs Playground) */
+        /* 🎈 記憶球全屏打散漂浮軌道動畫 (多動態軌道) */
         @keyframes floatAround1 {
             0% { transform: translate(0px, 0px) rotate(0deg); }
-            33% { transform: translate(25px, -35px) rotate(5deg); }
-            66% { transform: translate(-20px, 25px) rotate(-5deg); }
+            33% { transform: translate(18px, -28px) rotate(4deg); }
+            66% { transform: translate(-15px, 20px) rotate(-4deg); }
             100% { transform: translate(0px, 0px) rotate(0deg); }
         }
         @keyframes floatAround2 {
             0% { transform: translate(0px, 0px) rotate(0deg); }
-            33% { transform: translate(-30px, 20px) rotate(-6deg); }
-            66% { transform: translate(20px, -30px) rotate(4deg); }
+            33% { transform: translate(-22px, 15px) rotate(-5deg); }
+            66% { transform: translate(15px, -25px) rotate(3deg); }
             100% { transform: translate(0px, 0px) rotate(0deg); }
         }
         @keyframes floatAround3 {
             0% { transform: translate(0px, 0px) rotate(0deg); }
-            33% { transform: translate(15px, 35px) rotate(5deg); }
-            66% { transform: translate(-25px, -20px) rotate(-4deg); }
+            33% { transform: translate(12px, 25px) rotate(3deg); }
+            66% { transform: translate(-20px, -15px) rotate(-3deg); }
+            100% { transform: translate(0px, 0px) rotate(0deg); }
+        }
+        @keyframes floatAround4 {
+            0% { transform: translate(0px, 0px) rotate(0deg); }
+            50% { transform: translate(-18px, -22px) rotate(6deg); }
             100% { transform: translate(0px, 0px) rotate(0deg); }
         }
 
-        .floating-space-1 { animation: floatAround1 7s ease-in-out infinite; }
-        .floating-space-2 { animation: floatAround2 9s ease-in-out infinite; }
-        .floating-space-3 { animation: floatAround3 8s ease-in-out infinite; }
+        .floating-space-1 { animation: floatAround1 6.5s ease-in-out infinite; }
+        .floating-space-2 { animation: floatAround2 8s ease-in-out infinite; }
+        .floating-space-3 { animation: floatAround3 7.2s ease-in-out infinite; }
+        .floating-space-4 { animation: floatAround4 9s ease-in-out infinite; }
 
-        /* 全屏漂浮球容器大網格 */
+        /* 全屏打散網格容器 */
         .floating-universe-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 28px;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 24px;
             padding: 30px 10px;
-            min-height: 500px;
+            min-height: 450px;
             align-items: center;
             justify-items: center;
         }
 
         /* 🔮 超真 3D 柔和發光水晶球 */
         .movie-glass-sphere {
-            width: 76px;
-            height: 76px;
+            width: 72px;
+            height: 72px;
             border-radius: 50%;
             position: relative;
             cursor: pointer;
@@ -79,7 +85,7 @@
             transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
         }
 
-        /* 玻璃弧形頂部弧光 Highlight */
+        /* 玻璃頂部弧線反射高光 */
         .movie-glass-sphere::before {
             content: "";
             position: absolute;
@@ -154,65 +160,71 @@
     </header>
 
     <!-- 主要內容區 -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-8 space-y-10">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 space-y-8">
         
-        <!-- 搜尋與統計導航 -->
-        <div class="flex flex-col md:flex-row gap-4 items-center justify-between bg-slate-900/60 border border-sky-900/40 p-4 rounded-2xl backdrop-blur-md">
-            <div class="relative w-full md:w-96">
-                <i class="ph ph-magnifying-glass absolute left-4 top-3.5 text-sky-400 text-xl"></i>
-                <input type="text" id="searchInput" oninput="filterMemories()" placeholder="搜尋記憶標題、觸發事件..." class="w-full bg-slate-950 border border-sky-900/60 rounded-xl pl-12 pr-4 py-2.5 text-slate-100 placeholder-sky-400/40 focus:outline-none focus:border-sky-400 text-sm">
-            </div>
-
-            <div class="flex items-center space-x-2 w-full md:w-auto justify-end">
-                <span class="text-xs text-sky-300 font-bold"><i class="ph ph-chart-donut text-sm"></i> 情緒統計：</span>
-                <select id="timeRangeSelect" onchange="updateAnalytics()" class="bg-slate-950 border border-sky-900/60 text-sky-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-sky-400">
-                    <option value="all">全部時間</option>
-                    <option value="year">本年度 (2026)</option>
-                    <option value="month">本月份 (10月)</option>
-                    <option value="week">最近一週</option>
-                </select>
-            </div>
+        <!-- 搜尋列 -->
+        <div class="relative max-w-xl mx-auto">
+            <i class="ph ph-magnifying-glass absolute left-4 top-3.5 text-sky-400 text-xl"></i>
+            <input type="text" id="searchInput" oninput="filterMemories()" placeholder="搜尋記憶標題、觸發事件..." class="w-full bg-slate-950/80 border border-sky-900/60 rounded-2xl pl-12 pr-4 py-3 text-slate-100 placeholder-sky-400/40 focus:outline-none focus:border-sky-400 shadow-inner text-sm">
         </div>
 
-        <!-- 📊 統計數據面板 -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div class="bg-slate-900/80 border border-yellow-500/30 rounded-2xl p-4 flex items-center space-x-4 shadow-lg">
-                <div class="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center text-yellow-400 text-xl font-bold">💛</div>
-                <div>
-                    <div class="text-xs text-slate-400">喜悅 / 快樂</div>
-                    <div id="statJoy" class="text-xl font-black text-yellow-300">0 顆</div>
-                </div>
-            </div>
-            <div class="bg-slate-900/80 border border-sky-500/30 rounded-2xl p-4 flex items-center space-x-4 shadow-lg">
-                <div class="w-10 h-10 rounded-xl bg-sky-500/20 flex items-center justify-center text-sky-400 text-xl font-bold">💙</div>
-                <div>
-                    <div class="text-xs text-slate-400">哀傷 / 悲傷</div>
-                    <div id="statSad" class="text-xl font-black text-sky-300">0 顆</div>
-                </div>
-            </div>
-            <div class="bg-slate-900/80 border border-red-500/30 rounded-2xl p-4 flex items-center space-x-4 shadow-lg">
-                <div class="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center text-red-400 text-xl font-bold">🔴</div>
-                <div>
-                    <div class="text-xs text-slate-400">憤怒 / 煩躁</div>
-                    <div id="statAnger" class="text-xl font-black text-red-300">0 顆</div>
-                </div>
-            </div>
-            <div class="bg-slate-900/80 border border-cyan-500/30 rounded-2xl p-4 flex items-center space-x-4 shadow-lg">
-                <div class="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-xl font-bold">🔵</div>
-                <div>
-                    <div class="text-xs text-slate-400">焦慮 / 恐懼</div>
-                    <div id="statFear" class="text-xl font-black text-cyan-300">0 顆</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 🌐 全屏隨機漂浮記憶宇宙 (Full-screen Floating Universe) -->
+        <!-- 🌐 全屏打散隨機漂浮記憶宇宙 (記憶球連同文字一同飄浮) -->
         <section class="space-y-3 bg-slate-950/40 p-6 rounded-3xl border border-sky-900/30">
             <h2 class="text-lg font-bold text-sky-300 flex items-center space-x-2 drop-shadow-[0_0_8px_rgba(56,189,248,0.3)] px-2">
                 <i class="ph ph-planet text-sky-400"></i>
                 <span>大腦總部記憶漂浮宇宙 (Mind HQ Universe)</span>
             </h2>
             <div id="floatingUniverse" class="floating-universe-grid"></div>
+        </section>
+
+        <!-- 📊 統計數據面板 (移至下方) -->
+        <section class="space-y-4 pt-4 border-t border-sky-900/40">
+            <div class="flex flex-col md:flex-row gap-4 items-center justify-between bg-slate-900/60 border border-sky-900/40 p-4 rounded-2xl backdrop-blur-md">
+                <h3 class="text-md font-bold text-sky-200 flex items-center space-x-2">
+                    <i class="ph ph-chart-donut text-lg text-sky-400"></i>
+                    <span>情緒統計儀表板</span>
+                </h3>
+                <div class="flex items-center space-x-2 w-full md:w-auto justify-end">
+                    <span class="text-xs text-sky-300 font-bold">時間範圍：</span>
+                    <select id="timeRangeSelect" onchange="updateAnalytics()" class="bg-slate-950 border border-sky-900/60 text-sky-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-sky-400">
+                        <option value="all">全部時間</option>
+                        <option value="year">本年度 (2026)</option>
+                        <option value="month">本月份 (10月)</option>
+                        <option value="week">最近一週</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="bg-slate-900/80 border border-yellow-500/30 rounded-2xl p-4 flex items-center space-x-4 shadow-lg">
+                    <div class="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center text-yellow-400 text-xl font-bold">💛</div>
+                    <div>
+                        <div class="text-xs text-slate-400">喜悅 / 快樂</div>
+                        <div id="statJoy" class="text-xl font-black text-yellow-300">0 顆</div>
+                    </div>
+                </div>
+                <div class="bg-slate-900/80 border border-sky-500/30 rounded-2xl p-4 flex items-center space-x-4 shadow-lg">
+                    <div class="w-10 h-10 rounded-xl bg-sky-500/20 flex items-center justify-center text-sky-400 text-xl font-bold">💙</div>
+                    <div>
+                        <div class="text-xs text-slate-400">哀傷 / 悲傷</div>
+                        <div id="statSad" class="text-xl font-black text-sky-300">0 顆</div>
+                    </div>
+                </div>
+                <div class="bg-slate-900/80 border border-red-500/30 rounded-2xl p-4 flex items-center space-x-4 shadow-lg">
+                    <div class="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center text-red-400 text-xl font-bold">🔴</div>
+                    <div>
+                        <div class="text-xs text-slate-400">憤怒 / 煩躁</div>
+                        <div id="statAnger" class="text-xl font-black text-red-300">0 顆</div>
+                    </div>
+                </div>
+                <div class="bg-slate-900/80 border border-cyan-500/30 rounded-2xl p-4 flex items-center space-x-4 shadow-lg">
+                    <div class="w-10 h-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-xl font-bold">🔵</div>
+                    <div>
+                        <div class="text-xs text-slate-400">焦慮 / 恐懼</div>
+                        <div id="statFear" class="text-xl font-black text-cyan-300">0 顆</div>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
@@ -358,17 +370,65 @@
                     </div>
                 </div>
 
-                <!-- 身體感官反應 -->
+                <!-- 🔄 完整 6 大部位身體感官反應分類 -->
                 <div class="space-y-2">
-                    <label class="block text-sm font-medium text-sky-300">🔄 身體感官反應</label>
+                    <label class="block text-sm font-medium text-sky-300">🔄 身體感官反應 (6大部位細分)</label>
                     <div class="bg-slate-900 p-4 rounded-xl border border-sky-900/40 space-y-3 text-xs">
-                        <div class="flex flex-wrap gap-2">
-                            <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="眼眶發熱"> 眼眶發熱</label>
-                            <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="心跳加速"> 心跳加速</label>
-                            <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="胸悶氣短"> 胸悶氣短</label>
-                            <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="胃部不適"> 胃部不適</label>
-                            <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="肌肉緊繃"> 肌肉緊繃</label>
-                            <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="手心冒汗"> 手心冒汗</label>
+                        <div>
+                            <span class="text-sky-300 font-bold">🧠 1. 頭部與面部：</span>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="眼眶發熱"> 眼眶發熱</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="太陽穴跳動"> 太陽穴跳動</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="面部潮紅"> 面部潮紅</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="瞳孔放大"> 瞳孔放大</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="咬緊牙關"> 咬緊牙關</label>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-sky-300 font-bold">🫁 2. 胸腔與呼吸：</span>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="心跳加速"> 心跳加速</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="胸悶氣短"> 胸悶氣短</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="呼吸急促"> 呼吸急促</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="呼吸平穩"> 呼吸平穩</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="喉嚨緊繃"> 喉嚨緊繃</label>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-sky-300 font-bold">🫃 3. 胃部與消化：</span>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="胃部不適"> 胃部不適</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="胃部翻騰"> 胃部翻騰</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="反胃"> 反胃</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="胃部緊縮"> 胃部緊縮</label>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-sky-300 font-bold">💪 4. 肌肉與四肢：</span>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="肌肉緊繃"> 肌肉緊繃</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="肌肉鬆弛"> 肌肉鬆弛</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="身體顫抖"> 身體顫抖</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="步伐輕盈"> 步伐輕盈</label>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-sky-300 font-bold">🔥 5. 皮膚與體溫：</span>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="體溫升高"> 體溫升高</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="血壓上升"> 血壓上升</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="手心冒汗"> 手心冒汗</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="出冷汗"> 出冷汗</label>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-sky-300 font-bold">✨ 6. 神經與精神狀態：</span>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="無力感"> 無力感</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="思維清晰"> 思維清晰</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="身體放鬆"> 身體放鬆</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="面帶微笑"> 面帶微笑</label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -420,7 +480,22 @@
             { id: 2, title: "初次到東京旅行", date: "2026-10-10", trigger: "順利抵達機場並成功 Check-in。", emotions: ["興奮", "焦慮"], somatics: ["心跳加速", "步伐輕盈"], photo: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400", isCore: false, isFlashback: false },
             { id: 3, title: "小學開學日回憶", date: "小一的秋天", trigger: "執拾舊物見到舊校服。", emotions: ["緊張", "悲傷"], somatics: ["胸悶氣短"], photo: null, isCore: false, isFlashback: true },
             { id: 4, title: "寵物過世的道別", date: "2025-10-05", trigger: "陪伴多年的貓貓安詳離去。", emotions: ["悲傷", "孤單"], somatics: ["流淚", "無力感"], photo: null, isCore: true, isFlashback: false },
-            { id: 5, title: "工作專案獲得讚賞", date: "2026-09-15", trigger: "連續加班兩星期後簡報成功。", emotions: ["感恩", "自豪"], somatics: ["面帶微笑", "步伐輕盈"], photo: null, isCore: true, isFlashback: false }
+            { id: 5, title: "工作專案獲得讚賞", date: "2026-09-15", trigger: "連續加班兩星期後簡報成功。", emotions: ["感恩", "自豪"], somatics: ["面帶微笑", "步伐輕盈"], photo: null, isCore: true, isFlashback: false },
+            { id: 6, title: "地鐵被無禮推撞", date: "2026-09-10", trigger: "上班高峰期被硬擠。", emotions: ["生氣", "受冒犯"], somatics: ["體溫升高", "血壓上升"], photo: null, isCore: false, isFlashback: false },
+            { id: 7, title: "颱風天在家喝熱可可", date: "2026-08-20", trigger: "出面狂風暴雨，躲在被窩看電影。", emotions: ["平靜", "滿足"], somatics: ["呼吸平穩", "身體放鬆"], photo: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400", isCore: false, isFlashback: false },
+            { id: 8, title: "公開演講前 5 分鐘", date: "2026-08-05", trigger: "站在舞台側幕等候上台。", emotions: ["緊張", "擔憂"], somatics: ["心跳加速", "肌肉緊繃"], photo: null, isCore: false, isFlashback: false },
+            { id: 9, title: "見到朋友換新跑車", date: "2026-07-28", trigger: "聚會時看到朋友曬新車。", emotions: ["焦慮", "失望"], somatics: ["胃部不適"], photo: null, isCore: false, isFlashback: false },
+            { id: 10, title: "深夜想起舊廣播歌", date: "2026-07-15", trigger: "深夜聽歌突然想起舊時光。", emotions: ["悲傷", "開心"], somatics: ["眼眶發熱"], photo: null, isCore: false, isFlashback: true },
+            { id: 11, title: "搶到演唱會門票", date: "2026-06-30", trigger: "倒數搶票成功的一刻。", emotions: ["驚喜", "興奮"], somatics: ["心跳加速", "步伐輕盈"], photo: null, isCore: false, isFlashback: false },
+            { id: 12, title: "發現牛奶過期結塊", date: "2026-06-18", trigger: "剛倒入咖啡發現變質。", emotions: ["厭惡", "煩躁"], somatics: ["面部潮紅"], photo: null, isCore: false, isFlashback: false },
+            { id: 13, title: "完成 10K 馬拉松", date: "2026-06-01", trigger: "衝過終點線領完獎牌。", emotions: ["自豪", "滿足"], somatics: ["體溫升高", "心跳加速"], photo: null, isCore: true, isFlashback: false },
+            { id: 14, title: "簡報講錯重要數據", date: "2026-05-20", trigger: "台下全場突然安靜。", emotions: ["驚慌", "不知所措"], somatics: ["瞳孔放大", "出冷汗"], photo: null, isCore: false, isFlashback: false },
+            { id: 15, title: "週五下班離辦公室", date: "2026-05-10", trigger: "打卡離場迎接週末。", emotions: ["平靜", "樂觀"], somatics: ["呼吸平穩", "身體放鬆"], photo: null, isCore: false, isFlashback: false },
+            { id: 16, title: "童年玩伴結婚喜帖", date: "2026-04-25", trigger: "收到喜帖想起小時候爬樹。", emotions: ["開心", "悲傷"], somatics: ["眼眶發熱", "面帶微笑"], photo: null, isCore: false, isFlashback: true },
+            { id: 17, title: "衝動消費買貴衣物", date: "2026-04-12", trigger: "回家試穿覺得不合適。", emotions: ["內疚", "失望"], somatics: ["胃部不適"], photo: null, isCore: false, isFlashback: false },
+            { id: 18, title: "正念禪修靜坐 20 分鐘", date: "2026-03-30", trigger: "專注呼吸雜念沉澱。", emotions: ["平靜"], somatics: ["呼吸平穩", "思維清晰", "肌肉鬆弛"], photo: null, isCore: false, isFlashback: false },
+            { id: 19, title: "搬離住十年舊居", date: "2026-03-15", trigger: "最後一次鎖上舊家大門。", emotions: ["迷失", "興奮"], somatics: ["胸悶氣短", "無力感"], photo: null, isCore: true, isFlashback: false },
+            { id: 20, title: "小學被罰站回憶", date: "2026-03-01", trigger: "路過母校想起當年蝦碌事。", emotions: ["不安", "煩躁"], somatics: ["心跳加速", "肌肉緊繃"], photo: null, isCore: false, isFlashback: true }
         ];
 
         const encouragementQuotes = [
@@ -437,7 +512,6 @@
             "驚慌": "rgba(165,243,252,0.85)", "緊張": "rgba(103,232,249,0.85)", "擔憂": "rgba(165,243,252,0.85)", "焦慮": "rgba(103,232,249,0.85)", "害怕": "rgba(165,243,252,0.85)"
         };
 
-        // 雙色/多色混色漸層與對應發光暈
         function getMarbleGradient(emotions) {
             if (!emotions || emotions.length === 0) {
                 return "radial-gradient(circle at 35% 35%, rgba(253,224,71,0.7) 0%, rgba(202,138,4,0.8) 100%)";
@@ -453,13 +527,12 @@
             }
         }
 
-        // 取得對應情緒的專屬外發光顏色 (支援多情緒混色光暈)
         function getGlowColor(emotions) {
             if (!emotions || emotions.length === 0) return "rgba(253,224,71,0.55)";
             if (emotions.some(e => ["生氣", "憤怒", "煩躁"].includes(e))) return "rgba(239,68,68,0.65)";
             if (emotions.some(e => ["悲傷", "難過", "失望", "孤單"].includes(e))) return "rgba(56,189,248,0.65)";
             if (emotions.some(e => ["焦慮", "緊張", "驚慌"].includes(e))) return "rgba(103,232,249,0.65)";
-            return "rgba(253,224,71,0.65)"; // 預設金色快樂光暈
+            return "rgba(253,224,71,0.65)";
         }
 
         function getFilteredMemories() {
@@ -521,13 +594,13 @@
         }
 
         function createMemoryNode(m, index) {
-            const wrapper = document.createElement('div');
-            wrapper.className = "flex flex-col items-center cursor-pointer group flex-shrink-0 w-28";
+            // 包裹層：控制整顆球連同標題與日期的全屏隨機漂浮
+            const floatClass = index % 4 === 0 ? "floating-space-1" : index % 4 === 1 ? "floating-space-2" : index % 4 === 2 ? "floating-space-3" : "floating-space-4";
             
-            // 隨機分配全屏飄浮動畫類別
-            const floatClass = index % 3 === 0 ? "floating-space-1" : index % 3 === 1 ? "floating-space-2" : "floating-space-3";
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex flex-col items-center cursor-pointer group flex-shrink-0 w-24 ${floatClass}`;
 
-            let sphereClass = "movie-glass-sphere " + floatClass;
+            let sphereClass = "movie-glass-sphere ";
             let badge = "";
             if (m.isCore) {
                 sphereClass += "core-gold-glow ";
@@ -646,7 +719,6 @@
             closeBackupModal();
         }
 
-        // 自動取得並顯示最後修改時間
         function displayLastUpdated() {
             const lastMod = new Date(document.lastModified);
             if (!isNaN(lastMod)) {

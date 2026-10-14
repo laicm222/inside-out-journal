@@ -9,24 +9,24 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
-        body { font-family: 'Noto Sans TC', sans-serif; background-color: #080b13; color: #f3f4f6; overflow-x: hidden; }
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #030712; color: #f3f4f6; overflow-x: hidden; }
         
-        /* 電影級記憶總部牆身背景 */
+        /* 夜空藍電影級記憶總部牆身背景 */
         .headquarter-wall {
-            background: radial-gradient(circle at 50% 30%, #2e1065 0%, #0f0a1a 60%, #050308 100%);
+            background: radial-gradient(circle at 50% 30%, #0f172a 0%, #090d16 60%, #020617 100%);
             border-radius: 2rem;
             padding: 30px 20px;
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.9), 0 0 30px rgba(147, 51, 234, 0.2);
-            border: 2px solid rgba(168, 85, 247, 0.3);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.9), 0 0 30px rgba(14, 165, 233, 0.15);
+            border: 2px solid rgba(56, 189, 248, 0.2);
         }
 
-        /* 電影入面一條條帶有弧度嘅記憶管道架 */
+        /* 夜空藍金屬質感記憶管道架 */
         .movie-shelf-track {
             position: relative;
-            background: linear-gradient(180deg, #1e1138 0%, #2d1657 50%, #150b29 100%);
+            background: linear-gradient(180deg, #0b1329 0%, #111e38 50%, #070d1b 100%);
             border-radius: 9999px;
-            box-shadow: inset 0 4px 10px rgba(0,0,0,0.8), 0 8px 25px rgba(0,0,0,0.6);
-            border: 3px solid rgba(216, 180, 254, 0.25);
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.9), 0 8px 25px rgba(0,0,0,0.7);
+            border: 3px solid rgba(56, 189, 248, 0.25);
             padding: 16px 30px;
             margin: 24px 0;
             display: flex;
@@ -43,7 +43,7 @@
             border-radius: 50%;
             position: relative;
             cursor: pointer;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8) 0%, rgba(0,0,0,0.4) 70%), #334155;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8) 0%, rgba(0,0,0,0.4) 70%), #1e293b;
             box-shadow: inset 0 6px 12px rgba(0,0,0,0.8), inset 0 -4px 8px rgba(255,255,255,0.4), 0 6px 15px rgba(0,0,0,0.6);
             display: flex;
             align-items: center;
@@ -74,16 +74,16 @@
 <body class="min-h-screen flex flex-col">
 
     <!-- 頂部導航列 -->
-    <header class="bg-slate-950/90 backdrop-blur border-b border-purple-900/50 px-6 py-4 flex justify-between items-center sticky top-0 z-50 shadow-lg">
+    <header class="bg-slate-950/90 backdrop-blur border-b border-sky-900/40 px-6 py-4 flex justify-between items-center sticky top-0 z-50 shadow-lg">
         <div class="flex items-center space-x-3">
-            <span class="text-2xl font-black bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">Inside Out 記憶總部</span>
+            <span class="text-2xl font-black bg-gradient-to-r from-yellow-400 via-sky-400 to-cyan-300 bg-clip-text text-transparent">Inside Out 記憶總部</span>
         </div>
         <div class="flex items-center space-x-4">
-            <button onclick="openBackupModal()" class="bg-slate-900 hover:bg-slate-800 text-purple-200 px-4 py-2 rounded-xl text-sm font-medium flex items-center space-x-2 border border-purple-900/50 transition shadow-md">
-                <i class="ph ph-database text-lg text-purple-400"></i>
+            <button onclick="openBackupModal()" class="bg-slate-900 hover:bg-slate-800 text-sky-200 px-4 py-2 rounded-xl text-sm font-medium flex items-center space-x-2 border border-sky-900/40 transition shadow-md">
+                <i class="ph ph-database text-lg text-sky-400"></i>
                 <span>雲端同步 / 備份</span>
             </button>
-            <button onclick="openModal()" class="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-400 hover:to-purple-500 text-white px-5 py-2 rounded-xl text-sm font-bold flex items-center space-x-2 shadow-lg shadow-purple-500/30 transition">
+            <button onclick="openModal()" class="bg-gradient-to-r from-sky-500 to-cyan-600 hover:from-sky-400 hover:to-cyan-500 text-slate-950 px-5 py-2 rounded-xl text-sm font-bold flex items-center space-x-2 shadow-lg shadow-sky-500/20 transition">
                 <i class="ph ph-plus-circle text-lg"></i>
                 <span>新增記憶球</span>
             </button>
@@ -95,8 +95,8 @@
         
         <!-- 搜尋欄 -->
         <div class="relative max-w-xl mx-auto">
-            <i class="ph ph-magnifying-glass absolute left-4 top-3.5 text-purple-400 text-xl"></i>
-            <input type="text" id="searchInput" oninput="filterMemories()" placeholder="搜尋記憶水晶球標題、觸發事件..." class="w-full bg-slate-950/80 border border-purple-900/40 rounded-2xl pl-12 pr-4 py-3 text-slate-100 placeholder-purple-400/50 focus:outline-none focus:border-purple-500 shadow-inner">
+            <i class="ph ph-magnifying-glass absolute left-4 top-3.5 text-sky-400 text-xl"></i>
+            <input type="text" id="searchInput" oninput="filterMemories()" placeholder="搜尋記憶水晶球標題、觸發事件..." class="w-full bg-slate-950/80 border border-sky-900/40 rounded-2xl pl-12 pr-4 py-3 text-slate-100 placeholder-sky-400/50 focus:outline-none focus:border-sky-500 shadow-inner">
         </div>
 
         <!-- 電影總部主牆面 -->
@@ -115,9 +115,9 @@
 
             <!-- 所有記憶軌道 -->
             <section class="space-y-2">
-                <h2 class="text-lg font-bold text-purple-300 flex items-center space-x-2 px-2">
-                    <i class="ph ph-globe text-purple-400"></i>
-                    <span>所有記憶庫存牆 (Core Archives)</span>
+                <h2 class="text-lg font-bold text-sky-300 flex items-center space-x-2 px-2">
+                    <i class="ph ph-globe text-sky-400"></i>
+                    <span>所有記憶庫存牆 (Core Archives - 共 20 個經典範例)</span>
                 </h2>
                 <div id="allShelf" class="movie-shelf-track">
                     <!-- 動態載入所有記憶 -->
@@ -129,26 +129,26 @@
 
     <!-- 新增記憶表單 Modal -->
     <div id="memoryModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="bg-slate-950 border border-purple-900/60 rounded-3xl max-w-lg w-full p-6 space-y-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+        <div class="bg-slate-950 border border-sky-900/50 rounded-3xl max-w-lg w-full p-6 space-y-6 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-slate-800 pb-4">
-                <h3 class="text-lg font-bold text-purple-200">✨ 建立新記憶水晶球</h3>
+                <h3 class="text-lg font-bold text-sky-200">✨ 建立新記憶水晶球</h3>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-white"><i class="ph ph-x text-xl"></i></button>
             </div>
 
             <form id="memoryForm" onsubmit="saveMemory(event)" class="space-y-5">
                 <div>
                     <label class="block text-sm font-medium text-slate-300 mb-1">記憶標題</label>
-                    <input type="text" id="mTitle" required placeholder="例如：DSE 放榜當日" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-100 focus:outline-none focus:border-purple-500">
+                    <input type="text" id="mTitle" required placeholder="例如：DSE 放榜當日" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-100 focus:outline-none focus:border-sky-500">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-slate-300 mb-1">發生日期</label>
-                    <input type="date" id="mDate" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-100 focus:outline-none focus:border-purple-500">
+                    <input type="date" id="mDate" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-100 focus:outline-none focus:border-sky-500">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-slate-300 mb-1">觸發事件 / 簡述</label>
-                    <textarea id="mTrigger" rows="2" placeholder="發生咗咩事令你有呢種感覺..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-100 focus:outline-none focus:border-purple-500"></textarea>
+                    <textarea id="mTrigger" rows="2" placeholder="發生咗咩事令你有呢種感覺..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-100 focus:outline-none focus:border-sky-500"></textarea>
                 </div>
 
                 <!-- 5大情緒家族分類 -->
@@ -168,7 +168,7 @@
                             <div class="flex gap-3 mt-1"><label><input type="checkbox" name="emotions" value="憤怒"> 憤怒</label><label><input type="checkbox" name="emotions" value="煩躁"> 煩躁</label><label><input type="checkbox" name="emotions" value="不甘心"> 不甘心</label></div>
                         </div>
                         <div>
-                            <span class="text-purple-400 font-bold">💜 驚驚/焦慮家族：</span>
+                            <span class="text-cyan-400 font-bold">🔵 焦慮/驚驚家族：</span>
                             <div class="flex gap-3 mt-1"><label><input type="checkbox" name="emotions" value="焦慮"> 焦慮</label><label><input type="checkbox" name="emotions" value="害怕"> 害怕</label><label><input type="checkbox" name="emotions" value="緊張"> 緊張</label></div>
                         </div>
                     </div>
@@ -178,11 +178,11 @@
                 <div>
                     <label class="block text-sm font-medium text-slate-300 mb-1">身體感官標籤 (Somatics)</label>
                     <div class="flex flex-wrap gap-2">
-                        <label class="px-3 py-1 bg-slate-900 rounded-lg text-xs cursor-pointer border border-slate-800 hover:border-purple-500"><input type="checkbox" name="somatics" value="心跳加速" class="hidden"> 心跳加速</label>
-                        <label class="px-3 py-1 bg-slate-900 rounded-lg text-xs cursor-pointer border border-slate-800 hover:border-purple-500"><input type="checkbox" name="somatics" value="眼眶發熱" class="hidden"> 眼眶發熱</label>
-                        <label class="px-3 py-1 bg-slate-900 rounded-lg text-xs cursor-pointer border border-slate-800 hover:border-purple-500"><input type="checkbox" name="somatics" value="肌肉緊繃" class="hidden"> 肌肉緊繃</label>
-                        <label class="px-3 py-1 bg-slate-900 rounded-lg text-xs cursor-pointer border border-slate-800 hover:border-purple-500"><input type="checkbox" name="somatics" value="呼吸急促" class="hidden"> 呼吸急促</label>
-                        <label class="px-3 py-1 bg-slate-900 rounded-lg text-xs cursor-pointer border border-slate-800 hover:border-purple-500"><input type="checkbox" name="somatics" value="胃部翻騰" class="hidden"> 胃部翻騰</label>
+                        <label class="px-3 py-1 bg-slate-900 rounded-lg text-xs cursor-pointer border border-slate-800 hover:border-sky-500"><input type="checkbox" name="somatics" value="心跳加速" class="hidden"> 心跳加速</label>
+                        <label class="px-3 py-1 bg-slate-900 rounded-lg text-xs cursor-pointer border border-slate-800 hover:border-sky-500"><input type="checkbox" name="somatics" value="眼眶發熱" class="hidden"> 眼眶發熱</label>
+                        <label class="px-3 py-1 bg-slate-900 rounded-lg text-xs cursor-pointer border border-slate-800 hover:border-sky-500"><input type="checkbox" name="somatics" value="肌肉緊繃" class="hidden"> 肌肉緊繃</label>
+                        <label class="px-3 py-1 bg-slate-900 rounded-lg text-xs cursor-pointer border border-slate-800 hover:border-sky-500"><input type="checkbox" name="somatics" value="呼吸急促" class="hidden"> 呼吸急促</label>
+                        <label class="px-3 py-1 bg-slate-900 rounded-lg text-xs cursor-pointer border border-slate-800 hover:border-sky-500"><input type="checkbox" name="somatics" value="胃部翻騰" class="hidden"> 胃部翻騰</label>
                     </div>
                 </div>
 
@@ -200,7 +200,7 @@
 
                 <div class="flex justify-end space-x-3 pt-4 border-t border-slate-800">
                     <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-900 text-slate-300 rounded-xl text-sm font-medium hover:bg-slate-800">取消</button>
-                    <button type="submit" class="px-5 py-2 bg-purple-600 text-white rounded-xl text-sm font-bold hover:bg-purple-500">儲存記憶球</button>
+                    <button type="submit" class="px-5 py-2 bg-sky-500 text-slate-950 rounded-xl text-sm font-bold hover:bg-sky-400">儲存記憶球</button>
                 </div>
             </form>
         </div>
@@ -208,9 +208,9 @@
 
     <!-- 備份設定 Modal -->
     <div id="backupModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="bg-slate-950 border border-purple-900/60 rounded-3xl max-w-md w-full p-6 space-y-4">
+        <div class="bg-slate-950 border border-sky-900/50 rounded-3xl max-w-md w-full p-6 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <h3 class="text-lg font-bold text-purple-200">☁️ Supabase 雲端同步設定</h3>
+                <h3 class="text-lg font-bold text-sky-200">☁️ Supabase 雲端同步設定</h3>
                 <button onclick="closeBackupModal()" class="text-slate-400 hover:text-white"><i class="ph ph-x text-xl"></i></button>
             </div>
             <div class="space-y-3 text-sm">
@@ -222,17 +222,34 @@
                     <label class="block text-slate-300 mb-1">Supabase Anon Key</label>
                     <input type="text" id="sbKey" value="sb_publishable_imxjz7hPH0aCTamxVIsZ7Q_6YvurVqe" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200">
                 </div>
-                <button onclick="saveSupabaseConfig()" class="w-full py-2.5 bg-purple-600 text-white rounded-xl font-bold hover:bg-purple-500 transition">儲存並連接雲端</button>
+                <button onclick="saveSupabaseConfig()" class="w-full py-2.5 bg-sky-500 text-slate-950 rounded-xl font-bold hover:bg-sky-400 transition">儲存並連接雲端</button>
             </div>
         </div>
     </div>
 
     <script>
+        // 20 個經典 Inside Out 記憶球範例資料
         let memories = [
-            { id: 1, title: "DSE 放榜當日", date: "2026-10-14", trigger: "考到期望分數，與同學拍照道別。", emotions: ["快樂", "悲傷"], somatics: ["心跳加速"], isCore: true, isFlashback: false },
+            { id: 1, title: "DSE 放榜當日", date: "2026-10-14", trigger: "考到期望分數，與同學拍照道別。", emotions: ["快樂", "悲傷"], somatics: ["心跳加速", "眼眶發熱"], isCore: true, isFlashback: false },
             { id: 2, title: "初次到東京旅行", date: "2026-10-10", trigger: "順利抵達機場並成功 Check-in。", emotions: ["興奮", "焦慮"], somatics: ["呼吸急促"], isCore: false, isFlashback: false },
             { id: 3, title: "小學開學日回憶", date: "2026-09-25", trigger: "執拾舊物見到舊校服。", emotions: ["緊張", "悲傷"], somatics: ["胃部翻騰"], isCore: false, isFlashback: true },
-            { id: 4, title: "寵物過世的道別", date: "2025-10-05", trigger: "陪伴多年的貓貓安詳離去。", emotions: ["悲傷", "孤獨"], somatics: ["眼眶發熱"], isCore: true, isFlashback: false }
+            { id: 4, title: "寵物過世的道別", date: "2025-10-05", trigger: "陪伴多年的貓貓安詳離去。", emotions: ["悲傷", "孤獨"], somatics: ["眼眶發熱", "肌肉緊繃"], isCore: true, isFlashback: false },
+            { id: 5, title: "工作專案獲得讚賞", date: "2026-09-15", trigger: "連續加班兩星期後簡報成功。", emotions: ["快樂", "自豪"], somatics: ["心跳加速"], isCore: true, isFlashback: false },
+            { id: 6, title: "地鐵被無禮推撞", date: "2026-09-10", trigger: "上班高峰期被硬擠。", emotions: ["憤怒", "煩躁"], somatics: ["肌肉緊繃"], isCore: false, isFlashback: false },
+            { id: 7, title: "颱風天在家喝熱可可", date: "2026-08-20", trigger: "出面狂風暴雨，躲在被窩看電影。", emotions: ["平靜", "快樂"], somatics: [], isCore: false, isFlashback: false },
+            { id: 8, title: "公開演講前 5 分鐘", date: "2026-08-05", trigger: "站在舞台側幕等候上台。", emotions: ["緊張", "焦慮"], somatics: ["心跳加速", "呼吸急促"], isCore: false, isFlashback: false },
+            { id: 9, title: "見到朋友換新跑車", date: "2026-07-28", trigger: "聚會時看到朋友曬新車。", emotions: ["焦慮", "悲傷"], somatics: ["胃部翻騰"], isCore: false, isFlashback: false },
+            { id: 10, title: "深夜想起舊廣播歌", date: "2026-07-15", trigger: "深夜聽歌突然想起舊時光。", emotions: ["悲傷", "快樂"], somatics: ["眼眶發熱"], isCore: false, isFlashback: true },
+            { id: 11, title: "搶到演唱會門票", date: "2026-06-30", trigger: "倒數搶票成功的一刻。", emotions: ["興奮", "快樂"], somatics: ["心跳加速"], isCore: false, isFlashback: false },
+            { id: 12, title: "發現牛奶過期結塊", date: "2026-06-18", trigger: "剛倒入咖啡發現變質。", emotions: ["煩躁"], somatics: [], isCore: false, isFlashback: false },
+            { id: 13, title: "完成 10K 馬拉松", date: "2026-06-01", trigger: "衝過終點線領完獎牌。", emotions: ["自豪", "興奮"], somatics: ["肌肉緊繃", "呼吸急促"], isCore: true, isFlashback: false },
+            { id: 14, title: "簡報講錯重要數據", date: "2026-05-20", trigger: "台下全場突然安靜。", emotions: ["焦慮", "害怕"], somatics: ["心跳加速"], isCore: false, isFlashback: false },
+            { id: 15, title: "週五下班離辦公室", date: "2026-05-10", trigger: "打卡離場迎接週末。", emotions: ["平靜", "快樂"], somatics: [], isCore: false, isFlashback: false },
+            { id: 16, title: "童年玩伴結婚喜帖", date: "2026-04-25", trigger: "收到喜帖想起小時候爬樹。", emotions: ["快樂", "悲傷"], somatics: ["眼眶發熱"], isCore: false, isFlashback: true },
+            { id: 17, title: "衝動消費買貴衣物", date: "2026-04-12", trigger: "回家試穿覺得不合適。", emotions: ["煩躁", "悲傷"], somatics: ["胃部翻騰"], isCore: false, isFlashback: false },
+            { id: 18, title: "正念禪修靜坐 20 分鐘", date: "2026-03-30", trigger: "專注呼吸雜念沉澱。", emotions: ["平靜"], somatics: [], isCore: false, isFlashback: false },
+            { id: 19, title: "搬離住十年舊居", date: "2026-03-15", trigger: "最後一次鎖上舊家大門。", emotions: ["悲傷", "興奮"], somatics: ["胸口緊繃", "眼眶發熱"], isCore: true, isFlashback: false },
+            { id: 20, title: "小學被罰站回憶", date: "2026-03-01", trigger: "路過母校想起當年蝦碌事。", emotions: ["焦慮", "煩躁"], somatics: [], isCore: false, isFlashback: true }
         ];
 
         function renderMemories() {
@@ -246,4 +263,79 @@
         }
 
         function createMemoryNode(m) {
-            const div = document.createElement('
+            const div = document.createElement('div');
+            div.className = "flex flex-col items-center flex-shrink-0 cursor-pointer";
+            
+            let slotClass = "memory-slot ";
+            let badge = "";
+            if (m.isCore) {
+                slotClass += "core-glow ";
+                badge = "🌟";
+            } else if (m.isFlashback) {
+                slotClass += "flashback-effect ";
+                badge = "⚡";
+            }
+
+            let bgGrad = "radial-gradient(circle at 35% 35%, #fde047 0%, #ca8a04 80%)";
+            if (m.emotions.includes("悲傷")) bgGrad = "radial-gradient(circle at 35% 35%, #38bdf8 0%, #0369a1 80%)";
+            if (m.emotions.includes("憤怒") || m.emotions.includes("煩躁")) bgGrad = "radial-gradient(circle at 35% 35%, #f87171 0%, #b91c1c 80%)";
+            if (m.emotions.includes("緊張") || m.emotions.includes("焦慮") || m.emotions.includes("害怕")) bgGrad = "radial-gradient(circle at 35% 35%, #22d3ee 0%, #0891b2 80%)";
+
+            div.innerHTML = `
+                <div class="${slotClass}">
+                    <div class="w-[62px] h-[62px] rounded-full flex items-center justify-center text-xl font-bold shadow-inner" style="background: ${bgGrad};">
+                        ${badge || (m.emotions.includes("悲傷") ? "💙" : m.emotions.includes("憤怒") ? "🔴" : m.emotions.includes("焦慮") ? "🔵" : "💛")}
+                    </div>
+                </div>
+                <div class="text-center mt-2">
+                    <div class="text-xs font-bold text-slate-200 w-24 truncate">${m.title}</div>
+                    <div class="text-[10px] text-sky-400/80">${m.date}</div>
+                </div>
+            `;
+            return div;
+        }
+
+        function openModal() { document.getElementById('memoryModal').classList.remove('hidden'); document.getElementById('memoryModal').classList.add('flex'); }
+        function closeModal() { document.getElementById('memoryModal').classList.add('hidden'); document.getElementById('memoryModal').classList.remove('flex'); }
+        function openBackupModal() { document.getElementById('backupModal').classList.remove('hidden'); document.getElementById('backupModal').classList.add('flex'); }
+        function closeBackupModal() { document.getElementById('backupModal').classList.add('hidden'); document.getElementById('backupModal').classList.remove('flex'); }
+
+        function saveMemory(e) {
+            e.preventDefault();
+            const title = document.getElementById('mTitle').value;
+            const date = document.getElementById('mDate').value;
+            const trigger = document.getElementById('mTrigger').value;
+            const isCore = document.getElementById('mCore').checked;
+            const isFlashback = document.getElementById('mFlashback').checked;
+            const selectedEmotions = Array.from(document.querySelectorAll('input[name="emotions"]:checked')).map(el => el.value);
+            const selectedSomatics = Array.from(document.querySelectorAll('input[name="somatics"]:checked')).map(el => el.value);
+
+            memories.unshift({
+                id: Date.now(),
+                title, date, trigger,
+                emotions: selectedEmotions.length ? selectedEmotions : ["平靜"],
+                somatics: selectedSomatics,
+                isCore, isFlashback
+            });
+            renderMemories();
+            closeModal();
+            document.getElementById('memoryForm').reset();
+        }
+
+        function filterMemories() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = memories.filter(m => m.title.toLowerCase().includes(query) || m.trigger.toLowerCase().includes(query));
+            const allEl = document.getElementById('allShelf');
+            allEl.innerHTML = '';
+            filtered.forEach(m => allEl.appendChild(createMemoryNode(m)));
+        }
+
+        function saveSupabaseConfig() {
+            alert('Supabase 連接設定已儲存！');
+            closeBackupModal();
+        }
+
+        renderMemories();
+    </script>
+</body>
+</html>

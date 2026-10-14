@@ -27,28 +27,28 @@
             min-height: 100vh;
         }
 
-        /* 🎈 記憶球全屏打散漂浮軌道動畫 (多動態軌道) */
+        /* 🎈 記憶球全頁打散漂浮軌道動畫 */
         @keyframes floatAround1 {
             0% { transform: translate(0px, 0px) rotate(0deg); }
-            33% { transform: translate(18px, -28px) rotate(4deg); }
-            66% { transform: translate(-15px, 20px) rotate(-4deg); }
+            33% { transform: translate(18px, -24px) rotate(4deg); }
+            66% { transform: translate(-15px, 18px) rotate(-4deg); }
             100% { transform: translate(0px, 0px) rotate(0deg); }
         }
         @keyframes floatAround2 {
             0% { transform: translate(0px, 0px) rotate(0deg); }
-            33% { transform: translate(-22px, 15px) rotate(-5deg); }
-            66% { transform: translate(15px, -25px) rotate(3deg); }
+            33% { transform: translate(-20px, 15px) rotate(-5deg); }
+            66% { transform: translate(15px, -22px) rotate(3deg); }
             100% { transform: translate(0px, 0px) rotate(0deg); }
         }
         @keyframes floatAround3 {
             0% { transform: translate(0px, 0px) rotate(0deg); }
-            33% { transform: translate(12px, 25px) rotate(3deg); }
-            66% { transform: translate(-20px, -15px) rotate(-3deg); }
+            33% { transform: translate(12px, 22px) rotate(3deg); }
+            66% { transform: translate(-18px, -15px) rotate(-3deg); }
             100% { transform: translate(0px, 0px) rotate(0deg); }
         }
         @keyframes floatAround4 {
             0% { transform: translate(0px, 0px) rotate(0deg); }
-            50% { transform: translate(-18px, -22px) rotate(6deg); }
+            50% { transform: translate(-16px, -20px) rotate(5deg); }
             100% { transform: translate(0px, 0px) rotate(0deg); }
         }
 
@@ -57,21 +57,32 @@
         .floating-space-3 { animation: floatAround3 7.2s ease-in-out infinite; }
         .floating-space-4 { animation: floatAround4 9s ease-in-out infinite; }
 
-        /* 全屏打散網格容器 */
+        /* 全頁隨機打散網格容器（手機版最少 3 個球一行） */
         .floating-universe-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-            gap: 24px;
-            padding: 30px 10px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            padding: 20px 8px;
             min-height: 450px;
             align-items: center;
             justify-items: center;
         }
+        @media (min-width: 640px) {
+            .floating-universe-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 24px;
+            }
+        }
+        @media (min-width: 1024px) {
+            .floating-universe-grid {
+                grid-template-columns: repeat(5, minmax(0, 1fr));
+            }
+        }
 
         /* 🔮 超真 3D 柔和發光水晶球 */
         .movie-glass-sphere {
-            width: 72px;
-            height: 72px;
+            width: 68px;
+            height: 68px;
             border-radius: 50%;
             position: relative;
             cursor: pointer;
@@ -119,14 +130,14 @@
             animation: core-pulse 2.2s infinite alternate ease-in-out;
         }
         @keyframes core-pulse {
-            0% { box-shadow: inset -5px -6px 12px rgba(0,0,0,0.6), inset 5px 6px 12px rgba(255,255,255,0.9), 0 0 20px #facc15, 0 0 40px rgba(250,204,21,0.6); }
-            100% { box-shadow: inset -5px -6px 12px rgba(0,0,0,0.6), inset 5px 6px 12px rgba(255,255,255,0.9), 0 0 35px #fde047, 0 0 70px rgba(253,224,71,0.9); }
+            0% { box-shadow: inset -5px -6px 12px rgba(0,0,0,0.6), inset 5px 6px 12px rgba(255,255,255,0.9), 0 0 18px #facc15, 0 0 35px rgba(250,204,21,0.6); }
+            100% { box-shadow: inset -5px -6px 12px rgba(0,0,0,0.6), inset 5px 6px 12px rgba(255,255,255,0.9), 0 0 30px #fde047, 0 0 60px rgba(253,224,71,0.9); }
         }
 
         /* ⚡ 閃回記憶藍電光效果 */
         .flashback-blue-effect {
             border: 2px dashed #38bdf8 !important;
-            box-shadow: inset -5px -6px 12px rgba(0,0,0,0.7), 0 0 22px rgba(56, 189, 248, 0.9);
+            box-shadow: inset -5px -6px 12px rgba(0,0,0,0.7), 0 0 20px rgba(56, 189, 248, 0.9);
         }
 
         /* ✨ 飛入動畫 */
@@ -142,17 +153,21 @@
 </head>
 <body class="movie-hq-bg flex flex-col min-h-screen">
 
-    <!-- 頂部導航列 -->
-    <header class="bg-slate-950/90 backdrop-blur-md border-b border-sky-900/40 px-6 py-4 flex justify-between items-center sticky top-0 z-50 shadow-2xl">
-        <div class="flex items-center space-x-3">
-            <span class="text-2xl font-black bg-gradient-to-r from-yellow-400 via-sky-300 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_2px_10px_rgba(56,189,248,0.4)]">Inside Out 記憶總部</span>
+    <!-- 頂部導航列（第一行為標題，第二行放按鈕） -->
+    <header class="bg-slate-950/90 backdrop-blur-md border-b border-sky-900/40 px-6 py-4 space-y-3 sticky top-0 z-50 shadow-2xl">
+        <!-- 第一行：大字標題打橫橫跨 -->
+        <div class="text-center md:text-left">
+            <span class="text-2xl md:text-3xl font-black bg-gradient-to-r from-yellow-400 via-sky-300 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_2px_10px_rgba(56,189,248,0.4)]">
+                Inside Out 記憶總部
+            </span>
         </div>
-        <div class="flex items-center space-x-4">
-            <button onclick="openBackupModal()" class="bg-slate-900/80 hover:bg-slate-800 text-sky-200 px-4 py-2 rounded-xl text-sm font-medium flex items-center space-x-2 border border-sky-900/50 transition shadow-md">
+        <!-- 第二行：功能按鈕 -->
+        <div class="flex items-center justify-center md:justify-start space-x-4">
+            <button onclick="openBackupModal()" class="bg-slate-900/80 hover:bg-slate-800 text-sky-200 px-4 py-2 rounded-xl text-xs md:text-sm font-medium flex items-center space-x-2 border border-sky-900/50 transition shadow-md">
                 <i class="ph ph-database text-lg text-sky-400"></i>
                 <span>雲端同步</span>
             </button>
-            <button onclick="openModal()" class="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-slate-950 px-5 py-2 rounded-xl text-sm font-bold flex items-center space-x-2 shadow-lg shadow-sky-500/25 transition">
+            <button onclick="openModal()" class="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-slate-950 px-5 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center space-x-2 shadow-lg shadow-sky-500/25 transition">
                 <i class="ph ph-plus-circle text-lg"></i>
                 <span>新增記憶球</span>
             </button>
@@ -162,15 +177,35 @@
     <!-- 主要內容區 -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 space-y-8">
         
-        <!-- 搜尋列 -->
-        <div class="relative max-w-xl mx-auto">
-            <i class="ph ph-magnifying-glass absolute left-4 top-3.5 text-sky-400 text-xl"></i>
-            <input type="text" id="searchInput" oninput="filterMemories()" placeholder="搜尋記憶標題、觸發事件..." class="w-full bg-slate-950/80 border border-sky-900/60 rounded-2xl pl-12 pr-4 py-3 text-slate-100 placeholder-sky-400/40 focus:outline-none focus:border-sky-400 shadow-inner text-sm">
+        <!-- 搜尋列與多重類型篩選區 -->
+        <div class="flex flex-col sm:flex-row gap-3 items-center justify-between bg-slate-900/60 border border-sky-900/40 p-4 rounded-2xl backdrop-blur-md">
+            <!-- 搜尋關鍵字 -->
+            <div class="relative w-full sm:w-80">
+                <i class="ph ph-magnifying-glass absolute left-4 top-3 text-sky-400 text-lg"></i>
+                <input type="text" id="searchInput" oninput="filterMemories()" placeholder="搜尋記憶標題、觸發事件..." class="w-full bg-slate-950 border border-sky-900/60 rounded-xl pl-11 pr-4 py-2 text-slate-100 placeholder-sky-400/40 focus:outline-none focus:border-sky-400 text-xs md:text-sm">
+            </div>
+
+            <!-- 🎯 多重事件 / 情緒 / 核心記憶類別篩選器 -->
+            <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
+                <span class="text-xs text-sky-300 font-bold flex items-center space-x-1">
+                    <i class="ph ph-funnel text-sky-400"></i>
+                    <span>記憶篩選：</span>
+                </span>
+                <select id="typeFilterSelect" onchange="filterMemories()" class="bg-slate-950 border border-sky-900/60 text-sky-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-sky-400">
+                    <option value="all">所有記憶球</option>
+                    <option value="core">🌟 核心記憶 (Core)</option>
+                    <option value="flashback">⚡ 閃回記憶 (Flashback)</option>
+                    <option value="joy">💛 喜悅 / 快樂事件</option>
+                    <option value="sad">💙 哀傷 / 悲傷事件</option>
+                    <option value="anger">🔴 憤怒 / 煩躁事件</option>
+                    <option value="fear">🔵 焦慮 / 恐懼事件</option>
+                </select>
+            </div>
         </div>
 
-        <!-- 🌐 全屏打散隨機漂浮記憶宇宙 (記憶球連同文字一同飄浮) -->
-        <section class="space-y-3 bg-slate-950/40 p-6 rounded-3xl border border-sky-900/30">
-            <h2 class="text-lg font-bold text-sky-300 flex items-center space-x-2 drop-shadow-[0_0_8px_rgba(56,189,248,0.3)] px-2">
+        <!-- 🌐 全頁打散隨機漂浮記憶宇宙（手機版最少 3 個一行，全頁隨機漂浮） -->
+        <section class="space-y-3 bg-slate-950/40 p-4 sm:p-6 rounded-3xl border border-sky-900/30">
+            <h2 class="text-md sm:text-lg font-bold text-sky-300 flex items-center space-x-2 drop-shadow-[0_0_8px_rgba(56,189,248,0.3)] px-2">
                 <i class="ph ph-planet text-sky-400"></i>
                 <span>大腦總部記憶漂浮宇宙 (Mind HQ Universe)</span>
             </h2>
@@ -179,12 +214,12 @@
 
         <!-- 📊 統計數據面板 (移至下方) -->
         <section class="space-y-4 pt-4 border-t border-sky-900/40">
-            <div class="flex flex-col md:flex-row gap-4 items-center justify-between bg-slate-900/60 border border-sky-900/40 p-4 rounded-2xl backdrop-blur-md">
+            <div class="flex flex-col sm:flex-row gap-4 items-center justify-between bg-slate-900/60 border border-sky-900/40 p-4 rounded-2xl backdrop-blur-md">
                 <h3 class="text-md font-bold text-sky-200 flex items-center space-x-2">
                     <i class="ph ph-chart-donut text-lg text-sky-400"></i>
                     <span>情緒統計儀表板</span>
                 </h3>
-                <div class="flex items-center space-x-2 w-full md:w-auto justify-end">
+                <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
                     <span class="text-xs text-sky-300 font-bold">時間範圍：</span>
                     <select id="timeRangeSelect" onchange="updateAnalytics()" class="bg-slate-950 border border-sky-900/60 text-sky-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-sky-400">
                         <option value="all">全部時間</option>
@@ -536,17 +571,35 @@
         }
 
         function getFilteredMemories() {
-            const range = document.getElementById('timeRangeSelect').value;
             const query = document.getElementById('searchInput').value.toLowerCase();
+            const typeFilter = document.getElementById('typeFilterSelect').value;
 
             return memories.filter(m => {
+                // 關鍵字搜尋
                 const matchQuery = m.title.toLowerCase().includes(query) || (m.trigger && m.trigger.toLowerCase().includes(query));
                 if (!matchQuery) return false;
 
+                // 多重類型與情緒事件篩選
+                if (typeFilter === 'all') return true;
+                if (typeFilter === 'core') return m.isCore;
+                if (typeFilter === 'flashback') return m.isFlashback;
+                if (typeFilter === 'joy') return m.emotions.some(e => ["開心", "快樂", "興奮", "感恩", "滿足", "平靜", "自豪"].includes(e));
+                if (typeFilter === 'sad') return m.emotions.some(e => ["悲傷", "難過", "失望", "孤單", "內疚", "迷失"].includes(e));
+                if (typeFilter === 'anger') return m.emotions.some(e => ["生氣", "憤怒", "煩躁", "受冒犯"].includes(e));
+                if (typeFilter === 'fear') return m.emotions.some(e => ["驚慌", "緊張", "擔憂", "焦慮", "害怕"].includes(e));
+
+                return true;
+            });
+        }
+
+        function updateAnalytics() {
+            const range = document.getElementById('timeRangeSelect').value;
+            const now = new Date();
+
+            const timeFiltered = memories.filter(m => {
                 if (range === 'all') return true;
                 const mDate = new Date(m.date);
                 if (isNaN(mDate)) return true;
-                const now = new Date();
                 if (range === 'year') {
                     return mDate.getFullYear() === now.getFullYear();
                 } else if (range === 'month') {
@@ -557,13 +610,10 @@
                 }
                 return true;
             });
-        }
 
-        function updateAnalytics(filteredList) {
-            const list = filteredList || getFilteredMemories();
             let joyCount = 0, sadCount = 0, angerCount = 0, fearCount = 0;
 
-            list.forEach(m => {
+            timeFiltered.forEach(m => {
                 if (m.emotions.some(e => ["開心", "快樂", "興奮", "感恩", "滿足", "平靜", "自豪"].includes(e))) joyCount++;
                 if (m.emotions.some(e => ["悲傷", "難過", "失望", "孤單", "內疚", "迷失"].includes(e))) sadCount++;
                 if (m.emotions.some(e => ["生氣", "憤怒", "煩躁", "受冒犯"].includes(e))) angerCount++;
@@ -590,15 +640,15 @@
                 universeEl.appendChild(node);
             });
 
-            updateAnalytics(filtered);
+            updateAnalytics();
         }
 
         function createMemoryNode(m, index) {
-            // 包裹層：控制整顆球連同標題與日期的全屏隨機漂浮
+            // 包裹層：控制整顆球連同標題與日期的全頁隨機漂浮
             const floatClass = index % 4 === 0 ? "floating-space-1" : index % 4 === 1 ? "floating-space-2" : index % 4 === 2 ? "floating-space-3" : "floating-space-4";
             
             const wrapper = document.createElement('div');
-            wrapper.className = `flex flex-col items-center cursor-pointer group flex-shrink-0 w-24 ${floatClass}`;
+            wrapper.className = `flex flex-col items-center cursor-pointer group flex-shrink-0 w-full ${floatClass}`;
 
             let sphereClass = "movie-glass-sphere ";
             let badge = "";

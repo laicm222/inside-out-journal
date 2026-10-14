@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aura Sanctuary🔮</title>
+    <title>Aura Sanctuary 🔮</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -21,21 +21,46 @@
 
         /* 🌌 電影級夢幻大腦總部背景：多層次發光星雲 */
         .movie-hq-bg {
-            background: radial-gradient(circle at 50% 15%, rgba(56, 189, 248, 0.22) 0%, transparent 60%),
-                        radial-gradient(circle at 85% 75%, rgba(147, 51, 234, 0.18) 0%, transparent 55%),
-                        radial-gradient(circle at 15% 80%, rgba(14, 165, 233, 0.2) 0%, transparent 55%),
+            background: radial-gradient(circle at 50% 15%, rgba(56, 189, 248, 0.25) 0%, transparent 60%),
+                        radial-gradient(circle at 85% 75%, rgba(147, 51, 234, 0.2) 0%, transparent 55%),
+                        radial-gradient(circle at 15% 80%, rgba(14, 165, 233, 0.22) 0%, transparent 55%),
                         #020617;
             min-height: 100vh;
+            position: relative;
+        }
+
+        /* ✨ 漫天飄浮嘅發光微塵粒子特效 (Glowing Dust Particles) */
+        .particles-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: riseParticle 8s infinite linear;
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+        }
+        @keyframes riseParticle {
+            0% { transform: translateY(100vh) scale(0.2); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
         }
 
         /* ✨ 夢幻發光毛玻璃面板 (Glassmorphism & Glow) */
         .dreamy-glass-panel {
-            background: rgba(15, 23, 42, 0.65);
+            background: rgba(15, 23, 42, 0.7);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            box-shadow: 0 0 30px rgba(14, 165, 233, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            box-shadow: 0 0 35px rgba(14, 165, 233, 0.15), inset 0 0 15px rgba(255, 255, 255, 0.05);
             border-radius: 2rem;
+            position: relative;
+            z-index: 10;
         }
 
         /* 🎈 記憶球全頁打散漂浮軌道動畫 */
@@ -77,6 +102,8 @@
             min-height: 480px;
             align-items: center;
             justify-items: center;
+            position: relative;
+            z-index: 10;
         }
         @media (min-width: 640px) {
             .floating-universe-grid {
@@ -98,17 +125,16 @@
             position: relative;
             cursor: pointer;
             overflow: hidden;
-            border: 1.5px solid rgba(255, 255, 255, 0.85);
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
             box-shadow: inset -6px -7px 14px rgba(0, 0, 0, 0.7), 
-                        inset 6px 7px 14px rgba(255, 255, 255, 0.9),
-                        0 0 15px rgba(56, 189, 248, 0.4);
+                        inset 6px 7px 14px rgba(255, 255, 255, 0.95),
+                        0 0 20px rgba(56, 189, 248, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* 玻璃頂部弧線極致高光 */
         .movie-glass-sphere::before {
             content: "";
             position: absolute;
@@ -116,7 +142,7 @@
             left: 12%;
             width: 75%;
             height: 38%;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 100%);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 100%);
             border-radius: 50%;
             pointer-events: none;
             z-index: 10;
@@ -124,10 +150,10 @@
 
         .movie-glass-sphere:hover {
             transform: scale(1.3) translateY(-8px) !important;
-            filter: brightness(1.25);
+            filter: brightness(1.3);
             box-shadow: inset -6px -7px 14px rgba(0, 0, 0, 0.5), 
                         inset 6px 7px 14px rgba(255, 255, 255, 1),
-                        0 0 30px rgba(56, 189, 248, 0.8);
+                        0 0 35px rgba(56, 189, 248, 0.9);
             z-index: 50;
         }
 
@@ -136,23 +162,23 @@
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
-            opacity: 0.92;
+            opacity: 0.95;
         }
 
-        /* 🌟 核心記憶金色發光光暈 (呼吸感) */
+        /* 🌟 核心記憶金色發光光暈 */
         .core-gold-glow {
             border: 2px solid #fef08a !important;
             animation: core-pulse 2.4s infinite alternate ease-in-out;
         }
         @keyframes core-pulse {
-            0% { box-shadow: inset -6px -7px 14px rgba(0,0,0,0.6), inset 6px 7px 14px rgba(255,255,255,0.9), 0 0 20px #facc15, 0 0 40px rgba(250,204,21,0.6); }
-            100% { box-shadow: inset -6px -7px 14px rgba(0,0,0,0.6), inset 6px 7px 14px rgba(255,255,255,0.9), 0 0 35px #fde047, 0 0 70px rgba(253,224,71,0.95); }
+            0% { box-shadow: inset -6px -7px 14px rgba(0,0,0,0.6), inset 6px 7px 14px rgba(255,255,255,0.9), 0 0 22px #facc15, 0 0 45px rgba(250,204,21,0.7); }
+            100% { box-shadow: inset -6px -7px 14px rgba(0,0,0,0.6), inset 6px 7px 14px rgba(255,255,255,0.9), 0 0 38px #fde047, 0 0 75px rgba(253,224,71,1); }
         }
 
         /* ⚡ 閃回記憶藍電光效果 */
         .flashback-blue-effect {
             border: 2px dashed #38bdf8 !important;
-            box-shadow: inset -6px -7px 14px rgba(0,0,0,0.7), 0 0 25px rgba(56, 189, 248, 0.9);
+            box-shadow: inset -6px -7px 14px rgba(0,0,0,0.7), 0 0 25px rgba(56, 189, 248, 0.95);
         }
 
         /* ✨ 飛入動畫 */
@@ -165,43 +191,46 @@
             animation: flyIntoGrid 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
-        /* 夢幻發光輸入框與按鈕 */
         .dreamy-input {
-            background: rgba(2, 6, 23, 0.7);
-            border: 1px solid rgba(56, 189, 248, 0.3);
+            background: rgba(2, 6, 23, 0.75);
+            border: 1px solid rgba(56, 189, 248, 0.35);
             border-radius: 1rem;
             color: #f8fafc;
             transition: all 0.3s ease;
         }
         .dreamy-input:focus {
             outline: none;
-            border-color: rgba(56, 189, 248, 0.8);
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+            border-color: rgba(56, 189, 248, 0.9);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
         }
     </style>
 </head>
 <body id="bodyBg" class="movie-hq-bg flex flex-col min-h-screen">
 
-    <!-- 頂部導航列 (發光毛玻璃) -->
-    <header class="bg-slate-950/80 backdrop-blur-xl border-b border-sky-500/20 px-6 py-4 space-y-3 sticky top-0 z-50 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+    <!-- 背景動態微光星塵粒子 -->
+    <div class="particles-container" id="particlesLayer"></div>
+
+    <!-- 頂部導航列 -->
+    <header class="bg-slate-950/85 backdrop-blur-2xl border-b border-sky-500/30 px-6 py-4 space-y-3 sticky top-0 z-50 shadow-[0_4px_35px_rgba(0,0,0,0.6)]">
         <div class="text-center md:text-left flex flex-col md:flex-row md:items-center md:justify-between">
             <div>
-                <span class="text-2xl md:text-3xl font-black bg-gradient-to-r from-yellow-300 via-sky-300 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_2px_15px_rgba(56,189,248,0.5)]">
-                    Mindscape Sanctuary
+                <!-- 這裡已成功改名為 Aura Sanctuary -->
+                <span class="text-2xl md:text-3xl font-black bg-gradient-to-r from-yellow-300 via-sky-300 to-cyan-300 bg-clip-text text-transparent drop-shadow-[0_2px_20px_rgba(56,189,248,0.6)]">
+                    Aura Sanctuary 🔮
                 </span>
-                <span class="block text-[10px] text-sky-400/60 tracking-widest uppercase mt-0.5">Inside Out Memory Headquarters</span>
+                <span class="block text-[10px] text-sky-400/70 tracking-widest uppercase mt-0.5">Inside Out Memory Headquarters</span>
             </div>
-            <button onclick="triggerFlashbackRoulette()" class="mt-2 md:mt-0 bg-amber-500/15 hover:bg-amber-500/25 text-amber-200 border border-amber-400/40 px-4 py-2 rounded-2xl text-xs font-bold flex items-center justify-center space-x-2 transition shadow-[0_0_15px_rgba(251,191,36,0.2)]">
+            <button onclick="triggerFlashbackRoulette()" class="mt-2 md:mt-0 bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-400/50 px-4 py-2 rounded-2xl text-xs font-bold flex items-center justify-center space-x-2 transition shadow-[0_0_20px_rgba(251,191,36,0.3)]">
                 <i class="ph ph-shuffle text-base animate-spin"></i>
                 <span>🎲 隨機抽取記憶重溫</span>
             </button>
         </div>
         <div class="flex items-center justify-center md:justify-start space-x-4">
-            <button onclick="openBackupModal()" class="bg-slate-900/80 hover:bg-slate-800 text-sky-200 px-4 py-2 rounded-2xl text-xs md:text-sm font-medium flex items-center space-x-2 border border-sky-500/30 transition shadow-md">
+            <button onclick="openBackupModal()" class="bg-slate-900/90 hover:bg-slate-800 text-sky-200 px-4 py-2 rounded-2xl text-xs md:text-sm font-medium flex items-center space-x-2 border border-sky-500/40 transition shadow-md">
                 <i class="ph ph-database text-lg text-sky-400"></i>
                 <span>雲端同步</span>
             </button>
-            <button onclick="openModal()" class="bg-gradient-to-r from-sky-400 to-blue-600 hover:from-sky-300 hover:to-blue-500 text-slate-950 px-5 py-2 rounded-2xl text-xs md:text-sm font-bold flex items-center space-x-2 shadow-[0_0_20px_rgba(56,189,248,0.4)] transition">
+            <button onclick="openModal()" class="bg-gradient-to-r from-sky-400 to-blue-600 hover:from-sky-300 hover:to-blue-500 text-slate-950 px-5 py-2 rounded-2xl text-xs md:text-sm font-bold flex items-center space-x-2 shadow-[0_0_25px_rgba(56,189,248,0.6)] transition">
                 <i class="ph ph-plus-circle text-lg"></i>
                 <span>詳細新增記憶球</span>
             </button>
@@ -209,16 +238,16 @@
     </header>
 
     <!-- 主要內容區 -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 space-y-8">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 space-y-8 relative z-10">
         
-        <!-- ✨ 快速心情投入框 (發光玻璃面板) -->
+        <!-- ✨ 快速心情投入框 -->
         <section class="dreamy-glass-panel p-5 sm:p-6 space-y-3">
-            <h3 class="text-sm font-bold text-sky-300 flex items-center space-x-2 drop-shadow-[0_0_8px_rgba(56,189,248,0.4)]">
+            <h3 class="text-sm font-bold text-sky-300 flex items-center space-x-2 drop-shadow-[0_0_10px_rgba(56,189,248,0.5)]">
                 <i class="ph ph-sparkle text-lg text-yellow-300"></i>
                 <span>此時此刻，你的大腦總部發生咗咩事？（快速投遞記憶球）</span>
             </h3>
             <form onsubmit="quickSaveMemory(event)" class="flex flex-col sm:flex-row gap-3">
-                <input type="text" id="quickTitle" required placeholder="例如：食到好好味嘅雪糕 / 剛剛開會順利完成..." class="flex-1 dreamy-input px-4 py-2.5 text-xs md:text-sm placeholder-sky-400/40">
+                <input type="text" id="quickTitle" required placeholder="例如：食到好好味嘅雪糕 / 剛剛開會順利完成..." class="flex-1 dreamy-input px-4 py-2.5 text-xs md:text-sm placeholder-sky-400/50">
                 <select id="quickEmotion" class="dreamy-input text-sky-200 text-xs px-3 py-2">
                     <option value="開心">💛 開心 / 快樂</option>
                     <option value="平靜">💛 平靜 / 滿足</option>
@@ -227,7 +256,7 @@
                     <option value="焦慮">🔵 焦慮 / 緊張</option>
                     <option value="生氣">🔴 生氣 / 煩躁</option>
                 </select>
-                <button type="submit" class="bg-yellow-300 hover:bg-yellow-200 text-slate-950 px-5 py-2.5 rounded-2xl text-xs font-bold transition shadow-[0_0_15px_rgba(253,224,71,0.5)] flex items-center justify-center space-x-1">
+                <button type="submit" class="bg-yellow-300 hover:bg-yellow-200 text-slate-950 px-5 py-2.5 rounded-2xl text-xs font-bold transition shadow-[0_0_20px_rgba(253,224,71,0.6)] flex items-center justify-center space-x-1">
                     <i class="ph ph-paper-plane-tilt text-base"></i>
                     <span>瞬間投遞</span>
                 </button>
@@ -238,7 +267,7 @@
         <div class="dreamy-glass-panel p-4 flex flex-col sm:flex-row gap-3 items-center justify-between">
             <div class="relative w-full sm:w-80">
                 <i class="ph ph-magnifying-glass absolute left-4 top-3 text-sky-400 text-lg"></i>
-                <input type="text" id="searchInput" oninput="filterMemories()" placeholder="搜尋記憶標題、觸發事件..." class="w-full dreamy-input pl-11 pr-4 py-2 text-xs md:text-sm placeholder-sky-400/40">
+                <input type="text" id="searchInput" oninput="filterMemories()" placeholder="搜尋記憶標題、觸發事件..." class="w-full dreamy-input pl-11 pr-4 py-2 text-xs md:text-sm placeholder-sky-400/50">
             </div>
 
             <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
@@ -258,27 +287,27 @@
             </div>
         </div>
 
-        <!-- 🏷️ 常見觸發標籤雲 -->
+        <!-- 🏷️ 常用觸發標籤雲 -->
         <div class="flex flex-wrap items-center gap-2 px-1 text-xs">
             <span class="text-sky-300 font-bold"><i class="ph ph-tag"></i> 常用觸發標籤：</span>
-            <button onclick="filterByTag('工作')" class="px-3 py-1.5 bg-slate-900/80 hover:bg-sky-950/80 border border-sky-500/30 text-sky-200 rounded-xl transition shadow-sm">#工作壓力</button>
-            <button onclick="filterByTag('朋友')" class="px-3 py-1.5 bg-slate-900/80 hover:bg-sky-950/80 border border-sky-500/30 text-sky-200 rounded-xl transition shadow-sm">#朋友聚會</button>
-            <button onclick="filterByTag('旅行')" class="px-3 py-1.5 bg-slate-900/80 hover:bg-sky-950/80 border border-sky-500/30 text-sky-200 rounded-xl transition shadow-sm">#旅行探索</button>
-            <button onclick="filterByTag('日常')" class="px-3 py-1.5 bg-slate-900/80 hover:bg-sky-950/80 border border-sky-500/30 text-sky-200 rounded-xl transition shadow-sm">#日常瑣事</button>
-            <button onclick="resetTagFilter()" class="px-3 py-1.5 bg-slate-800/80 text-slate-400 hover:text-white rounded-xl transition">清除標籤</button>
+            <button onclick="filterByTag('工作')" class="px-3 py-1.5 bg-slate-900/90 hover:bg-sky-950 border border-sky-500/40 text-sky-200 rounded-xl transition shadow-sm">#工作壓力</button>
+            <button onclick="filterByTag('朋友')" class="px-3 py-1.5 bg-slate-900/90 hover:bg-sky-950 border border-sky-500/40 text-sky-200 rounded-xl transition shadow-sm">#朋友聚會</button>
+            <button onclick="filterByTag('旅行')" class="px-3 py-1.5 bg-slate-900/90 hover:bg-sky-950 border border-sky-500/40 text-sky-200 rounded-xl transition shadow-sm">#旅行探索</button>
+            <button onclick="filterByTag('日常')" class="px-3 py-1.5 bg-slate-900/90 hover:bg-sky-950 border border-sky-500/40 text-sky-200 rounded-xl transition shadow-sm">#日常瑣事</button>
+            <button onclick="resetTagFilter()" class="px-3 py-1.5 bg-slate-800 text-slate-400 hover:text-white rounded-xl transition">清除標籤</button>
         </div>
 
         <!-- 🌐 全頁打散隨機漂浮記憶宇宙 -->
         <section class="dreamy-glass-panel p-4 sm:p-6 space-y-3">
-            <h2 class="text-md sm:text-lg font-bold text-sky-200 flex items-center space-x-2 drop-shadow-[0_0_10px_rgba(56,189,248,0.5)] px-2">
+            <h2 class="text-md sm:text-lg font-bold text-sky-200 flex items-center space-x-2 drop-shadow-[0_0_12px_rgba(56,189,248,0.6)] px-2">
                 <i class="ph ph-planet text-sky-400"></i>
-                <span>Mindscape Universe · 記憶漂浮宇宙</span>
+                <span>Aura Universe · 記憶漂浮宇宙</span>
             </h2>
             <div id="floatingUniverse" class="floating-universe-grid"></div>
         </section>
 
         <!-- 📊 統計數據與情緒身心聯動分析面板 -->
-        <section class="space-y-4 pt-4 border-t border-sky-500/20">
+        <section class="space-y-4 pt-4 border-t border-sky-500/30">
             <div class="dreamy-glass-panel p-4 flex flex-col sm:flex-row gap-4 items-center justify-between">
                 <h3 class="text-md font-bold text-sky-200 flex items-center space-x-2">
                     <i class="ph ph-chart-donut text-lg text-sky-400"></i>
@@ -296,29 +325,29 @@
             </div>
 
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div class="dreamy-glass-panel p-4 flex items-center space-x-4 border-yellow-500/30 shadow-[0_0_15px_rgba(250,204,21,0.1)]">
-                    <div class="w-10 h-10 rounded-2xl bg-yellow-500/20 flex items-center justify-center text-yellow-300 text-xl font-bold">💛</div>
+                <div class="dreamy-glass-panel p-4 flex items-center space-x-4 border-yellow-500/40 shadow-[0_0_20px_rgba(250,204,21,0.15)]">
+                    <div class="w-10 h-10 rounded-2xl bg-yellow-500/25 flex items-center justify-center text-yellow-300 text-xl font-bold">💛</div>
                     <div>
                         <div class="text-xs text-slate-400">喜悅 / 快樂</div>
                         <div id="statJoy" class="text-xl font-black text-yellow-200">0 顆</div>
                     </div>
                 </div>
-                <div class="dreamy-glass-panel p-4 flex items-center space-x-4 border-sky-500/30 shadow-[0_0_15px_rgba(56,189,248,0.1)]">
-                    <div class="w-10 h-10 rounded-2xl bg-sky-500/20 flex items-center justify-center text-sky-300 text-xl font-bold">💙</div>
+                <div class="dreamy-glass-panel p-4 flex items-center space-x-4 border-sky-500/40 shadow-[0_0_20px_rgba(56,189,248,0.15)]">
+                    <div class="w-10 h-10 rounded-2xl bg-sky-500/25 flex items-center justify-center text-sky-300 text-xl font-bold">💙</div>
                     <div>
                         <div class="text-xs text-slate-400">哀傷 / 悲傷</div>
                         <div id="statSad" class="text-xl font-black text-sky-200">0 顆</div>
                     </div>
                 </div>
-                <div class="dreamy-glass-panel p-4 flex items-center space-x-4 border-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.1)]">
-                    <div class="w-10 h-10 rounded-2xl bg-red-500/20 flex items-center justify-center text-red-300 text-xl font-bold">🔴</div>
+                <div class="dreamy-glass-panel p-4 flex items-center space-x-4 border-red-500/40 shadow-[0_0_20px_rgba(239,68,68,0.15)]">
+                    <div class="w-10 h-10 rounded-2xl bg-red-500/25 flex items-center justify-center text-red-300 text-xl font-bold">🔴</div>
                     <div>
                         <div class="text-xs text-slate-400">憤怒 / 煩躁</div>
                         <div id="statAnger" class="text-xl font-black text-red-200">0 顆</div>
                     </div>
                 </div>
-                <div class="dreamy-glass-panel p-4 flex items-center space-x-4 border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.1)]">
-                    <div class="w-10 h-10 rounded-2xl bg-cyan-500/20 flex items-center justify-center text-cyan-300 text-xl font-bold">🔵</div>
+                <div class="dreamy-glass-panel p-4 flex items-center space-x-4 border-cyan-500/40 shadow-[0_0_20px_rgba(6,182,212,0.15)]">
+                    <div class="w-10 h-10 rounded-2xl bg-cyan-500/25 flex items-center justify-center text-cyan-300 text-xl font-bold">🔵</div>
                     <div>
                         <div class="text-xs text-slate-400">焦慮 / 恐懼</div>
                         <div id="statFear" class="text-xl font-black text-cyan-200">0 顆</div>
@@ -327,7 +356,7 @@
             </div>
 
             <!-- 🧠 身心覺察洞察 -->
-            <div class="dreamy-glass-panel p-5 space-y-2 border-sky-500/30">
+            <div class="dreamy-glass-panel p-5 space-y-2 border-sky-500/40">
                 <h4 class="text-xs font-bold text-sky-300 flex items-center space-x-2">
                     <i class="ph ph-brain text-base text-sky-400"></i>
                     <span>身心覺察洞察 (Mind-Body Pattern Insights)</span>
@@ -340,15 +369,15 @@
     </main>
 
     <!-- 底部最後更新時間顯示 -->
-    <footer class="text-center py-6 border-t border-sky-500/20 text-xs text-sky-400/60 space-y-1">
-        <p>Mindscape Sanctuary &copy; 2026 Inside Out HQ</p>
+    <footer class="text-center py-6 border-t border-sky-500/30 text-xs text-sky-400/70 space-y-1 relative z-10">
+        <p>Aura Sanctuary &copy; 2026 Inside Out HQ</p>
         <p id="lastUpdatedTime">頁面版本更新時間載入中...</p>
     </footer>
 
     <!-- 🔍 詳細資料視窗 -->
     <div id="detailModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="dreamy-glass-panel border-sky-400/50 max-w-lg w-full p-6 space-y-6 shadow-[0_0_60px_rgba(56,189,248,0.4)] relative">
-            <div class="flex justify-between items-center border-b border-sky-500/20 pb-3">
+        <div class="dreamy-glass-panel border-sky-400/60 max-w-lg w-full p-6 space-y-6 shadow-[0_0_70px_rgba(56,189,248,0.5)] relative">
+            <div class="flex justify-between items-center border-b border-sky-500/30 pb-3">
                 <div class="flex items-center space-x-3">
                     <div id="detailBadge" class="text-2xl">🌟</div>
                     <h3 id="detailTitle" class="text-xl font-black text-sky-200">記憶標題</h3>
@@ -356,7 +385,7 @@
                 <button onclick="closeDetailModal()" class="text-slate-400 hover:text-white"><i class="ph ph-x text-xl"></i></button>
             </div>
 
-            <div id="detailPhotoContainer" class="hidden w-full h-48 rounded-2xl overflow-hidden border border-sky-500/30">
+            <div id="detailPhotoContainer" class="hidden w-full h-48 rounded-2xl overflow-hidden border border-sky-500/40">
                 <img id="detailPhoto" src="" class="w-full h-full object-cover">
             </div>
 
@@ -367,7 +396,7 @@
                 </div>
                 <div>
                     <span class="text-sky-400 font-bold">觸發事件 / 簡述：</span>
-                    <p id="detailTrigger" class="mt-1 p-3 bg-slate-950/80 rounded-2xl border border-sky-500/20 text-slate-200 leading-relaxed"></p>
+                    <p id="detailTrigger" class="mt-1 p-3 bg-slate-950 rounded-2xl border border-sky-500/30 text-slate-200 leading-relaxed"></p>
                 </div>
                 <div>
                     <span class="text-sky-400 font-bold">情緒分類：</span>
@@ -379,7 +408,7 @@
                 </div>
             </div>
 
-            <button onclick="closeDetailModal()" class="w-full py-3 bg-gradient-to-r from-sky-400 to-blue-600 text-slate-950 font-bold rounded-2xl shadow-[0_0_20px_rgba(56,189,248,0.5)] hover:brightness-110 transition">
+            <button onclick="closeDetailModal()" class="w-full py-3 bg-gradient-to-r from-sky-400 to-blue-600 text-slate-950 font-bold rounded-2xl shadow-[0_0_25px_rgba(56,189,248,0.6)] hover:brightness-110 transition">
                 關閉
             </button>
         </div>
@@ -387,8 +416,8 @@
 
     <!-- 💙 心靈鼓勵彈窗 -->
     <div id="encouragementModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="dreamy-glass-panel border-sky-400/50 max-w-md w-full p-8 space-y-6 shadow-[0_0_60px_rgba(56,189,248,0.4)] text-center relative">
-            <div class="w-16 h-16 bg-sky-500/20 border border-sky-400 rounded-full flex items-center justify-center mx-auto text-3xl text-sky-300 shadow-[0_0_20px_rgba(56,189,248,0.5)]">
+        <div class="dreamy-glass-panel border-sky-400/60 max-w-md w-full p-8 space-y-6 shadow-[0_0_70px_rgba(56,189,248,0.5)] text-center relative">
+            <div class="w-16 h-16 bg-sky-500/25 border border-sky-400 rounded-full flex items-center justify-center mx-auto text-3xl text-sky-300 shadow-[0_0_25px_rgba(56,189,248,0.6)]">
                 💙
             </div>
             <div class="space-y-2">
@@ -397,7 +426,7 @@
                     「哭泣其實沒關係，這代表你正在釋放那些過重的負荷。允許自己脆弱，也是一種強大。」
                 </p>
             </div>
-            <button onclick="closeEncouragement()" class="w-full py-3 bg-gradient-to-r from-sky-400 to-blue-600 text-slate-950 font-bold rounded-2xl shadow-[0_0_20px_rgba(56,189,248,0.5)] hover:brightness-110 transition">
+            <button onclick="closeEncouragement()" class="w-full py-3 bg-gradient-to-r from-sky-400 to-blue-600 text-slate-950 font-bold rounded-2xl shadow-[0_0_25px_rgba(56,189,248,0.6)] hover:brightness-110 transition">
                 收到，多謝憂憂與樂樂！ ✨
             </button>
         </div>
@@ -405,8 +434,8 @@
 
     <!-- 詳細新增記憶 Modal -->
     <div id="memoryModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="dreamy-glass-panel border-sky-500/40 max-w-xl w-full p-6 space-y-6 shadow-2xl max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b border-sky-500/20 pb-4">
+        <div class="dreamy-glass-panel border-sky-500/50 max-w-xl w-full p-6 space-y-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-sky-500/30 pb-4">
                 <h3 class="text-lg font-bold text-sky-200">✨ 建立新記憶水晶球</h3>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-white"><i class="ph ph-x text-xl"></i></button>
             </div>
@@ -435,7 +464,7 @@
                 <!-- 情緒分類 -->
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-slate-300">情緒分類 (勾選多個可自動混色發光)</label>
-                    <div class="bg-slate-950/80 p-4 rounded-2xl border border-sky-500/20 space-y-3 text-sm">
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-sky-500/30 space-y-3 text-sm">
                         <div>
                             <span class="text-yellow-300 font-bold">💛 喜悅 / 快樂：</span>
                             <div class="flex flex-wrap gap-3 mt-1">
@@ -484,68 +513,68 @@
                 <!-- 🔄 完整 6 大部位身體感官反應分類 -->
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-sky-300">🔄 身體感官反應 (6大部位細分)</label>
-                    <div class="bg-slate-950/80 p-4 rounded-2xl border border-sky-500/20 space-y-3 text-xs">
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-sky-500/30 space-y-3 text-xs">
                         <div>
                             <span class="text-sky-300 font-bold">🧠 1. 頭部與面部：</span>
                             <div class="flex flex-wrap gap-2 mt-1">
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="眼眶發熱"> 眼眶發熱</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="太陽穴跳動"> 太陽穴跳動</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="面部潮紅"> 面部潮紅</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="瞳孔放大"> 瞳孔放大</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="咬緊牙關"> 咬緊牙關</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="眼眶發熱"> 眼眶發熱</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="太陽穴跳動"> 太陽穴跳動</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="面部潮紅"> 面部潮紅</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="瞳孔放大"> 瞳孔放大</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="咬緊牙關"> 咬緊牙關</label>
                             </div>
                         </div>
                         <div>
                             <span class="text-sky-300 font-bold">🫁 2. 胸腔與呼吸：</span>
                             <div class="flex flex-wrap gap-2 mt-1">
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="心跳加速"> 心跳加速</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="胸悶氣短"> 胸悶氣短</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="呼吸急促"> 呼吸急促</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="呼吸平穩"> 呼吸平穩</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="喉嚨緊繃"> 喉嚨緊繃</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="心跳加速"> 心跳加速</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="胸悶氣短"> 胸悶氣短</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="呼吸急促"> 呼吸急促</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="呼吸平穩"> 呼吸平穩</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="喉嚨緊繃"> 喉嚨緊繃</label>
                             </div>
                         </div>
                         <div>
                             <span class="text-sky-300 font-bold">🫃 3. 胃部與消化：</span>
                             <div class="flex flex-wrap gap-2 mt-1">
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="胃部不適"> 胃部不適</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="胃部翻騰"> 胃部翻騰</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="反胃"> 反胃</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="胃部緊縮"> 胃部緊縮</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="胃部不適"> 胃部不適</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="胃部翻騰"> 胃部翻騰</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="反胃"> 反胃</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="胃部緊縮"> 胃部緊縮</label>
                             </div>
                         </div>
                         <div>
                             <span class="text-sky-300 font-bold">💪 4. 肌肉與四肢：</span>
                             <div class="flex flex-wrap gap-2 mt-1">
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="肌肉緊繃"> 肌肉緊繃</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="肌肉鬆弛"> 肌肉鬆弛</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="身體顫抖"> 身體顫抖</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="步伐輕盈"> 步伐輕盈</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="肌肉緊繃"> 肌肉緊繃</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="肌肉鬆弛"> 肌肉鬆弛</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="身體顫抖"> 身體顫抖</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="步伐輕盈"> 步伐輕盈</label>
                             </div>
                         </div>
                         <div>
                             <span class="text-sky-300 font-bold">🔥 5. 皮膚與體溫：</span>
                             <div class="flex flex-wrap gap-2 mt-1">
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="體溫升高"> 體溫升高</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="血壓上升"> 血壓上升</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="手心冒汗"> 手心冒汗</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="出冷汗"> 出冷汗</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="體溫升高"> 體溫升高</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="血壓上升"> 血壓上升</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="手心冒汗"> 手心冒汗</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="出冷汗"> 出冷汗</label>
                             </div>
                         </div>
                         <div>
                             <span class="text-sky-300 font-bold">✨ 6. 神經與精神狀態：</span>
                             <div class="flex flex-wrap gap-2 mt-1">
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="無力感"> 無力感</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="思維清晰"> 思維清晰</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="身體放鬆"> 身體放鬆</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/10"><input type="checkbox" name="somatics" value="面帶微笑"> 面帶微笑</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="無力感"> 無力感</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="思維清晰"> 思維清晰</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="身體放鬆"> 身體放鬆</label>
+                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-sky-500/20"><input type="checkbox" name="somatics" value="面帶微笑"> 面帶微笑</label>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- 核心記憶 & 閃回選項 -->
-                <div class="space-y-2 bg-slate-950/80 p-4 rounded-2xl border border-sky-500/20">
+                <div class="space-y-2 bg-slate-950 p-4 rounded-2xl border border-sky-500/30">
                     <label class="flex items-center space-x-3 cursor-pointer">
                         <input type="checkbox" id="mCore" class="w-4 h-4 rounded text-yellow-400">
                         <span class="text-sm font-medium text-yellow-300">🌟 設為核心記憶球 (Core Memory - 金色光暈)</span>
@@ -556,9 +585,9 @@
                     </label>
                 </div>
 
-                <div class="flex justify-end space-x-3 pt-4 border-t border-sky-500/20">
+                <div class="flex justify-end space-x-3 pt-4 border-t border-sky-500/30">
                     <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-900 text-slate-300 rounded-2xl text-sm font-medium hover:bg-slate-800">取消</button>
-                    <button type="submit" class="px-5 py-2 bg-sky-400 text-slate-950 rounded-2xl text-sm font-bold shadow-[0_0_15px_rgba(56,189,248,0.5)] hover:bg-sky-300">儲存記憶球</button>
+                    <button type="submit" class="px-5 py-2 bg-sky-400 text-slate-950 rounded-2xl text-sm font-bold shadow-[0_0_20px_rgba(56,189,248,0.6)] hover:bg-sky-300">儲存記憶球</button>
                 </div>
             </form>
         </div>
@@ -566,8 +595,8 @@
 
     <!-- 雲端備份設定 Modal -->
     <div id="backupModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="dreamy-glass-panel border-sky-500/40 max-w-md w-full p-6 space-y-4">
-            <div class="flex justify-between items-center border-b border-sky-500/20 pb-3">
+        <div class="dreamy-glass-panel border-sky-500/50 max-w-md w-full p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-sky-500/30 pb-3">
                 <h3 class="text-lg font-bold text-sky-200">☁️ Supabase 雲端同步設定</h3>
                 <button onclick="closeBackupModal()" class="text-slate-400 hover:text-white"><i class="ph ph-x text-xl"></i></button>
             </div>
@@ -580,12 +609,29 @@
                     <label class="block text-slate-300 mb-1">Supabase Anon Key</label>
                     <input type="text" id="sbKey" value="sb_publishable_imxjz7hPH0aCTamxVIsZ7Q_6YvurVqe" class="w-full dreamy-input px-3 py-2 text-slate-200">
                 </div>
-                <button onclick="saveSupabaseConfig()" class="w-full py-2.5 bg-sky-400 text-slate-950 rounded-2xl font-bold shadow-[0_0_15px_rgba(56,189,248,0.5)] hover:bg-sky-300 transition">儲存並連接雲端</button>
+                <button onclick="saveSupabaseConfig()" class="w-full py-2.5 bg-sky-400 text-slate-950 rounded-2xl font-bold shadow-[0_0_20px_rgba(56,189,248,0.6)] hover:bg-sky-300 transition">儲存並連接雲端</button>
             </div>
         </div>
     </div>
 
     <script>
+        // 自動生成背景微光漂浮粒子
+        function initParticles() {
+            const container = document.getElementById('particlesLayer');
+            const particleCount = 25;
+            for (let i = 0; i < particleCount; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const size = Math.random() * 4 + 2;
+                p.style.width = `${size}px`;
+                p.style.height = `${size}px`;
+                p.style.left = `${Math.random() * 100}%`;
+                p.style.animationDuration = `${Math.random() * 6 + 6}s`;
+                p.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(p);
+            }
+        }
+
         let memories = [
             { id: 1, title: "DSE 放榜當日", date: "2026-10-14", trigger: "考到期望分數，與同學拍照道別。", emotions: ["開心", "悲傷"], somatics: ["心跳加速", "面帶微笑"], photo: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400", isCore: true, isFlashback: false },
             { id: 2, title: "初次到東京旅行", date: "2026-10-10", trigger: "順利抵達機場並成功 Check-in。", emotions: ["興奮", "焦慮"], somatics: ["心跳加速", "步伐輕盈"], photo: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400", isCore: false, isFlashback: false },
@@ -639,25 +685,25 @@
         }
 
         function getGlowColor(emotions) {
-            if (!emotions || emotions.length === 0) return "rgba(253,224,71,0.6)";
-            if (emotions.some(e => ["生氣", "憤怒", "煩躁"].includes(e))) return "rgba(239,68,68,0.7)";
-            if (emotions.some(e => ["悲傷", "難過", "失望", "孤單"].includes(e))) return "rgba(56,189,248,0.7)";
-            if (emotions.some(e => ["焦慮", "緊張", "驚慌"].includes(e))) return "rgba(103,232,249,0.7)";
-            return "rgba(253,224,71,0.7)";
+            if (!emotions || emotions.length === 0) return "rgba(253,224,71,0.65)";
+            if (emotions.some(e => ["生氣", "憤怒", "煩躁"].includes(e))) return "rgba(239,68,68,0.75)";
+            if (emotions.some(e => ["悲傷", "難過", "失望", "孤單"].includes(e))) return "rgba(56,189,248,0.75)";
+            if (emotions.some(e => ["焦慮", "緊張", "驚慌"].includes(e))) return "rgba(103,232,249,0.75)";
+            return "rgba(253,224,71,0.75)";
         }
 
         function updateAmbientBackground(filterType) {
             const body = document.getElementById('bodyBg');
             if (filterType === 'joy') {
-                body.style.background = "radial-gradient(circle at 50% 20%, rgba(250, 204, 21, 0.3) 0%, transparent 60%), #020617";
+                body.style.background = "radial-gradient(circle at 50% 20%, rgba(250, 204, 21, 0.35) 0%, transparent 60%), #020617";
             } else if (filterType === 'sad') {
-                body.style.background = "radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.3) 0%, transparent 60%), #020617";
+                body.style.background = "radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.35) 0%, transparent 60%), #020617";
             } else if (filterType === 'anger') {
-                body.style.background = "radial-gradient(circle at 50% 20%, rgba(239, 68, 68, 0.3) 0%, transparent 60%), #020617";
+                body.style.background = "radial-gradient(circle at 50% 20%, rgba(239, 68, 68, 0.35) 0%, transparent 60%), #020617";
             } else if (filterType === 'fear') {
-                body.style.background = "radial-gradient(circle at 50% 20%, rgba(103, 232, 249, 0.3) 0%, transparent 60%), #020617";
+                body.style.background = "radial-gradient(circle at 50% 20%, rgba(103, 232, 249, 0.35) 0%, transparent 60%), #020617";
             } else {
-                body.style.background = "radial-gradient(circle at 50% 15%, rgba(56, 189, 248, 0.22) 0%, transparent 60%), radial-gradient(circle at 85% 75%, rgba(147, 51, 234, 0.18) 0%, transparent 55%), #020617";
+                body.style.background = "radial-gradient(circle at 50% 15%, rgba(56, 189, 248, 0.25) 0%, transparent 60%), radial-gradient(circle at 85% 75%, rgba(147, 51, 234, 0.22) 0%, transparent 55%), #020617";
             }
         }
 
@@ -781,12 +827,12 @@
             let innerContent = m.photo ? `<img src="${m.photo}" class="sphere-photo">` : `<span class="text-2xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">${badge || faceIcon}</span>`;
 
             wrapper.innerHTML = `
-                <div class="${sphereClass}" style="background: ${bgGrad}; box-shadow: inset -6px -7px 14px rgba(0,0,0,0.7), inset 6px 7px 14px rgba(255,255,255,0.9), 0 0 25px ${glowColor};">
+                <div class="${sphereClass}" style="background: ${bgGrad}; box-shadow: inset -6px -7px 14px rgba(0,0,0,0.7), inset 6px 7px 14px rgba(255,255,255,0.95), 0 0 30px ${glowColor};">
                     ${innerContent}
                 </div>
                 <div class="text-center mt-2 w-full px-1">
                     <div class="text-[11px] font-bold text-slate-200 truncate group-hover:text-sky-300 transition">${m.title}</div>
-                    <div class="text-[9px] text-sky-400/70 truncate">${m.date}</div>
+                    <div class="text-[9px] text-sky-400/80 truncate">${m.date}</div>
                 </div>
             `;
 
@@ -859,10 +905,10 @@
             }
 
             const emoEl = document.getElementById('detailEmotions');
-            emoEl.innerHTML = m.emotions.map(e => `<span class="px-3 py-1 bg-sky-950/80 border border-sky-500/30 text-sky-200 rounded-xl text-xs font-medium">${e}</span>`).join('');
+            emoEl.innerHTML = m.emotions.map(e => `<span class="px-3 py-1 bg-sky-950/90 border border-sky-500/40 text-sky-200 rounded-xl text-xs font-medium">${e}</span>`).join('');
 
             const somEl = document.getElementById('detailSomatics');
-            somEl.innerHTML = m.somatics && m.somatics.length ? m.somatics.map(s => `<span class="px-3 py-1 bg-slate-900/80 border border-sky-500/10 text-slate-300 rounded-xl text-xs">${s}</span>`).join('') : '<span class="text-xs text-slate-500">無記錄身體反應</span>';
+            somEl.innerHTML = m.somatics && m.somatics.length ? m.somatics.map(s => `<span class="px-3 py-1 bg-slate-900 border border-sky-500/20 text-slate-300 rounded-xl text-xs">${s}</span>`).join('') : '<span class="text-xs text-slate-500">無記錄身體反應</span>';
 
             document.getElementById('detailModal').classList.remove('hidden');
             document.getElementById('detailModal').classList.add('flex');
@@ -944,6 +990,7 @@
             }
         }
 
+        initParticles();
         renderMemories();
         displayLastUpdated();
     </script>

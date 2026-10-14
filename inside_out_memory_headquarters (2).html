@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inside Out Memory Headquarters | 腦航員情緒日誌</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+    
+    body {
+      font-family: 'Fredoka', 'Noto Sans TC', sans-serif;
+      background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+
+    /* Core Memory Golden Glow */
+    .core-memory-glow {
+      box-shadow: 0 0 25px 8px rgba(255, 215, 0, 0.75), inset 0 0 15px rgba(255, 255, 255, 0.8);
+      border: 3px solid #ffd700 !important;
+      animation: pulseGlow 2.5s infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 15px 5px rgba(255, 215, 0, 0.6); }
+      100% { box-shadow: 0 0 35px 12px rgba(255, 215, 0, 0.95); }
+    }
+
+    /* Flashback Lightning Effect */
+    .flashback-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .flashback-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(60deg, transparent 30%, rgba(255, 255, 255, 0.25) 50%, transparent 70%);
+      transform: rotate(30deg);
+      animation: shimmer 4s infinite linear;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) rotate(30deg); }
+      100% { transform: translateX(100%) rotate(30deg); }
+    }
+
+    /* Glassmorphism UI */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .memory-orb {
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .memory-orb:hover {
+      transform: translateY(-8px) scale(1.03);
+    }
+  </style>
+</head>
+<body class="p-4 md:p-8">
+
+  <!-- Header -->
+  <header class="max-w-6xl mx-auto mb-8 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-slate-700/60 pb-6">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-slate-900 text-2xl font-bold shadow-lg shadow-amber-400/30">
+        <i class="fa-solid fa-brain"></i>
+      </div>
+      <div>
+        <h1 class="text-3xl font-bold tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-pink-400 to-cyan-300">
+          Inside Out 記憶總部
+        </h1>
+        <p class="text-xs md:text-sm text-slate-400">記錄每顆情緒記憶球 · 打造個人心靈群島</p>
+      </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="flex flex-wrap gap-2 text-sm">
+      <button onclick="filterMemories('ALL')" class="px-4 py-2 rounded-full glass-panel hover:bg-white/20 transition active-btn" id="filter-ALL">全部記憶</button>
+      <button onclick="filterMemories('CORE')" class="px-4 py-2 rounded-full glass-panel border-amber-400/50 text-amber-300 hover:bg-amber-400/20 transition" id="filter-CORE"><i class="fa-solid fa-star mr-1"></i>核心記憶球</button>
+      <button onclick="filterMemories('FLASHBACK')" class="px-4 py-2 rounded-full glass-panel border-cyan-400/50 text-cyan-300 hover:bg-cyan-400/20 transition" id="filter-FLASHBACK"><i class="fa-solid fa-bolt mr-1"></i>閃回記憶</button>
+    </div>
+  </header>
+
+  <!-- Main Grid Container -->
+  <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+    <!-- Left Column: Memory Creation Form -->
+    <section class="lg:col-span-5 glass-panel rounded-3xl p-6 shadow-2xl h-fit">
+      <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+        <i class="fa-solid fa-circle-plus text-amber-400"></i> 製造新記憶球
+      </h2>
+
+      <form id="memory-form" class="space-y-5" onsubmit="handleFormSubmit(event)">
+        <!-- Emotion Category & Specific Select -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">1. 選擇主情緒與細分情緒</label>
+          <div class="grid grid-cols-1 gap-3">
+            <select id="emotion-group" onchange="updateSubEmotions()" class="w-full bg-slate-800/80 border border-slate-600 rounded-xl px-4 py-2.5 text-slate-200 focus:outline-none focus:border-amber-400">
+              <option value="">-- 請選擇情緒大類 --</option>
+              <option value="JOY">💛 樂樂家族 (Joy & Positivity)</option>
+              <option value="SADNESS">💙 憂憂家族 (Sadness & Grief)</option>
+              <option value="ANGER">🔴 怒怒家族 (Anger & Frustration)</option>
+              <option value="FEAR">💜 驚驚家族 (Fear & Anxiety)</option>
+              <option value="DISGUST">💚 厭厭家族 (Disgust & Envy)</option>
+            </select>
+
+            <select id="emotion-type" class="w-full bg-slate-800/80 border border-slate-600 rounded-xl px-4 py-2.5 text-slate-200 focus:outline-none focus:border-amber-400" required disabled>
+              <option value="">-- 請先選擇大類 --</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Event Description -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">2. 記憶內容 / 發生的事情</label>
+          <textarea id="memory-text" rows="3" placeholder="今天發生了什麼事情？記下當下的感受吧..." class="w-full bg-slate-800/80 border border-slate-600 rounded-xl p-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-400" required></textarea>
+        </div>
+
+        <!-- Special Attributes (Core / Flashback Toggles) -->
+        <div class="space-y-3 pt-1 border-t border-slate-700/50">
+          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">3. 記憶球特殊屬性</label>
+          
+          <!-- Core Memory Checkbox -->
+          <label class="flex items-center gap-3 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 cursor-pointer hover:bg-amber-500/20 transition">
+            <input type="checkbox" id="is-core" class="w-5 h-5 rounded accent-amber-400 cursor-pointer">
+            <div class="flex flex-col">
+              <span class="text-sm font-semibold text-amber-300 flex items-center gap-1.5">
+                <i class="fa-solid fa-star text-amber-400"></i> 設為「核心記憶球」(Core Memory)
+              </span>
+              <span class="text-xs text-slate-400">塑造人格島嶼的重要里程碑或深刻回憶</span>
+            </div>
+          </label>
+
+          <!-- Flashback Checkbox -->
+          <label class="flex items-center gap-3 p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/30 cursor-pointer hover:bg-cyan-500/20 transition">
+            <input type="checkbox" id="is-flashback" class="w-5 h-5 rounded accent-cyan-400 cursor-pointer">
+            <div class="flex flex-col">
+              <span class="text-sm font-semibold text-cyan-300 flex items-center gap-1.5">
+                <i class="fa-solid fa-bolt text-cyan-400"></i> 標記為「Flashback 閃回/舊回憶」
+              </span>
+              <span class="text-xs text-slate-400">突然從長期記憶庫中浮現的過去回憶</span>
+            </div>
+          </label>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="w-full py-3.5 px-6 rounded-xl font-bold text-slate-900 bg-gradient-to-r from-amber-300 via-amber-400 to-yellow-500 hover:brightness-110 shadow-lg shadow-amber-500/25 transition">
+          <i class="fa-solid fa-paper-plane mr-2"></i>傳送記憶至總部
+        </button>
+      </form>
+    </section>
+
+    <!-- Right Column: Memory Vault / List -->
+    <section class="lg:col-span-7 space-y-4">
+      <div class="flex justify-between items-center mb-2">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-cubes-stacked text-cyan-400"></i> 記憶總部儲存區 
+          <span id="memory-count" class="text-xs bg-slate-700/80 text-cyan-300 px-2.5 py-1 rounded-full border border-slate-600">0</span>
+        </h2>
+      </div>
+
+      <!-- Memory Cards Container -->
+      <div id="memory-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Dynamic Cards Inserted Here -->
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Emotion Group Data Mapping
+    const EMOTION_DATA = {
+      JOY: {
+        color: 'from-amber-400 to-yellow-500',
+        borderColor: 'border-amber-400',
+        badgeBg: 'bg-amber-400/20 text-amber-300',
+        icon: 'fa-face-smile-beam',
+        options: ['快樂', '興奮', '平靜', '感激', '自豪', '愛意', '希望', '放鬆']
+      },
+      SADNESS: {
+        color: 'from-blue-500 to-indigo-600',
+        borderColor: 'border-blue-400',
+        badgeBg: 'bg-blue-400/20 text-blue-300',
+        icon: 'fa-face-sad-tear',
+        options: ['悲傷', '委屈', '孤獨', '失落', '遺憾', '沮喪']
+      },
+      ANGER: {
+        color: 'from-red-500 to-rose-600',
+        borderColor: 'border-red-400',
+        badgeBg: 'bg-red-400/20 text-red-300',
+        icon: 'fa-face-angry',
+        options: ['憤怒', '煩躁', '不甘心', '暴躁']
+      },
+      FEAR: {
+        color: 'from-purple-500 to-indigo-700',
+        borderColor: 'border-purple-400',
+        badgeBg: 'bg-purple-400/20 text-purple-300',
+        icon: 'fa-face-flushed',
+        options: ['焦慮 (Anxiety)', '害怕', '擔心', '緊張', '恐慌']
+      },
+      DISGUST: {
+        color: 'from-emerald-400 to-green-600',
+        borderColor: 'border-emerald-400',
+        badgeBg: 'bg-emerald-400/20 text-emerald-300',
+        icon: 'fa-face-rolling-eyes',
+        options: ['厭惡', '羨慕 (Envy)', '尷尬 (Ennui)', '嫉妒', '反感']
+      }
+    };
+
+    // In-memory array for store fallback
+    let memoryStore = [];
+    let currentFilter = 'ALL';
+
+    // Cascade Sub-Emotions
+    function updateSubEmotions() {
+      const groupSelect = document.getElementById('emotion-group');
+      const typeSelect = document.getElementById('emotion-type');
+      const selectedGroup = groupSelect.value;
+
+      typeSelect.innerHTML = '<option value="">-- 請選擇具體情緒 --</option>';
+
+      if (selectedGroup && EMOTION_DATA[selectedGroup]) {
+        typeSelect.disabled = false;
+        EMOTION_DATA[selectedGroup].options.forEach(sub => {
+          const opt = document.createElement('option');
+          opt.value = `${selectedGroup}:${sub}`;
+          opt.textContent = sub;
+          typeSelect.appendChild(opt);
+        });
+      } else {
+        typeSelect.disabled = true;
+      }
+    }
+
+    // Submit Handler
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const groupVal = document.getElementById('emotion-group').value;
+      const typeVal = document.getElementById('emotion-type').value;
+      const textVal = document.getElementById('memory-text').value;
+      const isCoreVal = document.getElementById('is-core').checked;
+      const isFlashbackVal = document.getElementById('is-flashback').checked;
+
+      if (!typeVal) return alert('請選擇具體情緒！');
+
+      const subEmotionName = typeVal.split(':')[1];
+
+      const newMemory = {
+        id: Date.now(),
+        group: groupVal,
+        emotion: subEmotionName,
+        text: textVal,
+        isCore: isCoreVal,
+        isFlashback: isFlashbackVal,
+        createdAt: new Date().toLocaleDateString('zh-HK', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+      };
+
+      memoryStore.unshift(newMemory);
+      renderMemories();
+
+      // Reset Form
+      document.getElementById('memory-form').reset();
+      document.getElementById('emotion-type').disabled = true;
+      document.getElementById('emotion-type').innerHTML = '<option value="">-- 請先選擇大類 --</option>';
+    }
+
+    // Filter Logic
+    function filterMemories(filterType) {
+      currentFilter = filterType;
+      ['ALL', 'CORE', 'FLASHBACK'].forEach(f => {
+        const btn = document.getElementById(`filter-${f}`);
+        if (f === filterType) {
+          btn.classList.add('bg-white/20', 'border-white');
+        } else {
+          btn.classList.remove('bg-white/20', 'border-white');
+        }
+      });
+      renderMemories();
+    }
+
+    // Render Cards Function
+    function renderMemories() {
+      const container = document.getElementById('memory-container');
+      container.innerHTML = '';
+
+      let filtered = memoryStore.filter(mem => {
+        if (currentFilter === 'CORE') return mem.isCore;
+        if (currentFilter === 'FLASHBACK') return mem.isFlashback;
+        return true;
+      });
+
+      document.getElementById('memory-count').innerText = filtered.length;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center py-12 text-slate-500">
+            <i class="fa-regular fa-folder-open text-4xl mb-3 block">
+            </i>尚無相關記憶球，請在左側建立！
+          </div>`;
+        return;
+      }
+
+      filtered.forEach(mem => {
+        const groupInfo = EMOTION_DATA[mem.group] || EMOTION_DATA.JOY;
+        
+        const card = document.createElement('div');
+        card.className = `memory-orb glass-panel rounded-2xl p-5 border relative flex flex-col justify-between ${mem.isCore ? 'core-memory-glow' : groupInfo.borderColor} ${mem.isFlashback ? 'flashback-card' : ''}`;
+
+        card.innerHTML = `
+          <div>
+            <!-- Top Badges -->
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="px-3 py-1 rounded-full text-xs font-bold ${groupInfo.badgeBg} flex items-center gap-1.5">
+                <i class="fa-solid ${groupInfo.icon}"></i> ${mem.emotion}
+              </span>
+
+              <div class="flex items-center gap-1 text-xs">
+                ${mem.isCore ? '<span class="bg-amber-400 text-slate-950 font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-star"></i> 核心</span>' : ''}
+                ${mem.isFlashback ? '<span class="bg-cyan-400 text-slate-950 font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-bolt"></i> 閃回</span>' : ''}
+              </div>
+            </div>
+
+            <!-- Content -->
+            <p class="text-slate-100 text-sm md:text-base leading-relaxed mb-4">${escapeHtml(mem.text)}</p>
+          </div>
+
+          <!-- Bottom Meta -->
+          <div class="flex justify-between items-center text-xs text-slate-400 pt-3 border-t border-slate-700/40">
+            <span><i class="fa-regular fa-clock mr-1"></i>${mem.createdAt}</span>
+            <button onclick="deleteMemory(${mem.id})" class="text-slate-500 hover:text-red-400 transition">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    // Delete Memory
+    function deleteMemory(id) {
+      memoryStore = memoryStore.filter(m => m.id !== id);
+      renderMemories();
+    }
+
+    // XSS Sanitizer
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, function(m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+      });
+    }
+
+    // Initial Load Demo Data
+    window.addEventListener('DOMContentLoaded', () => {
+      memoryStore = [
+        {
+          id: 1,
+          group: 'JOY',
+          emotion: '自豪',
+          text: '今天成功將 Inside Out 網頁加上了核心記憶球與閃回記憶功能，非常滿足！',
+          isCore: true,
+          isFlashback: false,
+          createdAt: '10月14日 15:30'
+        },
+        {
+          id: 2,
+          group: 'FEAR',
+          emotion: '焦慮 (Anxiety)',
+          text: '突然想起以前考試沒溫習好書的感覺，緊張了一下。',
+          isCore: false,
+          isFlashback: true,
+          createdAt: '10月14日 12:15'
+        }
+      ];
+      renderMemories();
+    });
+  </script>
+</body>
+</html>

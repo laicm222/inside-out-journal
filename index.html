@@ -18,7 +18,7 @@
             min-height: 100vh;
         }
 
-        /* 電影大腦總部：極深藍與青藍星空背景 (絕對無紫色) */
+        /* 電影大腦總部：極深藍與青藍星空背景 */
         .movie-hq-bg {
             background: radial-gradient(circle at 50% 20%, rgba(14, 165, 233, 0.25) 0%, transparent 65%),
                         radial-gradient(circle at 85% 75%, rgba(3, 105, 161, 0.22) 0%, transparent 55%),
@@ -27,7 +27,7 @@
             min-height: 100vh;
         }
 
-        /* 🎬 電影級流線弧形層板 (無框設計，每行固定 5 個小型精緻水晶球) */
+        /* 🎬 電影級流線弧形層板 (無框設計，每行固定 5 個) */
         .movie-shelf-track {
             display: grid;
             grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -59,7 +59,7 @@
             }
         }
 
-        /* 🔮 小型、立體、高透明度的玻璃水晶球 */
+        /* 🔮 超真 3D 柔和發光水晶球 (支援混色) */
         .movie-glass-sphere {
             width: 64px;
             height: 64px;
@@ -67,18 +67,34 @@
             position: relative;
             cursor: pointer;
             overflow: hidden;
-            border: 1.5px solid rgba(255, 255, 255, 0.6);
-            box-shadow: inset -6px -6px 14px rgba(0, 0, 0, 0.7), 
-                        inset 6px 6px 14px rgba(255, 255, 255, 0.6), 
-                        0 8px 20px rgba(0, 0, 0, 0.8);
+            /* 多重立體高光與弧形內陰影，模擬真實 Pixar 玻璃球質感 */
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            box-shadow: inset -5px -6px 12px rgba(0, 0, 0, 0.65), 
+                        inset 5px 6px 12px rgba(255, 255, 255, 0.85),
+                        0 8px 18px rgba(0, 0, 0, 0.75);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease, box-shadow 0.3s ease;
         }
+
+        /* 玻璃弧形頂部弧光 Highlight */
+        .movie-glass-sphere::before {
+            content: "";
+            position: absolute;
+            top: 6%;
+            left: 15%;
+            width: 70%;
+            height: 35%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
         .movie-glass-sphere:hover {
-            transform: scale(1.18) translateY(-4px);
-            filter: brightness(1.25);
+            transform: scale(1.2) translateY(-4px);
+            filter: brightness(1.2);
         }
 
         /* 高清相片預覽 */
@@ -87,27 +103,23 @@
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
-            opacity: 0.95;
+            opacity: 0.9;
         }
 
         /* 🌟 核心記憶金色發光光暈 */
         .core-gold-glow {
-            box-shadow: inset -6px -6px 14px rgba(0,0,0,0.6), 
-                        inset 6px 6px 16px rgba(255,255,255,0.9), 
-                        0 0 25px #facc15, 
-                        0 0 50px rgba(250,204,21,0.7);
-            border: 2px solid #fef08a;
+            border: 2px solid #fef08a !important;
             animation: core-pulse 2.2s infinite alternate ease-in-out;
         }
         @keyframes core-pulse {
-            0% { box-shadow: inset -6px -6px 14px rgba(0,0,0,0.6), 0 0 15px #facc15; }
-            100% { box-shadow: inset -6px -6px 14px rgba(0,0,0,0.6), 0 0 35px #fde047, 0 0 65px rgba(253,224,71,0.9); }
+            0% { box-shadow: inset -5px -6px 12px rgba(0,0,0,0.6), inset 5px 6px 12px rgba(255,255,255,0.9), 0 0 15px #facc15, 0 0 30px rgba(250,204,21,0.6); }
+            100% { box-shadow: inset -5px -6px 12px rgba(0,0,0,0.6), inset 5px 6px 12px rgba(255,255,255,0.9), 0 0 30px #fde047, 0 0 55px rgba(253,224,71,0.85); }
         }
 
         /* ⚡ 閃回記憶藍電光效果 */
         .flashback-blue-effect {
-            border: 2px dashed #38bdf8;
-            box-shadow: inset -6px -6px 14px rgba(0,0,0,0.7), 0 0 20px rgba(56, 189, 248, 0.9);
+            border: 2px dashed #38bdf8 !important;
+            box-shadow: inset -5px -6px 12px rgba(0,0,0,0.7), 0 0 18px rgba(56, 189, 248, 0.85);
         }
 
         /* ✨ 飛入動畫 */
@@ -302,7 +314,7 @@
 
                 <!-- 情緒分類表單 -->
                 <div class="space-y-2">
-                    <label class="block text-sm font-medium text-slate-300">情緒分類與佔比 (多維度細緻辨識)</label>
+                    <label class="block text-sm font-medium text-slate-300">情緒分類 (可勾選多個情緒，水晶球會自動進行雙色/多色混色！)</label>
                     <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-3 text-sm">
                         <div>
                             <span class="text-yellow-400 font-bold">💛 喜悅 / 快樂情緒：</span>
@@ -474,17 +486,43 @@
             "「即使今天烏雲密布，每一種情緒的存在都是為了讓你更完整。你做得很好！」—— 樂樂"
         ];
 
+        // 各大情緒對應之柔和電影色彩 (含透明度)
+        const emotionColorMap = {
+            "開心": "rgba(253,224,71,0.85)", "快樂": "rgba(253,224,71,0.85)", "興奮": "rgba(250,204,21,0.85)", "感恩": "rgba(254,240,138,0.85)", "滿足": "rgba(253,224,71,0.85)", "平靜": "rgba(254,240,138,0.85)", "自豪": "rgba(250,204,21,0.85)", "樂觀": "rgba(253,224,71,0.85)",
+            "生氣": "rgba(248,113,113,0.85)", "憤怒": "rgba(239,68,68,0.85)", "煩躁": "rgba(248,113,113,0.85)", "受冒犯": "rgba(239,68,68,0.85)", "受傷害": "rgba(248,113,113,0.85)", "不甘心": "rgba(239,68,68,0.85)",
+            "難過": "rgba(56,189,248,0.85)", "悲傷": "rgba(14,165,233,0.85)", "失望": "rgba(56,189,248,0.85)", "孤單": "rgba(14,165,233,0.85)", "內疚": "rgba(56,189,248,0.85)", "迷失": "rgba(14,165,233,0.85)", "委屈": "rgba(56,189,248,0.85)",
+            "驚慌": "rgba(165,243,252,0.85)", "緊張": "rgba(103,232,249,0.85)", "擔憂": "rgba(165,243,252,0.85)", "焦慮": "rgba(103,232,249,0.85)", "害怕": "rgba(165,243,252,0.85)", "恐懼": "rgba(103,232,249,0.85)",
+            "厭惡": "rgba(74,222,128,0.85)", "驚喜": "rgba(192,132,252,0.85)"
+        };
+
+        // 計算多重情緒之「雙色/多色混色漸層 (Marble Swirl Gradient)」
+        function getMarbleGradient(emotions) {
+            if (!emotions || emotions.length === 0) {
+                return "radial-gradient(circle at 35% 35%, rgba(253,224,71,0.7) 0%, rgba(202,138,4,0.8) 100%)";
+            }
+
+            const colors = emotions.map(e => emotionColorMap[e] || "rgba(56,189,248,0.85)");
+            
+            if (colors.length === 1) {
+                return `radial-gradient(circle at 35% 35%, ${colors[0]} 0%, rgba(15,23,42,0.9) 100%)`;
+            } else {
+                // 2個或以上情緒：產生電影般流線交織的大理石混色效果 (Marble Swirl Gradient)
+                const c1 = colors[0];
+                const c2 = colors[1];
+                const c3 = colors[2] || colors[0];
+                return `linear-gradient(135deg, ${c1} 0%, ${c1} 45%, ${c2} 55%, ${c2} 80%, ${c3} 100%)`;
+            }
+        }
+
         function getFilteredMemories() {
             const range = document.getElementById('timeRangeSelect').value;
             const query = document.getElementById('searchInput').value.toLowerCase();
             const now = new Date();
 
             return memories.filter(m => {
-                // 關鍵字篩選
                 const matchQuery = m.title.toLowerCase().includes(query) || (m.trigger && m.trigger.toLowerCase().includes(query));
                 if (!matchQuery) return false;
 
-                // 時間週期篩選
                 if (range === 'all') return true;
                 const mDate = new Date(m.date);
                 if (range === 'year') {
@@ -492,8 +530,7 @@
                 } else if (range === 'month') {
                     return mDate.getFullYear() === now.getFullYear() && mDate.getMonth() === now.getMonth();
                 } else if (range === 'week') {
-                    const diffTime = Math.abs(now - mDate);
-                    const diffDays = diffTime / (1000 * 60 * 60 * 24);
+                    const diffDays = Math.abs(now - mDate) / (1000 * 60 * 60 * 24);
                     return diffDays <= 7;
                 }
                 return true;
@@ -559,22 +596,23 @@
                 badge = "⚡";
             }
 
-            let bgGrad = "radial-gradient(circle at 35% 35%, rgba(253,224,71,0.55) 0%, rgba(202,138,4,0.65) 80%)";
+            // 動態算混色漸層 (Marble Swirl Gradient)
+            const bgGrad = getMarbleGradient(m.emotions);
+
             let faceIcon = "😊";
-            if (m.emotions.some(e => ["悲傷", "難過", "失望", "孤單", "內疚", "迷失", "委屈"].includes(e))) { 
-                bgGrad = "radial-gradient(circle at 35% 35%, rgba(56,189,248,0.55) 0%, rgba(3,105,161,0.65) 80%)"; faceIcon = "😢"; 
-            }
-            else if (m.emotions.some(e => ["生氣", "憤怒", "煩躁", "受冒犯", "受傷害", "不甘心"].includes(e))) { 
-                bgGrad = "radial-gradient(circle at 35% 35%, rgba(248,113,113,0.55) 0%, rgba(185,28,28,0.65) 80%)"; faceIcon = "😡"; 
-            }
-            else if (m.emotions.some(e => ["驚慌", "緊張", "擔憂", "焦慮", "害怕", "恐懼"].includes(e))) { 
-                bgGrad = "radial-gradient(circle at 35% 35%, rgba(147,197,253,0.55) 0%, rgba(30,58,138,0.65) 80%)"; faceIcon = "😰"; 
-            }
+            if (m.emotions.some(e => ["悲傷", "難過", "失望", "孤單", "內疚", "迷失", "委屈"].includes(e))) faceIcon = "😢";
+            else if (m.emotions.some(e => ["生氣", "憤怒", "煩躁", "受冒犯", "受傷害", "不甘心"].includes(e))) faceIcon = "😡";
+            else if (m.emotions.some(e => ["驚慌", "緊張", "擔憂", "焦慮", "害怕", "恐懼"].includes(e))) faceIcon = "😰";
 
             let innerContent = m.photo ? `<img src="${m.photo}" class="sphere-photo">` : `<span class="text-2xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">${badge || faceIcon}</span>`;
 
+            // 為水晶球外圍加上柔和的內發光擴散光暈 (Glow Effect)
+            const glowColor = m.emotions.includes("生氣") || m.emotions.includes("憤怒") ? "rgba(248,113,113,0.5)" :
+                              m.emotions.includes("悲傷") || m.emotions.includes("難過") ? "rgba(56,189,248,0.5)" :
+                              m.emotions.includes("焦慮") || m.emotions.includes("緊張") ? "rgba(165,243,252,0.5)" : "rgba(253,224,71,0.5)";
+
             div.innerHTML = `
-                <div class="${sphereClass}" style="background: ${bgGrad};">
+                <div class="${sphereClass}" style="background: ${bgGrad}; box-shadow: inset -5px -6px 12px rgba(0,0,0,0.65), inset 5px 6px 12px rgba(255,255,255,0.85), 0 0 15px ${glowColor};">
                     ${innerContent}
                 </div>
                 <div class="text-center mt-1.5 w-full">

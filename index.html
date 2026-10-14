@@ -1,592 +1,565 @@
-    body { 
-        font-family: 'Noto Sans TC', sans-serif; 
-        background-color: #020617; 
-        color: #f8fafc; 
-        overflow-x: hidden; 
-    }
-
-    /* 深邃夢境星空發光背景 */
-    .dream-cosmic-bg {
-        background: 
-            radial-gradient(circle at 50% 15%, rgba(14, 165, 233, 0.25) 0%, transparent 60%),
-            radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.18) 0%, transparent 50%),
-            radial-gradient(circle at 20% 80%, rgba(236, 72, 153, 0.12) 0%, transparent 50%),
-            radial-gradient(circle at 50% 50%, #060e26 0%, #020617 100%);
-        min-height: 100vh;
-    }
-
-    /* ✨ 取消外圍長方形框：改為開放式微光弧線軌道 (Floating Arc Track) */
-    .floating-arc-container {
-        position: relative;
-        padding: 50px 20px 30px;
-        margin: 10px 0 30px;
-        display: flex;
-        gap: 36px;
-        overflow-x: auto;
-        align-items: center;
-        scrollbar-width: thin;
-        scrollbar-color: rgba(56, 189, 248, 0.3) transparent;
-    }
-
-    /* 底層優雅弧線與霓虹微光 */
-    .floating-arc-container::after {
-        content: '';
-        position: absolute;
-        left: -5%;
-        right: -5%;
-        bottom: 25px;
-        height: 80px;
-        border-bottom: 2px solid rgba(56, 189, 248, 0.45);
-        border-radius: 50%;
-        pointer-events: none;
-        box-shadow: 0 12px 25px rgba(56, 189, 248, 0.25);
-        filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6));
-    }
-
-    /* 記憶球沿弧線的高低波浪擺放 */
-    .memory-item {
-        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        z-index: 10;
-    }
-    .memory-item:nth-child(5n+1) { transform: translateY(-18px); }
-    .memory-item:nth-child(5n+2) { transform: translateY(10px); }
-    .memory-item:nth-child(5n+3) { transform: translateY(-6px); }
-    .memory-item:nth-child(5n+4) { transform: translateY(16px); }
-    .memory-item:nth-child(5n+5) { transform: translateY(-12px); }
-
-    /* 🔮 超夢幻晶瑩透光玻璃水晶球 */
-    .glass-sphere {
-        width: 96px;
-        height: 96px;
-        border-radius: 50%;
-        position: relative;
-        cursor: pointer;
-        backdrop-filter: blur(8px);
-        /* 多重高光與內發光組合，打造極度透光的玻璃質感 */
-        box-shadow: 
-            inset -8px -8px 18px rgba(0, 0, 0, 0.5),
-            inset 8px 8px 20px rgba(255, 255, 255, 0.85),
-            inset 0 0 25px rgba(255, 255, 255, 0.4),
-            0 12px 28px rgba(0, 0, 0, 0.6),
-            0 0 20px rgba(56, 189, 248, 0.25);
-        border: 1.5px solid rgba(255, 255, 255, 0.55);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        flex-shrink: 0;
-        overflow: hidden;
-    }
-
-    .glass-sphere:hover { 
-        transform: scale(1.22) translateY(-12px) !important; 
-        filter: brightness(1.3);
-        box-shadow: 
-            inset -8px -8px 18px rgba(0, 0, 0, 0.3),
-            inset 8px 8px 25px rgba(255, 255, 255, 1),
-            0 0 35px rgba(56, 189, 248, 0.8),
-            0 15px 35px rgba(0, 0, 0, 0.7);
-    }
-
-    /* 水晶球弧形高光反光點 */
-    .glass-sphere::before {
-        content: '';
-        position: absolute;
-        top: 10%;
-        left: 18%;
-        width: 38%;
-        height: 22%;
-        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.1) 100%);
-        border-radius: 50%;
-        transform: rotate(-32deg);
-        filter: blur(0.5px);
-        pointer-events: none;
-        z-index: 12;
-    }
-
-    /* 水晶球相片 Overlay */
-    .sphere-photo {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-        opacity: 0.78;
-        mix-blend-mode: overlay;
-        filter: contrast(1.15) brightness(1.1);
-    }
-
-    /* 🌟 核心記憶金色夢幻太陽光芒 */
-    .core-glow-sphere {
-        box-shadow: 
-            inset -8px -8px 18px rgba(0,0,0,0.4),
-            inset 8px 8px 22px rgba(255,255,255,0.95),
-            0 0 30px #facc15, 0 0 65px rgba(250,204,21,0.6);
-        border: 2px solid #fef08a;
-        animation: core-pulse 2.2s infinite alternate ease-in-out;
-    }
-    @keyframes core-pulse {
-        0% { box-shadow: inset -8px -8px 18px rgba(0,0,0,0.4), 0 0 22px #facc15, 0 0 40px rgba(250,204,21,0.4); }
-        100% { box-shadow: inset -8px -8px 18px rgba(0,0,0,0.4), 0 0 45px #fde047, 0 0 90px rgba(253,224,71,0.8); }
-    }
-
-    /* ⚡ 閃回記憶藍電光流線 */
-    .flashback-sphere {
-        border: 2px dashed #38bdf8;
-        box-shadow: inset -8px -8px 18px rgba(0,0,0,0.5), 0 0 32px rgba(56, 189, 248, 0.85);
-        animation: flashback-pulse 1.8s infinite alternate;
-    }
-    @keyframes flashback-pulse {
-        0% { box-shadow: inset -8px -8px 18px rgba(0,0,0,0.5), 0 0 18px rgba(56, 189, 248, 0.6); }
-        100% { box-shadow: inset -8px -8px 18px rgba(0,0,0,0.5), 0 0 40px rgba(56, 189, 248, 1); }
-    }
-
-    /* ✨ 🚀 新增記憶水晶球「飛入弧線軌道」夢幻動畫 */
-    @keyframes flyIntoArcTrack {
-        0% {
-            transform: scale(0.1) translateY(350px) rotate(-180deg);
-            opacity: 0;
-            filter: brightness(3) blur(10px);
-        }
-        60% {
-            transform: scale(1.3) translateY(-40px) rotate(10deg);
-            opacity: 1;
-            filter: brightness(2) blur(0px);
-        }
-        85% {
-            transform: scale(0.92) translateY(10px);
-        }
-        100% {
-            transform: scale(1) translateY(0);
-            opacity: 1;
-            filter: brightness(1);
-        }
-    }
-    .fly-in-animation {
-        animation: flyIntoArcTrack 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-
-    /* 標籤選取微光樣式 */
-    .tag-checkbox:checked + span {
-        background-color: rgba(56, 189, 248, 0.25);
-        border-color: #38bdf8;
-        color: #38bdf8;
-        box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
-    }
-</style>
-
-
-<!-- 頂部導航列 -->
-<header class="bg-[#030712]/80 backdrop-blur-xl border-b border-sky-900/40 px-8 py-4 flex justify-between items-center sticky top-0 z-50 shadow-[0_4px_25px_rgba(0,0,0,0.6)]">
-    <div class="flex items-center space-x-3">
-        <span class="text-2xl font-black bg-gradient-to-r from-yellow-300 via-sky-300 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_2px_12px_rgba(56,189,248,0.5)]">
-            Inside Out 記憶總部
-        </span>
-    </div>
-    <div class="flex items-center space-x-4">
-        <button onclick="openBackupModal()" class="bg-slate-900/80 hover:bg-slate-800 text-sky-200 px-4 py-2.5 rounded-2xl text-xs font-semibold flex items-center space-x-2 border border-sky-800/50 transition shadow-md">
-            <i class="ph ph-database text-lg text-sky-400"></i>
-            <span>雲端同步 / 備份</span>
-        </button>
-        <button onclick="openModal()" class="bg-gradient-to-r from-sky-400 via-sky-500 to-blue-600 hover:brightness-110 text-slate-950 px-5 py-2.5 rounded-2xl text-xs font-black flex items-center space-x-2 shadow-lg shadow-sky-500/30 transition transform hover:scale-105">
-            <i class="ph ph-plus-circle text-lg"></i>
-            <span>新增記憶水晶球</span>
-        </button>
-    </div>
-</header>
-
-<!-- 主要內容區 -->
-<main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8 space-y-12">
-    
-    <!-- 搜尋欄 -->
-    <div class="relative max-w-xl mx-auto">
-        <i class="ph ph-magnifying-glass absolute left-5 top-3.5 text-sky-400 text-xl"></i>
-        <input type="text" id="searchInput" oninput="filterMemories()" placeholder="搜尋記憶水晶球標題、觸發事件、情緒..." class="w-full bg-[#030712]/80 border border-sky-800/50 rounded-2xl pl-13 pr-5 py-3 text-sm text-slate-100 placeholder-sky-400/40 focus:outline-none focus:border-sky-400 shadow-[inset_0_2px_8px_rgba(0,0,0,0.8)] backdrop-blur-md">
-    </div>
-
-    <!-- 近期記憶管道 (無長方形框，改為流暢發光弧線) -->
-    <section class="space-y-2">
-        <h2 class="text-lg font-bold text-yellow-300 flex items-center space-x-2 drop-shadow-[0_0_10px_rgba(250,204,21,0.4)]">
-            <i class="ph ph-sparkle text-yellow-400 text-xl"></i>
-            <span>近期記憶管道 (Recent Floating Shelf)</span>
-        </h2>
-        <div id="recentShelf" class="floating-arc-container">
-            <!-- 動態載入近期記憶水晶球 -->
-        </div>
-    </section>
-
-    <!-- 所有記憶庫存牆 (開放式弧線軌道) -->
-    <section class="space-y-2">
-        <h2 class="text-lg font-bold text-sky-300 flex items-center space-x-2 drop-shadow-[0_0_10px_rgba(56,189,248,0.4)]">
-            <i class="ph ph-planet text-sky-400 text-xl"></i>
-            <span>所有記憶庫存牆 (Core Archives - 共 20 個經典範例)</span>
-        </h2>
-        <div id="allShelf" class="floating-arc-container">
-            <!-- 動態載入所有記憶水晶球 -->
-        </div>
-    </section>
-</main>
-
-<!-- 💙 療癒鼓勵彈窗 -->
-<div id="encouragementModal" class="fixed inset-0 bg-black/85 backdrop-blur-xl hidden items-center justify-center z-50 p-4">
-    <div class="bg-gradient-to-b from-[#0c1d3d] to-[#030712] border border-sky-500/40 rounded-3xl max-w-md w-full p-8 space-y-6 shadow-[0_0_60px_rgba(56,189,248,0.35)] text-center relative">
-        <div class="w-16 h-16 bg-sky-500/20 border border-sky-400/60 rounded-full flex items-center justify-center mx-auto text-3xl shadow-[0_0_20px_rgba(56,189,248,0.4)]">
-            💙
-        </div>
-        <div class="space-y-2">
-            <h3 class="text-xl font-black text-sky-200">大腦總部心靈悄悄話</h3>
-            <p id="encouragementText" class="text-sm text-slate-300 leading-relaxed px-2">
-                「哭泣其實沒關係，這代表你正在釋放那些過重的負荷。允許自己脆弱，也是一種強大。」
-            </p>
-        </div>
-        <button onclick="closeEncouragement()" class="w-full py-3 bg-gradient-to-r from-sky-400 to-blue-600 text-slate-950 font-bold rounded-2xl shadow-lg shadow-sky-500/30 hover:brightness-110 transition">
-            收到，多謝總部提醒！ ✨
-        </button>
-    </div>
-</div>
-
-<!-- ✨ 新增記憶表單 Modal (極致夢幻 & 完整選項) -->
-<div id="memoryModal" class="fixed inset-0 bg-black/80 backdrop-blur-xl hidden items-center justify-center z-50 p-4">
-    <div class="bg-[#030712]/95 border border-sky-800/60 rounded-3xl max-w-2xl w-full p-7 space-y-6 shadow-[0_0_50px_rgba(0,0,0,0.9)] max-h-[90vh] overflow-y-auto">
-        <div class="flex justify-between items-center border-b border-slate-800 pb-4">
-            <h3 class="text-lg font-bold text-sky-200 flex items-center space-x-2">
-                <span>✨ 建立新記憶水晶球</span>
-            </h3>
-            <button onclick="closeModal()" class="text-slate-400 hover:text-white transition"><i class="ph ph-x text-2xl"></i></button>
-        </div>
-
-        <form id="memoryForm" onsubmit="saveMemory(event)" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1.5">記憶標題</label>
-                    <input type="text" id="mTitle" required placeholder="例如：DSE 放榜當日" class="w-full bg-[#020617] border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-sky-400">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1.5">發生日期</label>
-                    <input type="date" id="mDate" required class="w-full bg-[#020617] border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-sky-400">
-                </div>
-            </div>
-
-            <div>
-                <label class="block text-xs font-bold text-slate-300 mb-1.5">觸發事件 / 簡述</label>
-                <textarea id="mTrigger" rows="2" placeholder="發生咗咩事令你有呢種感覺..." class="w-full bg-[#020617] border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-sky-400"></textarea>
-            </div>
-
-            <!-- 相片 Preview 上傳 -->
-            <div>
-                <label class="block text-xs font-bold text-slate-300 mb-1.5">📷 記憶相片 Preview (選擇圖片，映照入水晶球內部)</label>
-                <input type="file" id="mPhoto" accept="image/*" onchange="previewImage(event)" class="w-full bg-[#020617] border border-slate-800 rounded-xl px-4 py-2 text-xs text-slate-400 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-sky-500/20 file:text-sky-300 hover:file:bg-sky-500/30">
-                <div id="photoPreviewContainer" class="mt-3 hidden">
-                    <img id="imgPreview" class="w-16 h-16 rounded-full object-cover border-2 border-sky-400 mx-auto shadow-md">
-                </div>
-            </div>
-
-            <!-- 🌈 5 大情緒家族 (全面擴充選項) -->
-            <div class="space-y-3">
-                <label class="block text-xs font-bold text-slate-300">🌈 情緒分類與佔比 (多選)</label>
-                <div class="bg-[#020617] p-4 rounded-2xl border border-slate-800/80 space-y-3 text-xs">
-                    <div>
-                        <span class="text-yellow-400 font-bold">💛 樂樂家族 (Joy)：</span>
-                        <div class="flex flex-wrap gap-2.5 mt-1.5">
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="快樂"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">快樂</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="興奮"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">興奮</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="平靜"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">平靜</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="自豪"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">自豪</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="感激"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">感激</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="滿足"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">滿足</span></label>
-                        </div>
-                    </div>
-                    <div>
-                        <span class="text-sky-400 font-bold">💙 憂憂家族 (Sadness)：</span>
-                        <div class="flex flex-wrap gap-2.5 mt-1.5">
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="悲傷"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">悲傷</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="委屈"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">委屈</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="孤獨"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">孤獨</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="失落"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">失落</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="遺憾"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">遺憾</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="內疚"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">內疚</span></label>
-                        </div>
-                    </div>
-                    <div>
-                        <span class="text-red-400 font-bold">🔴 怒怒家族 (Anger)：</span>
-                        <div class="flex flex-wrap gap-2.5 mt-1.5">
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="憤怒"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">憤怒</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="煩躁"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">煩躁</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="不甘心"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">不甘心</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="抓狂"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">抓狂</span></label>
-                        </div>
-                    </div>
-                    <div>
-                        <span class="text-purple-400 font-bold">🟣 焦慮/驚驚家族 (Anxiety/Fear)：</span>
-                        <div class="flex flex-wrap gap-2.5 mt-1.5">
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="焦慮"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">焦慮</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="害怕"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">害怕</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="緊張"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">緊張</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="恐慌"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">恐慌</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="emotions" value="迷惘"><span class="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded-lg inline-block">迷惘</span></label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 🫀 身體感官標籤 (按身體部位詳細分類) -->
-            <div class="space-y-3">
-                <label class="block text-xs font-bold text-slate-300">🫀 身體感官反應 (Somatics 按部位分類)</label>
-                <div class="bg-[#020617] p-4 rounded-2xl border border-slate-800/80 space-y-3 text-xs">
-                    <div>
-                        <span class="text-sky-300 font-semibold">【頭部 / 面部】</span>
-                        <div class="flex flex-wrap gap-2 mt-1">
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="somatics" value="眼眶發熱"><span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded-lg inline-block">眼眶發熱</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="somatics" value="太陽穴跳動"><span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded-lg inline-block">太陽穴跳動</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="somatics" value="頭昏腦脹"><span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded-lg inline-block">頭昏腦脹</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="somatics" value="喉嚨發緊"><span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded-lg inline-block">喉嚨發緊</span></label>
-                        </div>
-                    </div>
-                    <div>
-                        <span class="text-sky-300 font-semibold">【胸腔 / 呼吸】</span>
-                        <div class="flex flex-wrap gap-2 mt-1">
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="somatics" value="心跳加速"><span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded-lg inline-block">心跳加速</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="somatics" value="胸口緊繃"><span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded-lg inline-block">胸口緊繃</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="somatics" value="呼吸急促"><span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded-lg inline-block">呼吸急促</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="somatics" value="屏息憋氣"><span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded-lg inline-block">屏息憋氣</span></label>
-                        </div>
-                    </div>
-                    <div>
-                        <span class="text-sky-300 font-semibold">【腹部 / 消化】</span>
-                        <div class="flex flex-wrap gap-2 mt-1">
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="somatics" value="胃部翻騰"><span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded-lg inline-block">胃部翻騰</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="somatics" value="胃部絞痛"><span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded-lg inline-block">胃部絞痛</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="somatics" value="反胃噁心"><span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded-lg inline-block">反胃噁心</span></label>
-                        </div>
-                    </div>
-                    <div>
-                        <span class="text-sky-300 font-semibold">【肢體 / 全身】</span>
-                        <div class="flex flex-wrap gap-2 mt-1">
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="somatics" value="肌肉緊繃"><span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded-lg inline-block">肌肉緊繃</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="somatics" value="手心冒汗"><span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded-lg inline-block">手心冒汗</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="somatics" value="全身發抖"><span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded-lg inline-block">全身發抖</span></label>
-                            <label class="cursor-pointer"><input type="checkbox" class="tag-checkbox hidden" name="somatics" value="身體發麻"><span class="px-2 py-0.5 bg-slate-900 border border-slate-800 rounded-lg inline-block">身體發麻</span></label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 核心記憶 & 閃回選項 -->
-            <div class="space-y-2 bg-[#020617] p-4 rounded-2xl border border-slate-800">
-                <label class="flex items-center space-x-3 cursor-pointer">
-                    <input type="checkbox" id="mCore" class="w-4 h-4 rounded text-yellow-500">
-                    <span class="text-xs font-semibold text-yellow-400">🌟 設為核心記憶水晶球 (Core Memory - 金色璀璨光芒)</span>
-                </label>
-                <label class="flex items-center space-x-3 cursor-pointer">
-                    <input type="checkbox" id="mFlashback" class="w-4 h-4 rounded text-sky-500">
-                    <span class="text-xs font-semibold text-sky-400">⚡ 閃回記憶 / 突然想起的舊回憶 (Flashback)</span>
-                </label>
-            </div>
-
-            <div class="flex justify-end space-x-3 pt-3 border-t border-slate-800">
-                <button type="button" onclick="closeModal()" class="px-5 py-2.5 bg-slate-900 text-slate-300 rounded-xl text-xs font-medium hover:bg-slate-800 transition">取消</button>
-                <button type="submit" class="px-6 py-2.5 bg-gradient-to-r from-sky-400 to-blue-600 text-slate-950 rounded-xl text-xs font-bold hover:brightness-110 transition shadow-lg shadow-sky-500/20">儲存記憶球</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- 備份設定 Modal -->
-<div id="backupModal" class="fixed inset-0 bg-black/80 backdrop-blur-xl hidden items-center justify-center z-50 p-4">
-    <div class="bg-[#030712] border border-sky-800/60 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl">
-        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-            <h3 class="text-base font-bold text-sky-200">☁️ Supabase 雲端同步設定</h3>
-            <button onclick="closeBackupModal()" class="text-slate-400 hover:text-white"><i class="ph ph-x text-xl"></i></button>
-        </div>
-        <div class="space-y-3 text-xs">
-            <div>
-                <label class="block text-slate-300 mb-1">Supabase URL</label>
-                <input type="text" id="sbUrl" value="https://edqiijtguqgdtwtunfug.supabase.co" class="w-full bg-[#020617] border border-slate-800 rounded-xl px-3 py-2 text-slate-200">
-            </div>
-            <div>
-                <label class="block text-slate-300 mb-1">Supabase Anon Key</label>
-                <input type="text" id="sbKey" value="sb_publishable_imxjz7hPH0aCTamxVIsZ7Q_6YvurVqe" class="w-full bg-[#020617] border border-slate-800 rounded-xl px-3 py-2 text-slate-200">
-            </div>
-            <button onclick="saveSupabaseConfig()" class="w-full py-2.5 bg-sky-500 text-slate-950 rounded-xl font-bold hover:bg-sky-400 transition shadow-md">儲存並連接雲端</button>
-        </div>
-    </div>
-</div>
-
-<script>
-    let currentPhotoBase64 = "";
-
-    let memories = [
-        { id: 1, title: "DSE 放榜當日", date: "2026-10-14", trigger: "考到期望分數，與同學拍照道別。", emotions: ["快樂", "悲傷"], somatics: ["心跳加速", "眼眶發熱"], isCore: true, isFlashback: false, photo: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=150&auto=format&fit=crop&q=80" },
-        { id: 2, title: "初次到東京旅行", date: "2026-10-10", trigger: "順利抵達機場並成功 Check-in。", emotions: ["興奮", "焦慮"], somatics: ["呼吸急促"], isCore: false, isFlashback: false, photo: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=150&auto=format&fit=crop&q=80" },
-        { id: 3, title: "小學開學日回憶", date: "2026-09-25", trigger: "執拾舊物見到舊校服。", emotions: ["緊張", "悲傷"], somatics: ["胃部翻騰"], isCore: false, isFlashback: true },
-        { id: 4, title: "寵物過世的道別", date: "2025-10-05", trigger: "陪伴多年的貓貓安詳離去。", emotions: ["悲傷", "孤獨"], somatics: ["眼眶發熱", "肌肉緊繃"], isCore: true, isFlashback: false },
-        { id: 5, title: "工作專案獲得讚賞", date: "2026-09-15", trigger: "連續加班兩星期後簡報成功。", emotions: ["快樂", "自豪"], somatics: ["心跳加速"], isCore: true, isFlashback: false },
-        { id: 6, title: "地鐵被無禮推撞", date: "2026-09-10", trigger: "上班高峰期被硬擠。", emotions: ["憤怒", "煩躁"], somatics: ["肌肉緊繃"], isCore: false, isFlashback: false },
-        { id: 7, title: "颱風天在家喝熱可可", date: "2026-08-20", trigger: "出面狂風暴雨，躲在被窩看電影。", emotions: ["平靜", "快樂"], somatics: [], isCore: false, isFlashback: false, photo: "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=150&auto=format&fit=crop&q=80" },
-        { id: 8, title: "公開演講前 5 分鐘", date: "2026-08-05", trigger: "站在舞台側幕等候上台。", emotions: ["緊張", "焦慮"], somatics: ["心跳加速", "呼吸急促"], isCore: false, isFlashback: false },
-        { id: 9, title: "見到朋友換新跑車", date: "2026-07-28", trigger: "聚會時看到朋友曬新車。", emotions: ["焦慮", "悲傷"], somatics: ["胃部翻騰"], isCore: false, isFlashback: false },
-        { id: 10, title: "深夜想起舊廣播歌", date: "2026-07-15", trigger: "深夜聽歌突然想起舊時光。", emotions: ["悲傷", "快樂"], somatics: ["眼眶發熱"], isCore: false, isFlashback: true },
-        { id: 11, title: "搶到演唱會門票", date: "2026-06-30", trigger: "倒數搶票成功的一刻。", emotions: ["興奮", "快樂"], somatics: ["心跳加速"], isCore: false, isFlashback: false },
-        { id: 12, title: "發現牛奶過期結塊", date: "2026-06-18", trigger: "剛倒入咖啡發現變質。", emotions: ["煩躁"], somatics: [], isCore: false, isFlashback: false },
-        { id: 13, title: "完成 10K 馬拉松", date: "2026-06-01", trigger: "衝過終點線領完獎牌。", emotions: ["自豪", "興奮"], somatics: ["肌肉緊繃", "呼吸急促"], isCore: true, isFlashback: false },
-        { id: 14, title: "簡報講錯重要數據", date: "2026-05-20", trigger: "台下全場突然安靜。", emotions: ["焦慮", "害怕"], somatics: ["心跳加速"], isCore: false, isFlashback: false },
-        { id: 15, title: "週五下班離辦公室", date: "2026-05-10", trigger: "打卡離場迎接週末。", emotions: ["平靜", "快樂"], somatics: [], isCore: false, isFlashback: false },
-        { id: 16, title: "童年玩伴結婚喜帖", date: "2026-04-25", trigger: "收到喜帖想起小時候爬樹。", emotions: ["快樂", "悲傷"], somatics: ["眼眶發熱"], isCore: false, isFlashback: true },
-        { id: 17, title: "衝動消費買貴衣物", date: "2026-04-12", trigger: "回家試穿覺得不合適。", emotions: ["煩躁", "悲傷"], somatics: ["胃部翻騰"], isCore: false, isFlashback: false },
-        { id: 18, title: "正念禪修靜坐 20 分鐘", date: "2026-03-30", trigger: "專注呼吸雜念沉澱。", emotions: ["平靜"], somatics: [], isCore: false, isFlashback: false },
-        { id: 19, title: "搬離住十年舊居", date: "2026-03-15", trigger: "最後一次鎖上舊家大門。", emotions: ["悲傷", "興奮"], somatics: ["胸口緊繃", "眼眶發熱"], isCore: true, isFlashback: false },
-        { id: 20, title: "小學被罰站回憶", date: "2026-03-01", trigger: "路過母校想起當年蝦碌事。", emotions: ["焦慮", "煩躁"], somatics: [], isCore: false, isFlashback: true }
-    ];
-
-    const encouragementQuotes = [
-        "「哭泣其實沒關係，這代表你正在釋放那些過重的負荷。允許自己脆弱，也是一種強大。」—— 憂憂",
-        "「當你感到憤怒或煩躁時，記得深呼吸。你的情緒在提醒你：某些界限需要被守護。」—— 怒怒",
-        "「焦慮與害怕是為了保護你免受傷害。摸摸胸口告訴自己：現在很安全，我們一起面對。」—— 驚驚",
-        "「即使今天烏雲密布，每一種情緒的存在都是為了讓你更完整。你做得很好！」—— 樂樂"
-    ];
-
-    function renderMemories() {
-        const recentEl = document.getElementById('recentShelf');
-        const allEl = document.getElementById('allShelf');
-        recentEl.innerHTML = '';
-        allEl.innerHTML = '';
-
-        memories.forEach((m, index) => {
-            const node = createMemoryNode(m, index === 0 && m.isNew);
-            allEl.appendChild(node);
-        });
-
-        memories.slice(0, 5).forEach((m, index) => {
-            const node = createMemoryNode(m, index === 0 && m.isNew);
-            recentEl.appendChild(node);
-        });
-    }
-
-    function createMemoryNode(m, isNewAnimated) {
-        const div = document.createElement('div');
-        div.className = "memory-item flex flex-col items-center flex-shrink-0 cursor-pointer";
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inside Out 記憶總部</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
         
-        // 新增記憶時觸發「飛入弧線軌道」動畫
-        if (isNewAnimated) {
-            div.classList.add('fly-in-animation');
+        body { 
+            font-family: 'Noto Sans TC', sans-serif; 
+            background-color: #020617; 
+            color: #f8fafc; 
+            overflow-x: hidden; 
+            min-height: 100vh;
         }
 
-        let sphereClass = "glass-sphere ";
-        let badge = "";
-        if (m.isCore) {
-            sphereClass += "core-glow-sphere ";
-            badge = "🌟";
-        } else if (m.isFlashback) {
-            sphereClass += "flashback-sphere ";
-            badge = "⚡";
+        /* 深邃夢境星空發光背景 */
+        .dream-cosmic-bg {
+            background: radial-gradient(circle at 50% 15%, rgba(14, 165, 233, 0.25) 0%, transparent 60%),
+                        radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.18) 0%, transparent 50%),
+                        radial-gradient(circle at 20% 80%, rgba(236, 72, 153, 0.12) 0%, transparent 50%),
+                        #020617;
+            min-height: 100vh;
         }
 
-        // 透光水晶色澤與極致夢幻漸層 alpha 組合
-        let bgGrad = "radial-gradient(circle at 32% 32%, rgba(254, 240, 138, 0.82) 0%, rgba(234, 179, 8, 0.6) 80%)";
-        let faceIcon = "😊";
+        /* 弧線開放式軌道容器 */
+        .floating-arc-container {
+            position: relative;
+            padding: 40px 20px;
+            margin: 10px 0 30px;
+            display: flex;
+            gap: 36px;
+            overflow-x: auto;
+            align-items: center;
+        }
+
+        .floating-arc-container::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 25px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(56,189,248,0) 0%, rgba(56,189,248,0.6) 50%, rgba(56,189,248,0) 100%);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+            pointer-events: none;
+        }
+
+        /* 記憶球高低錯落位移 */
+        .memory-item { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); flex-shrink: 0; }
+        .memory-item:nth-child(5n+1) { transform: translateY(-18px); }
+        .memory-item:nth-child(5n+2) { transform: translateY(10px); }
+        .memory-item:nth-child(5n+3) { transform: translateY(-6px); }
+        .memory-item:nth-child(5n+4) { transform: translateY(16px); }
+
+        /* 🔮 晶瑩透光玻璃水晶球 */
+        .glass-sphere {
+            width: 92px;
+            height: 92px;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            box-shadow: inset -8px -8px 18px rgba(0, 0, 0, 0.6), inset 8px 8px 20px rgba(255, 255, 255, 0.5), 0 10px 25px rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        .glass-sphere:hover {
+            transform: scale(1.15) translateY(-8px) !important;
+            filter: brightness(1.25);
+        }
+
+        /* 相片滿版縮放覆蓋於水晶球內部 */
+        .sphere-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            opacity: 0.85;
+            mix-blend-mode: overlay;
+        }
+
+        /* 🌟 核心記憶金色光暈 */
+        .core-glow-sphere {
+            box-shadow: inset -8px -8px 18px rgba(0,0,0,0.5), inset 8px 8px 22px rgba(255,255,255,0.9), 0 0 30px #facc15, 0 0 60px rgba(250,204,21,0.6);
+            border: 2px solid #fef08a;
+            animation: core-pulse 2.2s infinite alternate ease-in-out;
+        }
+        @keyframes core-pulse {
+            0% { box-shadow: inset -8px -8px 18px rgba(0,0,0,0.5), 0 0 20px #facc15; }
+            100% { box-shadow: inset -8px -8px 18px rgba(0,0,0,0.5), 0 0 40px #fde047, 0 0 75px rgba(253,224,71,0.8); }
+        }
+
+        /* ⚡ 閃回記憶電光效果 */
+        .flashback-sphere {
+            border: 2px dashed #38bdf8;
+            box-shadow: inset -8px -8px 18px rgba(0,0,0,0.6), 0 0 25px rgba(56, 189, 248, 0.8);
+        }
+
+        /* ✨ 飛入軌道動畫 */
+        @keyframes flyIntoArcTrack {
+            0% { transform: scale(0.1) translateY(300px) rotate(-180deg); opacity: 0; filter: brightness(3); }
+            60% { transform: scale(1.25) translateY(-30px) rotate(10deg); opacity: 1; filter: brightness(2); }
+            100% { transform: scale(1) translateY(0); opacity: 1; filter: brightness(1); }
+        }
+        .fly-in-animation {
+            animation: flyIntoArcTrack 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+    </style>
+</head>
+<body class="dream-cosmic-bg flex flex-col min-h-screen">
+
+    <!-- 頂部導航列 -->
+    <header class="bg-slate-950/80 backdrop-blur-md border-b border-sky-900/40 px-6 py-4 flex justify-between items-center sticky top-0 z-50 shadow-2xl">
+        <div class="flex items-center space-x-3">
+            <span class="text-2xl font-black bg-gradient-to-r from-yellow-400 via-sky-300 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_2px_10px_rgba(56,189,248,0.4)]">Inside Out 記憶總部</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button onclick="openBackupModal()" class="bg-slate-900/80 hover:bg-slate-800 text-sky-200 px-4 py-2 rounded-xl text-sm font-medium flex items-center space-x-2 border border-sky-900/50 transition shadow-md">
+                <i class="ph ph-database text-lg text-sky-400"></i>
+                <span>雲端同步 / 備份</span>
+            </button>
+            <button onclick="openModal()" class="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-slate-950 px-5 py-2 rounded-xl text-sm font-bold flex items-center space-x-2 shadow-lg shadow-sky-500/25 transition">
+                <i class="ph ph-plus-circle text-lg"></i>
+                <span>新增記憶球</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- 主要內容區 -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8 space-y-10">
         
-        if (m.emotions.includes("悲傷") || m.emotions.includes("委屈") || m.emotions.includes("孤獨")) { 
-            bgGrad = "radial-gradient(circle at 32% 32%, rgba(186, 230, 253, 0.85) 0%, rgba(14, 165, 233, 0.65) 80%)"; 
-            faceIcon = "😢"; 
-        } else if (m.emotions.includes("憤怒") || m.emotions.includes("煩躁") || m.emotions.includes("不甘心")) { 
-            bgGrad = "radial-gradient(circle at 32% 32%, rgba(254, 202, 202, 0.85) 0%, rgba(225, 29, 72, 0.65) 80%)"; 
-            faceIcon = "😡"; 
-        } else if (m.emotions.includes("緊張") || m.emotions.includes("焦慮") || m.emotions.includes("害怕")) { 
-            bgGrad = "radial-gradient(circle at 32% 32%, rgba(233, 213, 255, 0.85) 0%, rgba(147, 51, 234, 0.65) 80%)"; 
-            faceIcon = "😰"; 
-        } else if (m.emotions.includes("興奮") || m.emotions.includes("自豪")) { 
-            bgGrad = "radial-gradient(circle at 32% 32%, rgba(187, 247, 208, 0.85) 0%, rgba(22, 163, 74, 0.65) 80%)"; 
-            faceIcon = "🤩"; 
+        <!-- 搜尋欄 -->
+        <div class="relative max-w-xl mx-auto">
+            <i class="ph ph-magnifying-glass absolute left-4 top-3.5 text-sky-400 text-xl"></i>
+            <input type="text" id="searchInput" oninput="filterMemories()" placeholder="搜尋記憶水晶球標題、觸發事件..." class="w-full bg-slate-950/80 border border-sky-900/60 rounded-2xl pl-12 pr-4 py-3 text-slate-100 placeholder-sky-400/40 focus:outline-none focus:border-sky-400 shadow-inner">
+        </div>
+
+        <!-- 近期記憶管道 -->
+        <section class="space-y-2">
+            <h2 class="text-xl font-bold text-yellow-300 flex items-center space-x-2 drop-shadow-[0_0_8px_rgba(250,204,21,0.3)]">
+                <i class="ph ph-sparkle text-yellow-400"></i>
+                <span>近期記憶管道 (Recent Floating Shelf)</span>
+            </h2>
+            <div id="recentShelf" class="floating-arc-container">
+                <!-- 動態載入近期記憶 -->
+            </div>
+        </section>
+
+        <!-- 所有記憶管道 -->
+        <section class="space-y-2">
+            <h2 class="text-xl font-bold text-sky-300 flex items-center space-x-2 drop-shadow-[0_0_8px_rgba(56,189,248,0.3)]">
+                <i class="ph ph-globe text-sky-400"></i>
+                <span>所有記憶庫存牆 (Core Archives - 共 20 個經典範例)</span>
+            </h2>
+            <div id="allShelf" class="floating-arc-container">
+                <!-- 動態載入所有記憶 -->
+            </div>
+        </section>
+    </main>
+
+    <!-- 💙 療癒鼓勵彈窗 -->
+    <div id="encouragementModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="bg-gradient-to-b from-[#0e2347] to-[#060b18] border border-sky-500/50 rounded-3xl max-w-md w-full p-8 space-y-6 shadow-[0_0_50px_rgba(56,189,248,0.3)] text-center relative">
+            <div class="w-16 h-16 bg-sky-500/20 border border-sky-400 rounded-full flex items-center justify-center mx-auto text-3xl text-sky-300">
+                💙
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-xl font-black text-sky-200">大腦總部心靈悄悄話</h3>
+                <p id="encouragementText" class="text-sm text-slate-300 leading-relaxed px-4">
+                    「哭泣其實沒關係，這代表你正在釋放那些過重的負荷。允許自己脆弱，也是一種強大。」
+                </p>
+            </div>
+            <button onclick="closeEncouragement()" class="w-full py-3 bg-gradient-to-r from-sky-500 to-blue-600 text-slate-950 font-bold rounded-2xl shadow-lg shadow-sky-500/30 hover:brightness-110 transition">
+                收到，多謝憂憂與樂樂！ ✨
+            </button>
+        </div>
+    </div>
+
+    <!-- 新增記憶 Modal -->
+    <div id="memoryModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-950 border border-sky-900/60 rounded-3xl max-w-xl w-full p-6 space-y-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                <h3 class="text-lg font-bold text-sky-200">✨ 建立新記憶水晶球</h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white"><i class="ph ph-x text-xl"></i></button>
+            </div>
+
+            <form id="memoryForm" onsubmit="saveMemory(event)" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">記憶標題</label>
+                    <input type="text" id="mTitle" required placeholder="例如：DSE 放榜當日" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-100 focus:outline-none focus:border-sky-400">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">發生日期</label>
+                    <input type="date" id="mDate" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-100 focus:outline-none focus:border-sky-400">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">觸發事件 / 簡述</label>
+                    <textarea id="mTrigger" rows="2" placeholder="發生咗咩事令你有呢種感覺..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-100 focus:outline-none focus:border-sky-400"></textarea>
+                </div>
+
+                <!-- 📷 上傳相片 Preview -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">📷 記憶相片 Preview (將映照於水晶球內部)</label>
+                    <input type="file" id="mPhoto" accept="image/*" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-xs text-slate-300 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-sky-500 file:text-slate-950 hover:file:bg-sky-400">
+                </div>
+
+                <!-- 擴充後的情緒分類表單 (結合圖表中的詳細心理學情緒與六大基本情緒) -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-slate-300">情緒分類與佔比 (多維度細緻辨識)</label>
+                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-3 text-sm">
+                        <div>
+                            <span class="text-yellow-400 font-bold">💛 喜悅 / 快樂情緒：</span>
+                            <div class="flex flex-wrap gap-3 mt-1">
+                                <label><input type="checkbox" name="emotions" value="開心"> 開心</label>
+                                <label><input type="checkbox" name="emotions" value="快樂"> 快樂</label>
+                                <label><input type="checkbox" name="emotions" value="興奮"> 興奮</label>
+                                <label><input type="checkbox" name="emotions" value="感恩"> 感恩</label>
+                                <label><input type="checkbox" name="emotions" value="滿足"> 滿足</label>
+                                <label><input type="checkbox" name="emotions" value="平靜"> 平靜</label>
+                                <label><input type="checkbox" name="emotions" value="自豪"> 自豪</label>
+                                <label><input type="checkbox" name="emotions" value="樂觀"> 樂觀</label>
+                                <label><input type="checkbox" name="emotions" value="欣慰"> 欣慰</label>
+                                <label><input type="checkbox" name="emotions" value="愉快"> 愉快</label>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-red-400 font-bold">🔴 憤怒 / 憤怒情緒：</span>
+                            <div class="flex flex-wrap gap-3 mt-1">
+                                <label><input type="checkbox" name="emotions" value="生氣"> 生氣</label>
+                                <label><input type="checkbox" name="emotions" value="震怒"> 震怒</label>
+                                <label><input type="checkbox" name="emotions" value="憤怒"> 憤怒</label>
+                                <label><input type="checkbox" name="emotions" value="憎恨"> 憎恨</label>
+                                <label><input type="checkbox" name="emotions" value="不耐"> 不耐</label>
+                                <label><input type="checkbox" name="emotions" value="煩躁"> 煩躁</label>
+                                <label><input type="checkbox" name="emotions" value="不公平"> 不公平</label>
+                                <label><input type="checkbox" name="emotions" value="受冒犯"> 受冒犯</label>
+                                <label><input type="checkbox" name="emotions" value="受威脅"> 受威脅</label>
+                                <label><input type="checkbox" name="emotions" value="受抨擊"> 受抨擊</label>
+                                <label><input type="checkbox" name="emotions" value="受傷害"> 受傷害</label>
+                                <label><input type="checkbox" name="emotions" value="不甘心"> 不甘心</label>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-sky-400 font-bold">💙 哀傷 / 悲傷情緒：</span>
+                            <div class="flex flex-wrap gap-3 mt-1">
+                                <label><input type="checkbox" name="emotions" value="難過"> 難過</label>
+                                <label><input type="checkbox" name="emotions" value="悲傷"> 悲傷</label>
+                                <label><input type="checkbox" name="emotions" value="傷心"> 傷心</label>
+                                <label><input type="checkbox" name="emotions" value="失望"> 失望</label>
+                                <label><input type="checkbox" name="emotions" value="孤單"> 孤單</label>
+                                <label><input type="checkbox" name="emotions" value="內疚"> 內疚</label>
+                                <label><input type="checkbox" name="emotions" value="疲累"> 疲累</label>
+                                <label><input type="checkbox" name="emotions" value="迷失"> 迷失</label>
+                                <label><input type="checkbox" name="emotions" value="沮喪"> 沮喪</label>
+                                <label><input type="checkbox" name="emotions" value="委屈"> 委屈</label>
+                                <label><input type="checkbox" name="emotions" value="失落"> 失落</label>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-purple-400 font-bold">🟣 懼怕 / 恐懼與焦慮情緒：</span>
+                            <div class="flex flex-wrap gap-3 mt-1">
+                                <label><input type="checkbox" name="emotions" value="驚慌"> 驚慌</label>
+                                <label><input type="checkbox" name="emotions" value="緊張"> 緊張</label>
+                                <label><input type="checkbox" name="emotions" value="擔憂"> 擔憂</label>
+                                <label><input type="checkbox" name="emotions" value="不安"> 不安</label>
+                                <label><input type="checkbox" name="emotions" value="焦慮"> 焦慮</label>
+                                <label><input type="checkbox" name="emotions" value="震慄"> 震慄</label>
+                                <label><input type="checkbox" name="emotions" value="不知所措"> 不知所措</label>
+                                <label><input type="checkbox" name="emotions" value="害怕"> 害怕</label>
+                                <label><input type="checkbox" name="emotions" value="恐懼"> 恐懼</label>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-violet-400 font-bold">🔮 驚訝情緒 (六大基本情緒)：</span>
+                            <div class="flex flex-wrap gap-3 mt-1">
+                                <label><input type="checkbox" name="emotions" value="錯愕"> 錯愕</label>
+                                <label><input type="checkbox" name="emotions" value="震驚"> 震驚</label>
+                                <label><input type="checkbox" name="emotions" value="驚喜"> 驚喜</label>
+                                <label><input type="checkbox" name="emotions" value="意外"> 意外</label>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-emerald-400 font-bold">💚 厭惡情緒 (六大基本情緒)：</span>
+                            <div class="flex flex-wrap gap-3 mt-1">
+                                <label><input type="checkbox" name="emotions" value="厭惡"> 厭惡</label><label><input type="checkbox" name="emotions" value="反感"> 反感</label><label><input type="checkbox" name="emotions" value="排斥"> 排斥</label><label><input type="checkbox" name="emotions" value="厭倦"> 厭倦</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 身心互動循環與身體反應 (繁體中文) -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-sky-300">🔄 身心互動循環與身體反應 (對應情緒)</label>
+                    <div class="bg-slate-900 p-4 rounded-xl border border-sky-900/40 space-y-3 text-xs">
+                        <div>
+                            <span class="text-yellow-300 font-bold">✨ 快樂對應：</span>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="面帶微笑"> 面帶微笑</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="步伐輕盈"> 步伐輕盈</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="身體放鬆"> 身體放鬆</label>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-sky-300 font-bold">💙 悲傷對應：</span>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="流淚"> 流淚</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="胸悶氣短"> 胸悶氣短</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="無力感"> 無力感</label>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-red-300 font-bold">🔥 憤怒對應：</span>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="體溫升高"> 體溫升高</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="血壓上升"> 血壓上升</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="面部潮紅"> 面部潮紅</label>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-orange-300 font-bold">⚡ 焦慮/緊張對應：</span>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="胃部不適"> 胃部不適</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="肌肉緊繃"> 肌肉緊繃</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="心跳加速"> 心跳加速</label>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-purple-300 font-bold">🟣 恐懼對應：</span>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="瞳孔放大"> 瞳孔放大</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="身體顫抖"> 身體顫抖</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="出冷汗"> 出冷汗</label>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-emerald-300 font-bold">🌿 平靜對應：</span>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="呼吸平穩"> 呼吸平穩</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="思維清晰"> 思維清晰</label>
+                                <label class="px-2 py-1 bg-slate-800 rounded cursor-pointer"><input type="checkbox" name="somatics" value="肌肉鬆弛"> 肌肉鬆弛</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 核心記憶 & 閃回選項 -->
+                <div class="space-y-2 bg-slate-900 p-4 rounded-xl border border-slate-800">
+                    <label class="flex items-center space-x-3 cursor-pointer">
+                        <input type="checkbox" id="mCore" class="w-4 h-4 rounded text-yellow-500">
+                        <span class="text-sm font-medium text-yellow-400">🌟 設為核心記憶球 (Core Memory - 金色光暈)</span>
+                    </label>
+                    <label class="flex items-center space-x-3 cursor-pointer">
+                        <input type="checkbox" id="mFlashback" class="w-4 h-4 rounded text-sky-500">
+                        <span class="text-sm font-medium text-sky-400">⚡ 閃回記憶 / 突然想起的舊回憶 (Flashback)</span>
+                    </label>
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-4 border-t border-slate-800">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-900 text-slate-300 rounded-xl text-sm font-medium hover:bg-slate-800">取消</button>
+                    <button type="submit" class="px-5 py-2 bg-sky-500 text-slate-950 rounded-xl text-sm font-bold hover:bg-sky-400">儲存記憶球</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 備份設定 Modal -->
+    <div id="backupModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-950 border border-sky-900/60 rounded-3xl max-w-md w-full p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="text-lg font-bold text-sky-200">☁️ Supabase 雲端同步設定</h3>
+                <button onclick="closeBackupModal()" class="text-slate-400 hover:text-white"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <label class="block text-slate-300 mb-1">Supabase URL</label>
+                    <input type="text" id="sbUrl" value="https://edqiijtguqgdtwtunfug.supabase.co" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200">
+                </div>
+                <div>
+                    <label class="block text-slate-300 mb-1">Supabase Anon Key</label>
+                    <input type="text" id="sbKey" value="sb_publishable_imxjz7hPH0aCTamxVIsZ7Q_6YvurVqe" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-200">
+                </div>
+                <button onclick="saveSupabaseConfig()" class="w-full py-2.5 bg-sky-500 text-slate-950 rounded-xl font-bold hover:bg-sky-400 transition">儲存並連接雲端</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let memories = [
+            { id: 1, title: "DSE 放榜當日", date: "2026-10-14", trigger: "考到期望分數，與同學拍照道別。", emotions: ["開心", "悲傷"], somatics: ["心跳加速", "面帶微笑"], photo: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=200", isCore: true, isFlashback: false },
+            { id: 2, title: "初次到東京旅行", date: "2026-10-10", trigger: "順利抵達機場並成功 Check-in。", emotions: ["興奮", "焦慮"], somatics: ["心跳加速", "步伐輕盈"], photo: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=200", isCore: false, isFlashback: false },
+            { id: 3, title: "小學開學日回憶", date: "2026-09-25", trigger: "執拾舊物見到舊校服。", emotions: ["緊張", "悲傷"], somatics: ["胸悶氣短"], photo: null, isCore: false, isFlashback: true },
+            { id: 4, title: "寵物過世的道別", date: "2025-10-05", trigger: "陪伴多年的貓貓安詳離去。", emotions: ["悲傷", "孤單"], somatics: ["流淚", "無力感"], photo: null, isCore: true, isFlashback: false },
+            { id: 5, title: "工作專案獲得讚賞", date: "2026-09-15", trigger: "連續加班兩星期後簡報成功。", emotions: ["感恩", "自豪"], somatics: ["面帶微笑", "步伐輕盈"], photo: null, isCore: true, isFlashback: false },
+            { id: 6, title: "地鐵被無禮推撞", date: "2026-09-10", trigger: "上班高峰期被硬擠。", emotions: ["憤怒", "受冒犯"], somatics: ["體溫升高", "血壓上升"], photo: null, isCore: false, isFlashback: false },
+            { id: 7, title: "颱風天在家喝熱可可", date: "2026-08-20", trigger: "出面狂風暴雨，躲在被窩看電影。", emotions: ["平靜", "滿足"], somatics: ["呼吸平穩", "身體放鬆"], photo: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=200", isCore: false, isFlashback: false },
+            { id: 8, title: "公開演講前 5 分鐘", date: "2026-08-05", trigger: "站在舞台側幕等候上台。", emotions: ["緊張", "擔憂"], somatics: ["心跳加速", "肌肉緊繃"], photo: null, isCore: false, isFlashback: false },
+            { id: 9, title: "見到朋友換新跑車", date: "2026-07-28", trigger: "聚會時看到朋友曬新車。", emotions: ["焦慮", "失望"], somatics: ["胃部不適"], photo: null, isCore: false, isFlashback: false },
+            { id: 10, title: "深夜想起舊廣播歌", date: "2026-07-15", trigger: "深夜聽歌突然想起舊時光。", emotions: ["悲傷", "開心"], somatics: ["流淚"], photo: null, isCore: false, isFlashback: true },
+            { id: 11, title: "搶到演唱會門票", date: "2026-06-30", trigger: "倒數搶票成功的一刻。", emotions: ["驚喜", "興奮"], somatics: ["心跳加速", "步伐輕盈"], photo: null, isCore: false, isFlashback: false },
+            { id: 12, title: "發現牛奶過期結塊", date: "2026-06-18", trigger: "剛倒入咖啡發現變質。", emotions: ["厭惡", "煩躁"], somatics: ["面部潮紅"], photo: null, isCore: false, isFlashback: false },
+            { id: 13, title: "完成 10K 馬拉松", date: "2026-06-01", trigger: "衝過終點線領完獎牌。", emotions: ["自豪", "滿足"], somatics: ["體溫升高", "心跳加速"], photo: null, isCore: true, isFlashback: false },
+            { id: 14, title: "簡報講錯重要數據", date: "2026-05-20", trigger: "台下全場突然安靜。", emotions: ["驚慌", "不知所措"], somatics: ["瞳孔放大", "出冷汗"], photo: null, isCore: false, isFlashback: false },
+            { id: 15, title: "週五下班離辦公室", date: "2026-05-10", trigger: "打卡離場迎接週末。", emotions: ["平靜", "樂觀"], somatics: ["呼吸平穩", "身體放鬆"], photo: null, isCore: false, isFlashback: false },
+            { id: 16, title: "童年玩伴結婚喜帖", date: "2026-04-25", trigger: "收到喜帖想起小時候爬樹。", emotions: ["開心", "悲傷"], somatics: ["流淚", "面帶微笑"], photo: null, isCore: false, isFlashback: true },
+            { id: 17, title: "衝動消費買貴衣物", date: "2026-04-12", trigger: "回家試穿覺得不合適。", emotions: ["內疚", "失望"], somatics: ["胃部不適"], photo: null, isCore: false, isFlashback: false },
+            { id: 18, title: "正念禪修靜坐 20 分鐘", date: "2026-03-30", trigger: "專注呼吸雜念沉澱。", emotions: ["平靜"], somatics: ["呼吸平穩", "思維清晰", "肌肉鬆弛"], photo: null, isCore: false, isFlashback: false },
+            { id: 19, title: "搬離住十年舊居", date: "2026-03-15", trigger: "最後一次鎖上舊家大門。", emotions: ["迷失", "興奮"], somatics: ["胸悶氣短", "無力感"], photo: null, isCore: true, isFlashback: false },
+            { id: 20, title: "小學被罰站回憶", date: "2026-03-01", trigger: "路過母校想起當年蝦碌事。", emotions: ["不安", "煩躁"], somatics: ["心跳加速", "肌肉緊繃"], photo: null, isCore: false, isFlashback: true }
+        ];
+
+        const encouragementQuotes = [
+            "「哭泣其實沒關係，這代表你正在釋放那些過重的負荷。允許自己脆弱，也是一種強大。」—— 憂憂",
+            "「當你感到憤怒或煩躁時，記得深呼吸。你的情緒在提醒你：某些界限需要被守護。」—— 怒怒",
+            "「焦慮與害怕是為了保護你免受傷害。摸摸胸口告訴自己：現在很安全，我們一起面對。」—— 驚驚",
+            "「即使今天烏雲密布，每一種情緒的存在都是為了讓你更完整。你做得很好！」—— 樂樂"
+        ];
+
+        function renderMemories() {
+            const recentEl = document.getElementById('recentShelf');
+            const allEl = document.getElementById('allShelf');
+            recentEl.innerHTML = '';
+            allEl.innerHTML = '';
+
+            memories.forEach((m, index) => {
+                const node = createMemoryNode(m);
+                if (index === 0 && m.isJustAdded) {
+                    node.classList.add('fly-in-animation');
+                    delete m.isJustAdded;
+                }
+                allEl.appendChild(node);
+            });
+
+            memories.slice(0, 5).forEach((m, index) => {
+                const node = createMemoryNode(m);
+                if (index === 0 && m.isJustAddedAnim) {
+                    node.classList.add('fly-in-animation');
+                    delete m.isJustAddedAnim;
+                }
+                recentEl.appendChild(node);
+            });
         }
 
-        let innerContent = m.photo 
-            ? `<img src="${m.photo}" class="sphere-photo"><span class="absolute text-xl drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] z-10">${badge}</span>`
-            : `<span class="text-2xl drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)] z-10">${badge || faceIcon}</span>`;
+        function createMemoryNode(m) {
+            const div = document.createElement('div');
+            div.className = "memory-item flex flex-col items-center flex-shrink-0 cursor-pointer";
+            
+            let sphereClass = "glass-sphere ";
+            let badge = "";
+            if (m.isCore) {
+                sphereClass += "core-glow-sphere ";
+                badge = "🌟";
+            } else if (m.isFlashback) {
+                sphereClass += "flashback-sphere ";
+                badge = "⚡";
+            }
 
-        div.innerHTML = `
-            <div class="${sphereClass}" style="background: ${bgGrad};">
-                ${innerContent}
-            </div>
-            <div class="text-center mt-2.5">
-                <div class="text-xs font-bold text-slate-100 w-24 truncate drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">${m.title}</div>
-                <div class="text-[10px] text-sky-300/80 font-medium">${m.date}</div>
-            </div>
-        `;
-        return div;
-    }
+            let bgGrad = "radial-gradient(circle at 35% 35%, rgba(253,224,71,0.85) 0%, rgba(202,138,4,0.95) 80%)";
+            let faceIcon = "😊";
+            if (m.emotions.some(e => ["悲傷", "難過", "傷心", "失望", "孤單", "內疚", "疲累", "迷失", "沮喪", "委屈", "失落"].includes(e))) { 
+                bgGrad = "radial-gradient(circle at 35% 35%, rgba(56,189,248,0.85) 0%, rgba(3,105,161,0.95) 80%)"; faceIcon = "😢"; 
+            }
+            else if (m.emotions.some(e => ["生氣", "震怒", "憤怒", "憎恨", "不耐", "煩躁", "不公平", "受冒犯", "受威脅", "受抨擊", "受傷害", "不甘心"].includes(e))) { 
+                bgGrad = "radial-gradient(circle at 35% 35%, rgba(248,113,113,0.85) 0%, rgba(185,28,28,0.95) 80%)"; faceIcon = "😡"; 
+            }
+            else if (m.emotions.some(e => ["驚慌", "緊張", "擔憂", "不安", "焦慮", "震慄", "不知所措", "害怕", "恐懼"].includes(e))) { 
+                bgGrad = "radial-gradient(circle at 35% 35%, rgba(192,132,252,0.85) 0%, rgba(107,33,168,0.95) 80%)"; faceIcon = "😰"; 
+            }
+            else if (m.emotions.some(e => ["錯愕", "震驚", "驚喜", "意外"].includes(e))) { 
+                bgGrad = "radial-gradient(circle at 35% 35%, rgba(168,85,247,0.85) 0%, rgba(109,40,217,0.95) 80%)"; faceIcon = "😲"; 
+            }
+            else if (m.emotions.some(e => ["厭惡", "反感", "排斥", "厭倦"].includes(e))) { 
+                bgGrad = "radial-gradient(circle at 35% 35%, rgba(74,222,128,0.85) 0%, rgba(21,128,61,0.95) 80%)"; faceIcon = "🤢"; 
+            }
+            else if (m.emotions.some(e => ["開心", "快樂", "興奮", "感恩", "滿足", "平靜", "自豪", "樂觀", "欣慰", "愉快"].includes(e))) { 
+                bgGrad = "radial-gradient(circle at 35% 35%, rgba(253,224,71,0.85) 0%, rgba(202,138,4,0.95) 80%)"; faceIcon = "😊"; 
+            }
 
-    function previewImage(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                currentPhotoBase64 = e.target.result;
-                document.getElementById('imgPreview').src = currentPhotoBase64;
-                document.getElementById('photoPreviewContainer').classList.remove('hidden');
+            let innerContent = m.photo ? `<img src="${m.photo}" class="sphere-photo">` : `<span class="text-3xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">${badge || faceIcon}</span>`;
+
+            div.innerHTML = `
+                <div class="${sphereClass}" style="background: ${bgGrad};">
+                    ${innerContent}
+                </div>
+                <div class="text-center mt-2">
+                    <div class="text-xs font-bold text-slate-200 w-24 truncate">${m.title}</div>
+                    <div class="text-[10px] text-sky-400/80">${m.date}</div>
+                </div>
+            `;
+            return div;
+        }
+
+        function openModal() { document.getElementById('memoryModal').classList.remove('hidden'); document.getElementById('memoryModal').classList.add('flex'); }
+        function closeModal() { document.getElementById('memoryModal').classList.add('hidden'); document.getElementById('memoryModal').classList.remove('flex'); }
+        function openBackupModal() { document.getElementById('backupModal').classList.remove('hidden'); document.getElementById('backupModal').classList.add('flex'); }
+        function closeBackupModal() { document.getElementById('backupModal').classList.add('hidden'); document.getElementById('backupModal').classList.remove('flex'); }
+        function closeEncouragement() { document.getElementById('encouragementModal').classList.add('hidden'); document.getElementById('encouragementModal').classList.remove('flex'); }
+
+        function saveMemory(e) {
+            e.preventDefault();
+            const title = document.getElementById('mTitle').value;
+            const date = document.getElementById('mDate').value;
+            const trigger = document.getElementById('mTrigger').value;
+            const isCore = document.getElementById('mCore').checked;
+            const isFlashback = document.getElementById('mFlashback').checked;
+            const selectedEmotions = Array.from(document.querySelectorAll('input[name="emotions"]:checked')).map(el => el.value);
+            const selectedSomatics = Array.from(document.querySelectorAll('input[name="somatics"]:checked')).map(el => el.value);
+            const photoFile = document.getElementById('mPhoto').files[0];
+
+            let photoUrl = null;
+            if (photoFile) {
+                photoUrl = URL.createObjectURL(photoFile);
+            }
+
+            const newMemory = {
+                id: Date.now(),
+                title, date, trigger,
+                emotions: selectedEmotions.length ? selectedEmotions : ["平靜"],
+                somatics: selectedSomatics,
+                photo: photoUrl,
+                isCore, isFlashback,
+                isJustAdded: true,
+                isJustAddedAnim: true
             };
-            reader.readAsDataURL(file);
+
+            memories.unshift(newMemory);
+            renderMemories();
+            closeModal();
+            document.getElementById('memoryForm').reset();
+
+            const negativeEmotions = ["生氣", "震怒", "憤怒", "憎恨", "不耐", "煩躁", "不公平", "受冒犯", "受威脅", "受抨擊", "受傷害", "不甘心", "難過", "悲傷", "傷心", "失望", "孤單", "內疚", "疲累", "迷失", "沮喪", "委屈", "失落", "驚慌", "緊張", "擔憂", "不安", "焦慮", "震慄", "不知所措", "害怕", "恐懼", "厭惡", "反感", "排斥", "厭倦"];
+            if (selectedEmotions.some(e => negativeEmotions.includes(e))) {
+                const randomQuote = encouragementQuotes[Math.floor(Math.random() * encouragementQuotes.length)];
+                document.getElementById('encouragementText').innerText = randomQuote;
+                document.getElementById('encouragementModal').classList.remove('hidden');
+                document.getElementById('encouragementModal').classList.add('flex');
+            }
         }
-    }
 
-    function openModal() { document.getElementById('memoryModal').classList.remove('hidden'); document.getElementById('memoryModal').classList.add('flex'); }
-    function closeModal() { document.getElementById('memoryModal').classList.add('hidden'); document.getElementById('memoryModal').classList.remove('flex'); }
-    function openBackupModal() { document.getElementById('backupModal').classList.remove('hidden'); document.getElementById('backupModal').classList.add('flex'); }
-    function closeBackupModal() { document.getElementById('backupModal').classList.add('hidden'); document.getElementById('backupModal').classList.remove('flex'); }
-    function closeEncouragement() { document.getElementById('encouragementModal').classList.add('hidden'); document.getElementById('encouragementModal').classList.remove('flex'); }
+        function filterMemories() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = memories.filter(m => m.title.toLowerCase().includes(query) || m.trigger.toLowerCase().includes(query));
+            const allEl = document.getElementById('allShelf');
+            allEl.innerHTML = '';
+            filtered.forEach(m => allEl.appendChild(createMemoryNode(m)));
+        }
 
-    function saveMemory(e) {
-        e.preventDefault();
-        const title = document.getElementById('mTitle').value;
-        const date = document.getElementById('mDate').value;
-        const trigger = document.getElementById('mTrigger').value;
-        const isCore = document.getElementById('mCore').checked;
-        const isFlashback = document.getElementById('mFlashback').checked;
-        const selectedEmotions = Array.from(document.querySelectorAll('input[name="emotions"]:checked')).map(el => el.value);
-        const selectedSomatics = Array.from(document.querySelectorAll('input[name="somatics"]:checked')).map(el => el.value);
+        function saveSupabaseConfig() {
+            alert('Supabase 連接設定已儲存！');
+            closeBackupModal();
+        }
 
-        // 清除之前的 isNew 標籤
-        memories.forEach(m => delete m.isNew);
-
-        const newMemory = {
-            id: Date.now(),
-            title, date, trigger,
-            emotions: selectedEmotions.length ? selectedEmotions : ["平靜"],
-            somatics: selectedSomatics,
-            isCore, isFlashback,
-            photo: currentPhotoBase64 || null,
-            isNew: true // 觸發動畫
-        };
-
-        memories.unshift(newMemory);
         renderMemories();
-        closeModal();
-        document.getElementById('memoryForm').reset();
-        document.getElementById('photoPreviewContainer').classList.add('hidden');
-        currentPhotoBase64 = "";
-
-        // 檢查負面情緒並彈出心靈鼓勵
-        const negativeEmotions = ["悲傷", "委屈", "孤獨", "失落", "遺憾", "憤怒", "煩躁", "不甘心", "焦慮", "害怕", "緊張", "恐慌"];
-        const hasNegative = selectedEmotions.some(e => negativeEmotions.includes(e));
-
-        if (hasNegative) {
-            const randomQuote = encouragementQuotes[Math.floor(Math.random() * encouragementQuotes.length)];
-            document.getElementById('encouragementText').innerText = randomQuote;
-            document.getElementById('encouragementModal').classList.remove('hidden');
-            document.getElementById('encouragementModal').classList.add('flex');
-        }
-    }
-
-    function filterMemories() {
-        const query = document.getElementById('searchInput').value.toLowerCase();
-        const filtered = memories.filter(m => m.title.toLowerCase().includes(query) || m.trigger.toLowerCase().includes(query) || m.emotions.some(e => e.toLowerCase().includes(query)));
-        const allEl = document.getElementById('allShelf');
-        allEl.innerHTML = '';
-        filtered.forEach(m => allEl.appendChild(createMemoryNode(m, false)));
-    }
-
-    function saveSupabaseConfig() {
-        alert('Supabase 連接設定已儲存！');
-        closeBackupModal();
-    }
-
-    renderMemories();
-</script>
+    </script>
+</body>
+</html>

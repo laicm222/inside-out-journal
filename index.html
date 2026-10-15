@@ -638,7 +638,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-1">📷 記憶相片預覽</label>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">📷 記憶相片 (支援直接存入雲端)</label>
                     <input type="file" id="mPhoto" accept="image/*" class="w-full dreamy-input px-4 py-2 text-xs text-slate-300 file:mr-4 file:py-1 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-amber-300 file:text-slate-950 hover:file:bg-amber-200">
                 </div>
 
@@ -820,7 +820,6 @@
             }
         }
 
-        // 從 Supabase 下載資料 (對應 table: memories, 欄位: id, data, updated_at)
         async function fetchMemoriesFromSupabase() {
             if (!supabaseClient) return;
             try {
@@ -840,7 +839,6 @@
             }
         }
 
-        // 寫入 Supabase (對應 table: memories)
         async function syncMemoryToSupabase(memoryItem) {
             if (!supabaseClient) return;
             try {
@@ -1312,7 +1310,7 @@
 
             memories.unshift(newMemory);
             renderMemories();
-            syncMemoryToSupabase(newMemory); // 同步寫入 Supabase
+            syncMemoryToSupabase(newMemory);
             document.getElementById('quickTitle').value = '';
 
             const negativeEmotions = ["生氣", "憤怒", "煩躁", "難過", "悲傷", "焦慮", "緊張"];
@@ -1387,33 +1385,46 @@
             const isMemorial = document.getElementById('mMemorial').checked;
             const selectedEmotions = Array.from(document.querySelectorAll('input[name="emotions"]:checked')).map(el => el.value);
             const selectedSomatics = Array.from(document.querySelectorAll('input[name="somatics"]:checked')).map(el => el.value);
+            const photoFile = document.getElementById('mPhoto').files[0];
 
-            const newMemory = {
-                id: Date.now(),
-                title, date, trigger,
-                emotions: selectedEmotions.length ? selectedEmotions : ["平靜"],
-                somatics: selectedSomatics,
-                photo: null,
-                isCore, isFlashback, isMemorial,
-                isJustAdded: true
+            const finishSave = (photoUrl) => {
+                const newMemory = {
+                    id: Date.now(),
+                    title, date, trigger,
+                    emotions: selectedEmotions.length ? selectedEmotions : ["平靜"],
+                    somatics: selectedSomatics,
+                    photo: photoUrl,
+                    isCore, isFlashback, isMemorial,
+                    isJustAdded: true
+                };
+
+                memories.unshift(newMemory);
+                renderMemories();
+                syncMemoryToSupabase(newMemory);
+                closeModal();
+                document.getElementById('memoryForm').reset();
+
+                if (isMemorial) {
+                    showPetSpeech('happy', "收到主人寫俾我哋嘅心事信件喇！我和噹噹好開心～ 💌");
+                } else {
+                    const negativeEmotions = ["生氣", "憤怒", "煩躁", "難過", "悲傷", "失望", "孤單", "內疚", "迷失", "驚慌", "緊張", "擔憂", "焦慮", "害怕"];
+                    if (selectedEmotions.some(e => negativeEmotions.includes(e))) {
+                        const randomQuote = encouragementQuotes[Math.floor(Math.random() * encouragementQuotes.length)];
+                        document.getElementById('encouragementText').innerText = randomQuote;
+                        document.getElementById('encouragementModal').classList.remove('hidden');
+                        document.getElementById('encouragementModal').classList.add('flex');
+                    }
+                }
             };
 
-            memories.unshift(newMemory);
-            renderMemories();
-            syncMemoryToSupabase(newMemory); // 同步寫入 Supabase
-            closeModal();
-            document.getElementById('memoryForm').reset();
-
-            if (isMemorial) {
-                showPetSpeech('happy', "收到主人寫俾我哋嘅心事信件喇！我和噹噹好開心～ 💌");
+            if (photoFile) {
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) {
+                    finishSave(uploadEvent.target.result); // Base64 格式
+                };
+                reader.readAsDataURL(photoFile);
             } else {
-                const negativeEmotions = ["生氣", "憤怒", "煩躁", "難過", "悲傷", "失望", "孤單", "內疚", "迷失", "驚慌", "緊張", "擔憂", "焦慮", "害怕"];
-                if (selectedEmotions.some(e => negativeEmotions.includes(e))) {
-                    const randomQuote = encouragementQuotes[Math.floor(Math.random() * encouragementQuotes.length)];
-                    document.getElementById('encouragementText').innerText = randomQuote;
-                    document.getElementById('encouragementModal').classList.remove('hidden');
-                    document.getElementById('encouragementModal').classList.add('flex');
-                }
+                finishSave(null);
             }
         }
 

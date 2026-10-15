@@ -286,6 +286,7 @@
                 <span class="text-2xl md:text-3xl font-black bg-gradient-to-r from-amber-200 via-yellow-300 to-emerald-400 bg-clip-text text-transparent drop-shadow-[0_2px_20px_rgba(250,204,21,0.6)]">
                     Aurosphere 🔮
                 </span>
+                <span id="syncStatusBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">未連線 Supabase</span>
             </div>
             <div class="flex flex-wrap items-center justify-center gap-2 mt-2 md:mt-0">
                 <button onclick="toggleAudio()" id="audioBtn" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 border border-emerald-400/50 px-3 py-1.5 rounded-2xl text-xs font-bold flex items-center space-x-1.5 transition">
@@ -798,6 +799,71 @@
     </div>
 
     <script>
+        // --- ☁️ Supabase 對接初始化 ---
+        let supabaseClient = null;
+        let defaultSbUrl = "https://edqiijtguqgdtwtunfug.supabase.co";
+        let defaultSbKey = "sb_publishable_imxjz7hPH0aCTamxVIsZ7Q_6YvurVqe";
+
+        function initSupabase() {
+            const url = localStorage.getItem('sb_url') || defaultSbUrl;
+            const key = localStorage.getItem('sb_key') || defaultSbKey;
+            
+            if (url && key) {
+                try {
+                    supabaseClient = supabase.createClient(url, key);
+                    document.getElementById('syncStatusBadge').innerText = "☁️ 已連線 Supabase";
+                    document.getElementById('syncStatusBadge').className = "text-[10px] px-2 py-0.5 rounded-full bg-emerald-900/80 text-emerald-300 border border-emerald-500/40";
+                    fetchMemoriesFromSupabase();
+                } catch(e) {
+                    console.error("Supabase 連線失敗:", e);
+                }
+            }
+        }
+
+        // 從 Supabase 下載資料 (對應 table: memories, 欄位: id, data, updated_at)
+        async function fetchMemoriesFromSupabase() {
+            if (!supabaseClient) return;
+            try {
+                const { data, error } = await supabaseClient
+                    .from('memories')
+                    .select('*')
+                    .order('id', { ascending: false });
+
+                if (error) {
+                    console.error("下載 Supabase 資料失敗:", error);
+                } else if (data && data.length > 0) {
+                    memories = data.map(row => row.data);
+                    renderMemories();
+                }
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
+        // 寫入 Supabase (對應 table: memories)
+        async function syncMemoryToSupabase(memoryItem) {
+            if (!supabaseClient) return;
+            try {
+                const payload = {
+                    id: memoryItem.id,
+                    data: memoryItem,
+                    updated_at: new Date().toISOString()
+                };
+
+                const { error } = await supabaseClient
+                    .from('memories')
+                    .upsert(payload);
+
+                if (error) {
+                    console.error("寫入 Supabase 失敗:", error);
+                } else {
+                    console.log("成功同步入 Supabase！");
+                }
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
         function initParticles() {
             const container = document.getElementById('particlesLayer');
             const particleCount = 25;
@@ -817,11 +883,7 @@
         let memories = [
             { id: 1, title: "月夜大樹下的平靜", date: "2026-10-15", trigger: "獨自坐在草地上仰望明月與大樹，雜念沉澱。", emotions: ["平靜", "滿足"], somatics: ["呼吸平穩", "身體放鬆", "思維清晰"], photo: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=500", isCore: true, isFlashback: false, isMemorial: false },
             { id: 2, title: "DSE 放榜當日", date: "2026-10-14", trigger: "考到期望分數，與同學拍照道別。", emotions: ["開心", "悲傷"], somatics: ["心跳加速", "面帶微笑", "眼眶發熱"], photo: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400", isCore: true, isFlashback: false, isMemorial: false },
-            { id: 3, title: "初次到東京旅行", date: "2026-10-10", trigger: "順利抵達機場並成功 Check-in。", emotions: ["興奮", "焦慮"], somatics: ["心跳加速", "步伐輕盈"], photo: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400", isCore: false, isFlashback: false, isMemorial: false },
-            { id: 4, title: "給 Happy仔與噹噹的一封信", date: "2026-10-01", trigger: "夢見在草地上跟 Happy仔 跑跳，噹噹在樹上嚼草。", emotions: ["感恩", "平靜"], somatics: ["眼眶發熱", "面帶微笑"], photo: null, isCore: true, isFlashback: false, isMemorial: true },
-            { id: 5, title: "寵物過世的道別", date: "2025-10-05", trigger: "陪伴多年的小寶貝安詳離去。", emotions: ["悲傷", "孤單"], somatics: ["眼眶發熱", "無力感"], photo: null, isCore: true, isFlashback: false, isMemorial: true },
-            { id: 6, title: "工作專案獲得讚賞", date: "2026-09-15", trigger: "連續加班兩星期後簡報成功。", emotions: ["感恩", "自豪"], somatics: ["面帶微笑", "步伐輕盈", "思維清晰"], photo: null, isCore: true, isFlashback: false, isMemorial: false },
-            { id: 7, title: "颱風天在家喝熱可可", date: "2026-08-20", trigger: "出面狂風暴雨，躲在被窩看電影。", emotions: ["平靜", "滿足"], somatics: ["呼吸平穩", "身體放鬆"], photo: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400", isCore: false, isFlashback: false, isMemorial: false }
+            { id: 3, title: "初次到東京旅行", date: "2026-10-10", trigger: "順利抵達機場並成功 Check-in。", emotions: ["興奮", "焦慮"], somatics: ["心跳加速", "步伐輕盈"], photo: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400", isCore: false, isFlashback: false, isMemorial: false }
         ];
 
         const encouragementQuotes = [
@@ -870,10 +932,7 @@
             pets.dang.bubble = document.getElementById('dangBubble');
             pets.dang.textEl = document.getElementById('dangSpeech');
 
-            // 漫步計時器 (2D 全螢幕)
             setInterval(movePets, 80);
-
-            // 隨機對話計時器
             setInterval(randomPetSpeech, 14000);
         }
 
@@ -881,7 +940,6 @@
             ['happy', 'dang'].forEach(key => {
                 let p = pets[key];
 
-                // 隨機改變微小方向
                 if (Math.random() < 0.05) {
                     p.dirY = (Math.random() - 0.5) * 0.8;
                 }
@@ -889,7 +947,6 @@
                 p.x += p.dirX * p.speed;
                 p.y += p.dirY * p.speed;
 
-                // 2D 全螢幕碰撞反彈邊界 (頂部導航與底部邊緣)
                 if (p.x > 88) { p.x = 88; p.dirX = -1; }
                 if (p.x < 2) { p.x = 2; p.dirX = 1; }
                 if (p.y > 85) { p.y = 85; p.dirY = -p.dirY; }
@@ -898,7 +955,6 @@
                 p.el.style.left = p.x + '%';
                 p.el.style.top = p.y + '%';
 
-                // 水平翻轉圖像
                 if (p.dirX === -1) {
                     p.el.querySelector('svg').style.transform = 'scaleX(-1)';
                 } else {
@@ -1256,6 +1312,7 @@
 
             memories.unshift(newMemory);
             renderMemories();
+            syncMemoryToSupabase(newMemory); // 同步寫入 Supabase
             document.getElementById('quickTitle').value = '';
 
             const negativeEmotions = ["生氣", "憤怒", "煩躁", "難過", "悲傷", "焦慮", "緊張"];
@@ -1330,25 +1387,20 @@
             const isMemorial = document.getElementById('mMemorial').checked;
             const selectedEmotions = Array.from(document.querySelectorAll('input[name="emotions"]:checked')).map(el => el.value);
             const selectedSomatics = Array.from(document.querySelectorAll('input[name="somatics"]:checked')).map(el => el.value);
-            const photoFile = document.getElementById('mPhoto').files[0];
-
-            let photoUrl = null;
-            if (photoFile) {
-                photoUrl = URL.createObjectURL(photoFile);
-            }
 
             const newMemory = {
                 id: Date.now(),
                 title, date, trigger,
                 emotions: selectedEmotions.length ? selectedEmotions : ["平靜"],
                 somatics: selectedSomatics,
-                photo: photoUrl,
+                photo: null,
                 isCore, isFlashback, isMemorial,
                 isJustAdded: true
             };
 
             memories.unshift(newMemory);
             renderMemories();
+            syncMemoryToSupabase(newMemory); // 同步寫入 Supabase
             closeModal();
             document.getElementById('memoryForm').reset();
 
@@ -1370,7 +1422,12 @@
         }
 
         function saveSupabaseConfig() {
-            alert('Supabase 連接設定已儲存！');
+            const url = document.getElementById('sbUrl').value;
+            const key = document.getElementById('sbKey').value;
+            localStorage.setItem('sb_url', url);
+            localStorage.setItem('sb_key', key);
+            initSupabase();
+            alert('Supabase 連接設定已更新！');
             closeBackupModal();
         }
 
@@ -1391,6 +1448,7 @@
         }
 
         initParticles();
+        initSupabase();
         renderMemories();
         displayLastUpdated();
         initRoamingPets();

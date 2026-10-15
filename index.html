@@ -23,7 +23,7 @@
             font-family: 'Caveat', cursive, 'Noto Sans TC', sans-serif;
         }
 
-        /* 🌌 電影級夢幻大腦總部背景 */
+        /* 🌌 背景與粒子 */
         .movie-hq-bg {
             background: 
                 radial-gradient(circle at 12% 10%, rgba(254, 240, 138, 0.25) 0%, transparent 40%),
@@ -34,7 +34,6 @@
             position: relative;
         }
 
-        /* ✨ 漫天飄浮嘅發光微塵粒子特效 */
         .particles-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -56,7 +55,6 @@
             100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
         }
 
-        /* ✨ 夢幻發光毛玻璃面板 */
         .dreamy-glass-panel {
             background: rgba(10, 22, 30, 0.65);
             backdrop-filter: blur(16px);
@@ -68,7 +66,6 @@
             z-index: 10;
         }
 
-        /* 🌳 心靈語錄列（淺色大樹背景浮水印） */
         .quote-banner {
             background: linear-gradient(135deg, rgba(10, 22, 30, 0.8) 0%, rgba(15, 30, 42, 0.7) 100%);
             backdrop-filter: blur(16px);
@@ -94,7 +91,7 @@
             filter: blur(1px);
         }
 
-        /* 🎈 記憶球漂浮軌道動畫 */
+        /* 🎈 記憶球漂浮軌道 */
         @keyframes floatAround1 {
             0% { transform: translate(0px, 0px) rotate(0deg); }
             33% { transform: translate(16px, -22px) rotate(3deg); }
@@ -147,7 +144,7 @@
             }
         }
 
-        /* 🔮 3D 通透發光水晶球 */
+        /* 🔮 水晶球 */
         .movie-glass-sphere {
             width: 76px;
             height: 76px;
@@ -169,15 +166,9 @@
         .movie-glass-sphere::before {
             content: "";
             position: absolute;
-            top: 6%;
-            left: 15%;
-            width: 70%;
-            height: 40%;
+            top: 6%; left: 15%; width: 70%; height: 40%;
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.05) 100%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 10;
-            filter: blur(0.5px);
+            border-radius: 50%; pointer-events: none; z-index: 10; filter: blur(0.5px);
         }
 
         .movie-glass-sphere:hover {
@@ -191,28 +182,16 @@
         }
 
         .sphere-photo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-            opacity: 0.95;
+            width: 100%; height: 100%; object-fit: cover; border-radius: 50%; opacity: 0.95;
         }
 
-        .core-gold-glow {
-            animation: core-pulse 2.4s infinite alternate ease-in-out;
-        }
+        .core-gold-glow { animation: core-pulse 2.4s infinite alternate ease-in-out; }
         @keyframes core-pulse {
-            0% { 
-                box-shadow: inset 5px 5px 12px rgba(255,255,255,0.7), inset -8px -10px 18px rgba(0,0,0,0.8), 0 0 25px #facc15, 0 0 50px rgba(250,204,21,0.5); 
-            }
-            100% { 
-                box-shadow: inset 6px 6px 14px rgba(255,255,255,0.9), inset -8px -10px 18px rgba(0,0,0,0.5), 0 0 40px #fde047, 0 0 80px rgba(253,224,71,0.85); 
-            }
+            0% { box-shadow: inset 5px 5px 12px rgba(255,255,255,0.7), inset -8px -10px 18px rgba(0,0,0,0.8), 0 0 25px #facc15, 0 0 50px rgba(250,204,21,0.5); }
+            100% { box-shadow: inset 6px 6px 14px rgba(255,255,255,0.9), inset -8px -10px 18px rgba(0,0,0,0.5), 0 0 40px #fde047, 0 0 80px rgba(253,224,71,0.85); }
         }
 
-        .flashback-blue-effect {
-            box-shadow: inset 5px 5px 12px rgba(255,255,255,0.7), inset -8px -10px 18px rgba(0,0,0,0.8), 0 0 30px rgba(56, 189, 248, 0.8) !important;
-        }
+        .flashback-blue-effect { box-shadow: inset 5px 5px 12px rgba(255,255,255,0.7), inset -8px -10px 18px rgba(0,0,0,0.8), 0 0 30px rgba(56, 189, 248, 0.8) !important; }
 
         .memorial-star-effect {
             border: 1.5px dashed rgba(254, 240, 138, 0.8) !important;
@@ -231,51 +210,69 @@
             transition: all 0.3s ease;
         }
         .dreamy-input:focus {
-            outline: none;
-            border-color: rgba(250, 204, 21, 0.9);
-            box-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
+            outline: none; border-color: rgba(250, 204, 21, 0.9); box-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
         }
 
-        /* 🐾 手繪塗鴉風小夥伴懸浮卡片 */
-        .doodle-pet-card {
-            background: rgba(15, 25, 35, 0.88);
+        /* 🐾 全螢幕自由漫步桌寵 */
+        .roaming-pet {
+            position: fixed;
+            z-index: 45;
+            cursor: pointer;
+            transition: left 0.1s linear, top 0.1s linear;
+            user-select: none;
+        }
+
+        .pet-walking-happy {
+            animation: happyWalk 0.5s infinite alternate ease-in-out;
+        }
+        @keyframes happyWalk {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-4px) rotate(3deg); }
+        }
+
+        .pet-walking-dang {
+            animation: dangWalk 0.4s infinite alternate ease-in-out;
+        }
+        @keyframes dangWalk {
+            0% { transform: translateY(0) scaleY(1); }
+            100% { transform: translateY(-5px) scaleY(0.96); }
+        }
+
+        .pet-bubble {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 12px;
+            width: 200px;
+            background: rgba(10, 22, 32, 0.92);
             backdrop-filter: blur(12px);
-            border: 2px dashed rgba(250, 204, 21, 0.5);
-            border-radius: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 15px rgba(255, 255, 255, 0.03);
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px dashed rgba(250, 204, 21, 0.7);
+            border-radius: 1.2rem;
+            padding: 10px 14px;
+            font-size: 11px;
+            color: #f8fafc;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            pointer-events: none;
+            white-space: normal;
+            line-height: 1.4;
+            text-align: center;
         }
-        .doodle-pet-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            border-color: rgba(250, 204, 21, 0.9);
+        .pet-bubble::after {
+            content: "";
+            position: absolute;
+            top: 100%; left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: rgba(250, 204, 21, 0.7) transparent transparent transparent;
         }
 
-        /* 🧘 呼吸動畫 */
         @keyframes breathCircle {
             0%, 100% { transform: scale(1); opacity: 0.6; }
             50% { transform: scale(2.2); opacity: 1; }
         }
-        .animate-breath {
-            animation: breathCircle 12s infinite ease-in-out;
-        }
-
-        /* 手繪搖擺動畫 */
-        @keyframes happyWiggle {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-8deg) scale(1.05); }
-            75% { transform: rotate(8deg) scale(1.05); }
-        }
-        .wiggle-animation {
-            animation: happyWiggle 0.6s ease-in-out;
-        }
-
-        @keyframes dangJump {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px) scale(1.08); }
-        }
-        .jump-animation {
-            animation: dangJump 0.5s ease-in-out;
-        }
+        .animate-breath { animation: breathCircle 12s infinite ease-in-out; }
     </style>
 </head>
 <body id="bodyBg" class="movie-hq-bg flex flex-col min-h-screen">
@@ -408,7 +405,7 @@
             <div id="timelineContainer" class="hidden space-y-4 py-4 px-2 max-h-[600px] overflow-y-auto pr-2"></div>
         </section>
 
-        <!-- 📊 統計數據與情緒身心聯動分析面板 -->
+        <!-- 📊 統計數據面板 -->
         <section class="space-y-4 pt-4 border-t border-amber-500/30">
             <div class="dreamy-glass-panel p-4 flex flex-col sm:flex-row gap-4 items-center justify-between">
                 <h3 class="text-md font-bold text-amber-200 flex items-center space-x-2">
@@ -469,60 +466,58 @@
         </section>
     </main>
 
-    <!-- 🐾 手繪塗鴉風小夥伴懸浮卡片 (固定喺右下角) -->
-    <div class="fixed bottom-4 right-4 z-40 flex items-end space-x-3 pointer-events-auto">
-        <!-- 陪伴對話泡泡 -->
-        <div id="petSpeechBubble" class="hidden max-w-xs p-3.5 bg-slate-900/95 border-2 border-amber-400/80 rounded-2xl shadow-2xl text-xs text-slate-100 space-y-1 relative mb-2 backdrop-blur-md transition-all">
-            <div class="flex items-center justify-between border-b border-amber-500/30 pb-1 mb-1">
-                <span id="speechSpeaker" class="font-bold text-amber-300 handwritten text-sm">Happy仔 🐾</span>
-                <button onclick="closeSpeechBubble()" class="text-slate-400 hover:text-white"><i class="ph ph-x text-xs"></i></button>
-            </div>
-            <p id="speechContent" class="leading-relaxed">「主人，今日記得飲多啲水呀！我會一直陪住你～」</p>
+    <!-- 🐾 全螢幕漫步桌寵：Happy仔 (白色比熊 + 藍色櫻桃領巾) -->
+    <div id="happyPet" class="roaming-pet pet-walking-happy" style="left: 10%; top: 75%;" onclick="clickPet('happy')">
+        <div id="happyBubble" class="pet-bubble hidden">
+            <span class="font-bold text-amber-300 handwritten text-xs block mb-1">Happy仔 🐩</span>
+            <span id="happySpeech">「主人，今日記得飲多啲水呀！我會一直陪住你～」</span>
         </div>
+        <div class="w-16 h-16 relative filter drop-shadow-[0_5px_15px_rgba(0,0,0,0.6)]">
+            <svg viewBox="0 0 100 100" class="w-full h-full">
+                <circle cx="50" cy="55" r="32" fill="#ffffff" stroke="#222" stroke-width="3.5"/>
+                <ellipse cx="36" cy="84" rx="9" ry="7" fill="#ffffff" stroke="#222" stroke-width="3"/>
+                <ellipse cx="64" cy="84" rx="9" ry="7" fill="#ffffff" stroke="#222" stroke-width="3"/>
+                <circle cx="50" cy="40" r="30" fill="#ffffff" stroke="#222" stroke-width="3.5"/>
+                <circle cx="24" cy="36" r="12" fill="#ffffff" stroke="#222" stroke-width="3"/>
+                <circle cx="76" cy="36" r="12" fill="#ffffff" stroke="#222" stroke-width="3"/>
+                <circle cx="38" cy="38" r="4.5" fill="#111"/>
+                <circle cx="62" cy="38" r="4.5" fill="#111"/>
+                <ellipse cx="50" cy="46" rx="5.5" ry="4" fill="#111"/>
+                <path d="M 45 52 Q 50 56 55 52" fill="none" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="30" cy="45" r="5" fill="#fca5a5" opacity="0.6"/>
+                <circle cx="70" cy="45" r="5" fill="#fca5a5" opacity="0.6"/>
+                <path d="M 32 58 Q 50 72 68 58 Q 50 64 32 58 Z" fill="#93c5fd" stroke="#1d4ed8" stroke-width="2"/>
+                <circle cx="50" cy="64" r="2.5" fill="#ef4444"/>
+                <circle cx="54" cy="64" r="2.5" fill="#ef4444"/>
+            </svg>
+        </div>
+    </div>
 
-        <div class="doodle-pet-card p-2.5 flex items-center space-x-3 border-dashed">
-            <!-- Happy仔 (白色比熊 手繪頭像) -->
-            <button onclick="interactPet('happy')" id="happyPetBtn" class="flex flex-col items-center group relative focus:outline-none" title="點擊摸摸 Happy仔 🐾">
-                <div class="w-12 h-12 rounded-full bg-slate-100/95 border-2 border-slate-900 p-0.5 flex items-center justify-center shadow-md overflow-hidden group-hover:scale-110 transition">
-                    <!-- SVG 手繪白色比熊塗鴉 -->
-                    <svg viewBox="0 0 100 100" class="w-full h-full">
-                        <circle cx="50" cy="50" r="42" fill="#fafafa" stroke="#334155" stroke-width="4"/>
-                        <circle cx="30" cy="35" r="14" fill="#f5f5f5" stroke="#334155" stroke-width="3"/>
-                        <circle cx="70" cy="35" r="14" fill="#f5f5f5" stroke="#334155" stroke-width="3"/>
-                        <circle cx="38" cy="48" r="5" fill="#1e293b"/>
-                        <circle cx="62" cy="48" r="5" fill="#1e293b"/>
-                        <ellipse cx="50" cy="58" rx="7" ry="5" fill="#0f172a"/>
-                        <path d="M 44 65 Q 50 70 56 65" fill="none" stroke="#334155" stroke-width="3" stroke-linecap="round"/>
-                        <circle cx="28" cy="56" r="6" fill="#fbcfe8" opacity="0.6"/>
-                        <circle cx="72" cy="56" r="6" fill="#fbcfe8" opacity="0.6"/>
-                    </svg>
-                </div>
-                <span class="text-[10px] font-bold text-amber-200 handwritten mt-0.5">Happy仔 🐩</span>
-            </button>
-
-            <!-- 噹噹 (灰色龍貓 手繪頭像) -->
-            <button onclick="interactPet('dang')" id="dangPetBtn" class="flex flex-col items-center group relative focus:outline-none" title="點擊摸摸 噹噹 🦔">
-                <div class="w-12 h-12 rounded-full bg-slate-400 border-2 border-slate-900 p-0.5 flex items-center justify-center shadow-md overflow-hidden group-hover:scale-110 transition">
-                    <!-- SVG 手繪灰色龍貓塗鴉 -->
-                    <svg viewBox="0 0 100 100" class="w-full h-full">
-                        <ellipse cx="50" cy="55" rx="38" ry="36" fill="#94a3b8" stroke="#1e293b" stroke-width="4"/>
-                        <ellipse cx="32" cy="22" rx="8" ry="18" fill="#94a3b8" stroke="#1e293b" stroke-width="3"/>
-                        <ellipse cx="68" cy="22" rx="8" ry="18" fill="#94a3b8" stroke="#1e293b" stroke-width="3"/>
-                        <ellipse cx="50" cy="62" rx="24" ry="22" fill="#f1f5f9"/>
-                        <circle cx="36" cy="46" r="4" fill="#0f172a"/>
-                        <circle cx="64" cy="46" r="4" fill="#0f172a"/>
-                        <ellipse cx="50" cy="50" rx="4" ry="3" fill="#0f172a"/>
-                        <!-- 鬍鬚 -->
-                        <line x1="12" y1="50" x2="28" y2="52" stroke="#1e293b" stroke-width="2"/>
-                        <line x1="10" y1="58" x2="28" y2="56" stroke="#1e293b" stroke-width="2"/>
-                        <line x1="88" y1="50" x2="72" y2="52" stroke="#1e293b" stroke-width="2"/>
-                        <line x1="90" y1="58" x2="72" y2="56" stroke="#1e293b" stroke-width="2"/>
-                        <!-- 肚子肚子紋路 -->
-                        <path d="M 44 58 Q 50 55 56 58" fill="none" stroke="#64748b" stroke-width="2.5"/>
-                    </svg>
-                </div>
-                <span class="text-[10px] font-bold text-slate-300 handwritten mt-0.5">噹噹 🦔</span>
-            </button>
+    <!-- 🐾 全螢幕漫步桌寵：噹噹 (灰色龍貓 + 橡果) -->
+    <div id="dangPet" class="roaming-pet pet-walking-dang" style="left: 80%; top: 60%;" onclick="clickPet('dang')">
+        <div id="dangBubble" class="pet-bubble hidden">
+            <span class="font-bold text-slate-300 handwritten text-xs block mb-1">噹噹 🦔</span>
+            <span id="dangSpeech">「咕嚕～ 深呼吸一口氣，你已經做得很棒很棒喇！」</span>
+        </div>
+        <div class="w-16 h-16 relative filter drop-shadow-[0_5px_15px_rgba(0,0,0,0.6)]">
+            <svg viewBox="0 0 100 100" class="w-full h-full">
+                <ellipse cx="50" cy="58" rx="34" ry="32" fill="#94a3b8" stroke="#1e293b" stroke-width="3.5"/>
+                <ellipse cx="32" cy="24" rx="8" ry="18" fill="#94a3b8" stroke="#1e293b" stroke-width="3"/>
+                <ellipse cx="68" cy="24" rx="8" ry="18" fill="#94a3b8" stroke="#1e293b" stroke-width="3"/>
+                <ellipse cx="32" cy="25" rx="4" ry="11" fill="#cbd5e1"/>
+                <ellipse cx="68" cy="25" rx="4" ry="11" fill="#cbd5e1"/>
+                <path d="M 78 68 Q 96 60 90 40 Q 82 48 74 60" fill="#94a3b8" stroke="#1e293b" stroke-width="3"/>
+                <ellipse cx="50" cy="65" rx="20" ry="18" fill="#f1f5f9"/>
+                <circle cx="36" cy="46" r="3.5" fill="#0f172a"/>
+                <circle cx="64" cy="46" r="3.5" fill="#0f172a"/>
+                <ellipse cx="50" cy="48" rx="3.5" ry="2.5" fill="#0f172a"/>
+                <line x1="14" y1="48" x2="28" y2="50" stroke="#1e293b" stroke-width="2"/>
+                <line x1="12" y1="56" x2="28" y2="54" stroke="#1e293b" stroke-width="2"/>
+                <line x1="86" y1="48" x2="72" y2="50" stroke="#1e293b" stroke-width="2"/>
+                <line x1="88" y1="56" x2="72" y2="54" stroke="#1e293b" stroke-width="2"/>
+                <ellipse cx="50" cy="68" rx="7" ry="8" fill="#b45309" stroke="#78350f" stroke-width="2"/>
+                <path d="M 43 62 Q 50 58 57 62" fill="#78350f"/>
+            </svg>
         </div>
     </div>
 
@@ -536,7 +531,6 @@
                 <p class="text-xs text-slate-300">噹噹與 Happy仔 在天空中陪你慢慢放鬆身體。</p>
             </div>
 
-            <!-- 呼吸引導光圈 -->
             <div class="relative w-48 h-48 mx-auto flex items-center justify-center my-6">
                 <div class="absolute inset-0 rounded-full bg-gradient-to-r from-sky-400/30 to-emerald-400/30 animate-breath"></div>
                 <div class="w-28 h-28 rounded-full bg-slate-950/80 border-2 border-sky-300 flex items-center justify-center z-10 shadow-inner">
@@ -696,7 +690,7 @@
                     </div>
                 </div>
 
-                <!-- 🔄 完整 6 大部位身體感官反應分類 -->
+                <!-- 🔄 身體感官反應分類 -->
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-amber-300">🔄 身體感官反應 (6大部位細分)</label>
                     <div class="bg-slate-950 p-4 rounded-2xl border border-amber-500/30 space-y-3 text-xs">
@@ -837,7 +831,6 @@
             "「即使今天烏雲密布，每一種情緒的存在都是為了讓你更完整。你做得很好！」—— 樂樂"
         ];
 
-        /* 🐾 Happy仔 & 噹噹 專屬溫暖小語庫 */
         const happyQuotes = [
             "「主人！今日記得飲多啲水呀！我一直喺彩虹橋上面陪住你搖尾巴～ 🐾」",
             "「摸摸我！無論你遇到咩難關，Happy仔都相信你一定搞得定！」",
@@ -859,9 +852,86 @@
             "驚慌": "rgba(165,243,252,0.85)", "緊張": "rgba(103,232,249,0.85)", "擔憂": "rgba(165,243,252,0.85)", "焦慮": "rgba(103,232,249,0.85)", "害怕": "rgba(165,243,252,0.85)"
         };
 
-        let currentViewMode = 'universe'; // 'universe' or 'timeline'
-        let audioContext = null;
+        let currentViewMode = 'universe';
         let isAudioPlaying = false;
+
+        /* 🐾 全螢幕 2D 自由漫步 AI 系統 */
+        let pets = {
+            happy: { x: 10, y: 70, dirX: 1, dirY: -0.3, speed: 0.12, el: null, bubble: null, textEl: null },
+            dang: { x: 80, y: 50, dirX: -1, dirY: 0.4, speed: 0.10, el: null, bubble: null, textEl: null }
+        };
+
+        function initRoamingPets() {
+            pets.happy.el = document.getElementById('happyPet');
+            pets.happy.bubble = document.getElementById('happyBubble');
+            pets.happy.textEl = document.getElementById('happySpeech');
+
+            pets.dang.el = document.getElementById('dangPet');
+            pets.dang.bubble = document.getElementById('dangBubble');
+            pets.dang.textEl = document.getElementById('dangSpeech');
+
+            // 漫步計時器 (2D 全螢幕)
+            setInterval(movePets, 80);
+
+            // 隨機對話計時器
+            setInterval(randomPetSpeech, 14000);
+        }
+
+        function movePets() {
+            ['happy', 'dang'].forEach(key => {
+                let p = pets[key];
+
+                // 隨機改變微小方向
+                if (Math.random() < 0.05) {
+                    p.dirY = (Math.random() - 0.5) * 0.8;
+                }
+
+                p.x += p.dirX * p.speed;
+                p.y += p.dirY * p.speed;
+
+                // 2D 全螢幕碰撞反彈邊界 (頂部導航與底部邊緣)
+                if (p.x > 88) { p.x = 88; p.dirX = -1; }
+                if (p.x < 2) { p.x = 2; p.dirX = 1; }
+                if (p.y > 85) { p.y = 85; p.dirY = -p.dirY; }
+                if (p.y < 12) { p.y = 12; p.dirY = -p.dirY; }
+
+                p.el.style.left = p.x + '%';
+                p.el.style.top = p.y + '%';
+
+                // 水平翻轉圖像
+                if (p.dirX === -1) {
+                    p.el.querySelector('svg').style.transform = 'scaleX(-1)';
+                } else {
+                    p.el.querySelector('svg').style.transform = 'scaleX(1)';
+                }
+            });
+        }
+
+        function randomPetSpeech() {
+            const petKey = Math.random() > 0.5 ? 'happy' : 'dang';
+            showPetSpeech(petKey);
+        }
+
+        function showPetSpeech(petKey, customText) {
+            let p = pets[petKey];
+            let quotes = petKey === 'happy' ? happyQuotes : dangQuotes;
+            let msg = customText || quotes[Math.floor(Math.random() * quotes.length)];
+
+            p.textEl.innerText = msg;
+            p.bubble.classList.remove('hidden');
+
+            setTimeout(() => {
+                p.bubble.classList.add('hidden');
+            }, 6000);
+        }
+
+        function clickPet(petKey) {
+            let p = pets[petKey];
+            p.el.style.transform = 'scale(1.25) translateY(-10px)';
+            setTimeout(() => { p.el.style.transform = 'none'; }, 300);
+
+            showPetSpeech(petKey, petKey === 'happy' ? "主人摸摸我！Happy仔永遠最愛你～ 🐾" : "咕嚕～ 噹噹一直喺度陪住你！ 🍃");
+        }
 
         function getMarbleGradient(emotions) {
             if (!emotions || emotions.length === 0) {
@@ -1098,48 +1168,6 @@
             renderMemories();
         }
 
-        /* 🐾 寵物對話與互動機制 */
-        function interactPet(petType) {
-            const bubble = document.getElementById('petSpeechBubble');
-            const speaker = document.getElementById('speechSpeaker');
-            const content = document.getElementById('speechContent');
-
-            if (petType === 'happy') {
-                const btn = document.getElementById('happyPetBtn');
-                btn.classList.add('wiggle-animation');
-                setTimeout(() => btn.classList.remove('wiggle-animation'), 600);
-
-                speaker.innerText = "Happy仔 🐾";
-                const q = happyQuotes[Math.floor(Math.random() * happyQuotes.length)];
-                content.innerText = q;
-            } else {
-                const btn = document.getElementById('dangPetBtn');
-                btn.classList.add('jump-animation');
-                setTimeout(() => btn.classList.remove('jump-animation'), 500);
-
-                speaker.innerText = "噹噹 🦔";
-                const q = dangQuotes[Math.floor(Math.random() * dangQuotes.length)];
-                content.innerText = q;
-            }
-
-            bubble.classList.remove('hidden');
-        }
-
-        function closeSpeechBubble() {
-            document.getElementById('petSpeechBubble').classList.add('hidden');
-        }
-
-        function startAutoPetSpeech() {
-            setInterval(() => {
-                if (Math.random() > 0.5) {
-                    interactPet('happy');
-                } else {
-                    interactPet('dang');
-                }
-            }, 35000);
-        }
-
-        /* 🍃 靜心呼吸引導 */
         function openBreathingModal() {
             document.getElementById('breathingModal').classList.remove('hidden');
             document.getElementById('breathingModal').classList.add('flex');
@@ -1160,14 +1188,13 @@
             if (window.breathTimer) clearInterval(window.breathTimer);
         }
 
-        /* 🎵 沉浸背景音效 (以 HTML5 Web Audio 合成微風白噪音，毋須外部檔案) */
         function toggleAudio() {
             const btnText = document.getElementById('audioText');
             const icon = document.getElementById('audioIcon');
 
             if (!isAudioPlaying) {
                 try {
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    let audioContext = new (window.AudioContext || window.webkitAudioContext)();
                     const bufferSize = audioContext.sampleRate * 2;
                     const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
                     const output = noiseBuffer.getChannelData(0);
@@ -1185,7 +1212,7 @@
                     filter.Q.value = 1.0;
 
                     const gainNode = audioContext.createGain();
-                    gainNode.gain.value = 0.03; // 柔和輕微音量
+                    gainNode.gain.value = 0.03;
 
                     whiteNoise.connect(filter);
                     filter.connect(gainNode);
@@ -1326,7 +1353,7 @@
             document.getElementById('memoryForm').reset();
 
             if (isMemorial) {
-                interactPet('happy');
+                showPetSpeech('happy', "收到主人寫俾我哋嘅心事信件喇！我和噹噹好開心～ 💌");
             } else {
                 const negativeEmotions = ["生氣", "憤怒", "煩躁", "難過", "悲傷", "失望", "孤單", "內疚", "迷失", "驚慌", "緊張", "擔憂", "焦慮", "害怕"];
                 if (selectedEmotions.some(e => negativeEmotions.includes(e))) {
@@ -1366,7 +1393,7 @@
         initParticles();
         renderMemories();
         displayLastUpdated();
-        startAutoPetSpeech();
+        initRoamingPets();
     </script>
 </body>
 </html>

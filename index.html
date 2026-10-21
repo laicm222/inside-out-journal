@@ -820,3 +820,618 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="space-y-2 bg-slate-950 p-4 rounded-2xl border border-amber-500/30">
+                    <label class="flex items-center space-x-3 cursor-pointer">
+                        <input type="checkbox" id="mCore" class="w-4 h-4 rounded text-yellow-400">
+                        <span class="text-sm font-medium text-yellow-300">🌟 設為核心記憶球 (Core Memory - 金色光暈)</span>
+                    </label>
+                    <label class="flex items-center space-x-3 cursor-pointer">
+                        <input type="checkbox" id="mFlashback" class="w-4 h-4 rounded text-sky-400">
+                        <span class="text-sm font-medium text-sky-300">⚡ 閃回記憶 / 突然想起的舊回憶 (Flashback)</span>
+                    </label>
+                    <label class="flex items-center space-x-3 cursor-pointer border-t border-amber-500/20 pt-2">
+                        <input type="checkbox" id="mMemorial" class="w-4 h-4 rounded text-amber-200">
+                        <span class="text-sm font-medium text-amber-200">💌 寄給天上的 Happy仔 & 噹噹 (專屬星光光澤)</span>
+                    </label>
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-4 border-t border-amber-500/30">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-900 text-slate-300 rounded-2xl text-sm font-medium hover:bg-slate-800">取消</button>
+                    <button type="submit" class="px-5 py-2 bg-amber-300 text-slate-950 rounded-2xl text-sm font-bold shadow-[0_0_20px_rgba(250,204,21,0.6)] hover:bg-amber-200">儲存記憶球並灌溉</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 雲端備份設定 Modal -->
+    <div id="backupModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="dreamy-glass-panel border-amber-500/50 max-w-md w-full p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-amber-500/30 pb-3">
+                <h3 class="text-lg font-bold text-amber-200">☁️ Supabase 雲端同步設定</h3>
+                <button onclick="closeBackupModal()" class="text-slate-400 hover:text-white"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <label class="block text-slate-300 mb-1">Supabase URL</label>
+                    <input type="text" id="sbUrl" value="https://edqiijtguqgdtwtunfug.supabase.co" class="w-full dreamy-input px-3 py-2 text-slate-200">
+                </div>
+                <div>
+                    <label class="block text-slate-300 mb-1">Supabase Anon Key</label>
+                    <input type="text" id="sbKey" value="sb_publishable_imxjz7hPH0aCTamxVIsZ7Q_6YvurVqe" class="w-full dreamy-input px-3 py-2 text-slate-200">
+                </div>
+                <button onclick="saveSupabaseConfig()" class="w-full py-2.5 bg-amber-300 text-slate-950 rounded-2xl font-bold shadow-[0_0_20px_rgba(250,204,21,0.6)] hover:bg-amber-200 transition">儲存並連接雲端</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 🕶️ 辦公室老闆鍵 (Esc 變 Excel) ---
+        function toggleBossMode() {
+            const mask = document.getElementById('bossMask');
+            mask.classList.toggle('hidden');
+            document.getElementById('bossOwnerCell').innerText = getCurrentUser();
+        }
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') toggleBossMode(); });
+
+        // --- 👤 用家切換與資料隔離 ---
+        function getCurrentUser() { return document.getElementById('currentUserSelect').value; }
+        function switchUser() { fetchMemoriesFromSupabase(); }
+
+        // --- 🌿 心靈植物動態灌溉系統 ---
+        const plantLibrary = [
+            { id: 'p1', name: '月光多肉 🪴', icon: '🪴' },
+            { id: 'p2', name: '星塵向日葵 🌻', icon: '🌻' },
+            { id: 'p3', name: '翡翠銀杏 🍂', icon: '🍂' },
+            { id: 'p4', name: '雨後睡蓮 🪷', icon: '🪷' },
+            { id: 'p5', name: '夜光水晶樹 💎', icon: '💎' },
+            { id: 'p6', name: '古木心靈大樹 🌳', icon: '🌳' }
+        ];
+
+        let plantState = JSON.parse(localStorage.getItem('aurosphere_plant')) || { typeIndex: 0, progress: 20, unlockedForest: ['p1'] };
+
+        function updatePlantUI() {
+            const currentPlant = plantLibrary[plantState.typeIndex];
+            document.getElementById('plantName').innerText = currentPlant.name;
+            document.getElementById('plantProgressBar').style.width = `${plantState.progress}%`;
+            document.getElementById('plantPercent').innerText = `${plantState.progress}%`;
+            document.getElementById('plantAvatar').innerText = plantState.progress >= 75 ? currentPlant.icon : "🌱";
+            localStorage.setItem('aurosphere_plant', JSON.stringify(plantState));
+        }
+
+        function addPlantProgress(points) {
+            plantState.progress += points;
+            const avatar = document.getElementById('plantAvatar');
+            avatar.classList.remove('plant-grow-animation'); void avatar.offsetWidth; avatar.classList.add('plant-grow-animation');
+            if (plantState.progress >= 100) {
+                plantState.progress = 100; updatePlantUI();
+                setTimeout(triggerHarvest, 600);
+            } else { updatePlantUI(); }
+        }
+
+        function triggerHarvest() {
+            const currentPlant = plantLibrary[plantState.typeIndex];
+            document.getElementById('harvestIcon').innerText = currentPlant.icon;
+            document.getElementById('harvestName').innerText = currentPlant.name;
+            if (!plantState.unlockedForest.includes(currentPlant.id)) plantState.unlockedForest.push(currentPlant.id);
+            document.getElementById('harvestModal').classList.remove('hidden');
+            document.getElementById('harvestModal').classList.add('flex');
+        }
+
+        function closeHarvestModal() {
+            document.getElementById('harvestModal').classList.add('hidden');
+            document.getElementById('harvestModal').classList.remove('flex');
+            plantState.typeIndex = (plantState.typeIndex + 1) % plantLibrary.length;
+            plantState.progress = 10; updatePlantUI();
+        }
+
+        function openForestModal() {
+            document.getElementById('forestList').innerHTML = plantLibrary.map(p => {
+                const unlocked = plantState.unlockedForest.includes(p.id);
+                return `<div class="p-2.5 rounded-xl border ${unlocked ? 'bg-emerald-950/65 border-emerald-400 text-emerald-200' : 'bg-slate-900 border-slate-800 text-slate-600'} text-center">
+                    <div class="text-xl">${unlocked ? p.icon : '🔒'}</div><div class="font-bold text-[10px] mt-1">${unlocked ? p.name : '未解鎖'}</div></div>`;
+            }).join('');
+            document.getElementById('forestModal').classList.remove('hidden'); document.getElementById('forestModal').classList.add('flex');
+        }
+        function closeForestModal() { document.getElementById('forestModal').classList.add('hidden'); document.getElementById('forestModal').classList.remove('flex'); }
+
+        // --- ☁️ Supabase 對接初始化 (帶用家隔離過濾) ---
+        let supabaseClient = null;
+        let defaultSbUrl = "https://edqiijtguqgdtwtunfug.supabase.co";
+        let defaultSbKey = "sb_publishable_imxjz7hPH0aCTamxVIsZ7Q_6YvurVqe";
+
+        function initSupabase() {
+            const url = localStorage.getItem('sb_url') || defaultSbUrl;
+            const key = localStorage.getItem('sb_key') || defaultSbKey;
+            
+            if (url && key) {
+                try {
+                    supabaseClient = supabase.createClient(url, key);
+                    document.getElementById('syncStatusBadge').innerText = "☁️ 已連線 Supabase";
+                    document.getElementById('syncStatusBadge').className = "text-[10px] px-2 py-0.5 rounded-full bg-emerald-900/80 text-emerald-300 border border-emerald-500/40";
+                    fetchMemoriesFromSupabase();
+                } catch(e) {
+                    console.error("Supabase 連線失敗:", e);
+                }
+            }
+        }
+
+        async function fetchMemoriesFromSupabase() {
+            if (!supabaseClient) return;
+            try {
+                const { data, error } = await supabaseClient
+                    .from('memories')
+                    .select('*')
+                    .order('id', { ascending: false });
+
+                if (error) {
+                    console.error("下載 Supabase 資料失敗:", error);
+                } else if (data && data.length > 0) {
+                    const user = getCurrentUser();
+                    // 過濾出屬於當前用家的資料（若舊資料無 owner 則預設歸屬 ChuiMan）
+                    memories = data.map(row => row.data).filter(m => (m.owner || 'ChuiMan') === user);
+                    renderMemories();
+                } else {
+                    memories = [];
+                    renderMemories();
+                }
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
+        async function syncMemoryToSupabase(memoryItem) {
+            if (!supabaseClient) return;
+            try {
+                memoryItem.owner = getCurrentUser(); // 綁定當前用家
+                const payload = {
+                    id: memoryItem.id,
+                    data: memoryItem,
+                    updated_at: new Date().toISOString()
+                };
+
+                const { error } = await supabaseClient
+                    .from('memories')
+                    .upsert(payload);
+
+                if (error) {
+                    console.error("寫入 Supabase 失敗:", error);
+                }
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
+        function initParticles() {
+            const container = document.getElementById('particlesLayer');
+            const particleCount = 25;
+            for (let i = 0; i < particleCount; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const size = Math.random() * 4 + 2;
+                p.style.width = `${size}px`;
+                p.style.height = `${size}px`;
+                p.style.left = `${Math.random() * 100}%`;
+                p.style.animationDuration = `${Math.random() * 6 + 6}s`;
+                p.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(p);
+            }
+        }
+
+        let memories = [
+            { id: 1, owner: "ChuiMan", title: "月夜大樹下的平靜", date: "2026-10-15", trigger: "獨自坐在草地上仰望明月與大樹，雜念沉澱。", emotions: ["平靜", "滿足"], somatics: ["呼吸平穩", "身體放鬆", "思維清晰"], photo: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=500", isCore: true, isFlashback: false, isMemorial: false },
+            { id: 2, owner: "ChuiMan", title: "DSE 放榜當日", date: "2026-10-14", trigger: "考到期望分數，與同學拍照道別。", emotions: ["開心", "悲傷"], somatics: ["心跳加速", "面帶微笑", "眼眶發熱"], photo: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400", isCore: true, isFlashback: false, isMemorial: false },
+            { id: 3, owner: "ChuiMan", title: "初次到東京旅行", date: "2026-10-10", trigger: "順利抵達機場並成功 Check-in。", emotions: ["興奮", "焦慮"], somatics: ["心跳加速", "步伐輕盈"], photo: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400", isCore: false, isFlashback: false, isMemorial: false }
+        ];
+
+        const encouragementQuotes = [
+            "「哭泣其實沒關係，這代表你正在釋放那些過重的負荷。允許自己脆弱，也是一種強大。」—— 憂憂",
+            "「當你感到憤怒或煩躁時，記得深呼吸。你的情緒在提醒你：某些界限需要被守護。」—— 怒怒",
+            "「焦慮與害怕是為了保護你免受傷害。摸摸胸口告訴自己：現在很安全，我們一起面對。」—— 驚驚",
+            "「即使今天烏雲密布，每一種情緒的存在都是為了讓你更完整。你做得很好！」—— 樂樂"
+        ];
+
+        const happyQuotes = [
+            "「主人！今日記得飲多啲水呀！我一直喺彩虹橋上面陪住你搖尾巴～ 🐾」",
+            "「摸摸我！無論你遇到咩難關，Happy仔都相信你一定搞得定！」",
+            "「今日有冇好好食飯呀？最想見到你露出甜甜嘅笑容喇～ ✨」",
+            "「累咗就休息下啦，我會一直趴喺你腳邊守護你～ 🐩」"
+        ];
+
+        const dangQuotes = [
+            "「咕嚕～ 主人，深呼吸一口氣，你已經做得很棒很棒喇！ 🍃」",
+            "「就算外面暴風雨，我和 Happy仔 喺呢度為你撐一把樹葉小傘～ 🦔」",
+            "「今晚記得早啲休息，夢裡我帶你去天空森林散步！ 🌟」",
+            "「心裡覺得悶嘅時候，記得摸摸我，我一直喺度聽你說心事。」"
+        ];
+
+        const emotionColorMap = {
+            "開心": "rgba(253,224,71,0.85)", "快樂": "rgba(253,224,71,0.85)", "興奮": "rgba(250,204,21,0.85)", "感恩": "rgba(254,240,138,0.85)", "滿足": "rgba(253,224,71,0.85)", "平靜": "rgba(254,240,138,0.85)", "自豪": "rgba(250,204,21,0.85)",
+            "生氣": "rgba(248,113,113,0.85)", "憤怒": "rgba(239,68,68,0.85)", "煩躁": "rgba(248,113,113,0.85)", "受冒犯": "rgba(239,68,68,0.85)",
+            "難過": "rgba(56,189,248,0.85)", "悲傷": "rgba(14,165,233,0.85)", "失望": "rgba(56,189,248,0.85)", "孤單": "rgba(14,165,233,0.85)", "內疚": "rgba(56,189,248,0.85)", "迷失": "rgba(14,165,233,0.85)",
+            "驚慌": "rgba(165,243,252,0.85)", "緊張": "rgba(103,232,249,0.85)", "擔憂": "rgba(165,243,252,0.85)", "焦慮": "rgba(103,232,249,0.85)", "害怕": "rgba(165,243,252,0.85)"
+        };
+
+        let currentViewMode = 'universe';
+        let isAudioPlaying = false;
+
+        /* 🐾 全螢幕 2D 自由漫步 AI 系統 */
+        let pets = {
+            happy: { x: 10, y: 70, dirX: 1, dirY: -0.3, speed: 0.12, el: null, bubble: null, textEl: null },
+            dang: { x: 80, y: 50, dirX: -1, dirY: 0.4, speed: 0.10, el: null, bubble: null, textEl: null }
+        };
+
+        function initRoamingPets() {
+            pets.happy.el = document.getElementById('happyPet');
+            pets.happy.bubble = document.getElementById('happyBubble');
+            pets.happy.textEl = document.getElementById('happySpeech');
+
+            pets.dang.el = document.getElementById('dangPet');
+            pets.dang.bubble = document.getElementById('dangBubble');
+            pets.dang.textEl = document.getElementById('dangSpeech');
+
+            setInterval(movePets, 80);
+            setInterval(randomPetSpeech, 14000);
+        }
+
+        function movePets() {
+            ['happy', 'dang'].forEach(key => {
+                let p = pets[key];
+                if (Math.random() < 0.05) p.dirY = (Math.random() - 0.5) * 0.8;
+                p.x += p.dirX * p.speed;
+                p.y += p.dirY * p.speed;
+
+                if (p.x > 88) { p.x = 88; p.dirX = -1; }
+                if (p.x < 2) { p.x = 2; p.dirX = 1; }
+                if (p.y > 85) { p.y = 85; p.dirY = -p.dirY; }
+                if (p.y < 12) { p.y = 12; p.dirY = -p.dirY; }
+
+                p.el.style.left = p.x + '%';
+                p.el.style.top = p.y + '%';
+
+                if (p.dirX === -1) p.el.querySelector('svg').style.transform = 'scaleX(-1)';
+                else p.el.querySelector('svg').style.transform = 'scaleX(1)';
+            });
+        }
+
+        function randomPetSpeech() {
+            showPetSpeech(Math.random() > 0.5 ? 'happy' : 'dang');
+        }
+
+        function showPetSpeech(petKey, customText) {
+            let p = pets[petKey];
+            let quotes = petKey === 'happy' ? happyQuotes : dangQuotes;
+            let msg = customText || quotes[Math.floor(Math.random() * quotes.length)];
+            p.textEl.innerText = msg;
+            p.bubble.classList.remove('hidden');
+            setTimeout(() => { p.bubble.classList.add('hidden'); }, 6000);
+        }
+
+        function clickPet(petKey) {
+            let p = pets[petKey];
+            p.el.style.transform = 'scale(1.25) translateY(-10px)';
+            setTimeout(() => { p.el.style.transform = 'none'; }, 300);
+            showPetSpeech(petKey, petKey === 'happy' ? "主人摸摸我！Happy仔永遠最愛你～ 🐾" : "咕嚕～ 噹噹一直喺度陪住你！ 🍃");
+        }
+
+        function getMarbleGradient(emotions) {
+            if (!emotions || emotions.length === 0) return "radial-gradient(circle at 35% 35%, rgba(253,224,71,0.7) 0%, rgba(202,138,4,0.8) 100%)";
+            const colors = emotions.map(e => emotionColorMap[e] || "rgba(250,204,21,0.85)");
+            if (colors.length === 1) return `radial-gradient(circle at 35% 35%, ${colors[0]} 0%, rgba(15,23,42,0.9) 100%)`;
+            return `linear-gradient(135deg, ${colors[0]} 0%, ${colors[0]} 45%, ${colors[1]} 55%, ${colors[1]} 80%, ${colors[2] || colors[0]} 100%)`;
+        }
+
+        function getGlowColor(emotions) {
+            if (!emotions || emotions.length === 0) return "rgba(250,204,21,0.4)";
+            if (emotions.some(e => ["生氣", "憤怒", "煩躁"].includes(e))) return "rgba(239,68,68,0.5)";
+            if (emotions.some(e => ["悲傷", "難過", "失望", "孤單"].includes(e))) return "rgba(56,189,248,0.5)";
+            if (emotions.some(e => ["焦慮", "緊張", "驚慌"].includes(e))) return "rgba(103,232,249,0.5)";
+            return "rgba(250,204,21,0.4)";
+        }
+
+        function updateAmbientBackground(filterType) {
+            const body = document.getElementById('bodyBg');
+            if (filterType === 'joy') body.style.background = "radial-gradient(circle at 50% 20%, rgba(250, 204, 21, 0.35) 0%, transparent 60%), #050a0e";
+            else if (filterType === 'sad') body.style.background = "radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.35) 0%, transparent 60%), #050a0e";
+            else if (filterType === 'anger') body.style.background = "radial-gradient(circle at 50% 20%, rgba(239, 68, 68, 0.35) 0%, transparent 60%), #050a0e";
+            else if (filterType === 'fear') body.style.background = "radial-gradient(circle at 50% 20%, rgba(103, 232, 249, 0.35) 0%, transparent 60%), #050a0e";
+            else body.style.background = "radial-gradient(circle at 12% 10%, rgba(254, 240, 138, 0.25) 0%, transparent 40%), radial-gradient(circle at 85% 15%, rgba(251, 146, 60, 0.2) 0%, transparent 50%), linear-gradient(180deg, #091018 0%, #050a0e 100%)";
+        }
+
+        function getFilteredMemories() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const typeFilter = document.getElementById('typeFilterSelect').value;
+            updateAmbientBackground(typeFilter);
+
+            return memories.filter(m => {
+                const matchQuery = m.title.toLowerCase().includes(query) || (m.trigger && m.trigger.toLowerCase().includes(query));
+                if (!matchQuery) return false;
+                if (typeFilter === 'all') return true;
+                if (typeFilter === 'core') return m.isCore;
+                if (typeFilter === 'flashback') return m.isFlashback;
+                if (typeFilter === 'joy') return m.emotions.some(e => ["開心", "快樂", "興奮", "感恩", "滿足", "平靜", "自豪"].includes(e));
+                if (typeFilter === 'sad') return m.emotions.some(e => ["悲傷", "難過", "失望", "孤單", "內疚", "迷失"].includes(e));
+                if (typeFilter === 'anger') return m.emotions.some(e => ["生氣", "憤怒", "煩躁", "受冒犯"].includes(e));
+                if (typeFilter === 'fear') return m.emotions.some(e => ["驚慌", "緊張", "擔憂", "焦慮", "害怕"].includes(e));
+                return true;
+            });
+        }
+
+        function updateAnalytics() {
+            const range = document.getElementById('timeRangeSelect').value;
+            const now = new Date();
+            const timeFiltered = memories.filter(m => {
+                if (range === 'all') return true;
+                const mDate = new Date(m.date);
+                if (isNaN(mDate)) return true;
+                if (range === 'year') return mDate.getFullYear() === now.getFullYear();
+                if (range === 'month') return mDate.getFullYear() === now.getFullYear() && mDate.getMonth() === now.getMonth();
+                if (range === 'week') return Math.abs(now - mDate) / (1000 * 60 * 60 * 24) <= 7;
+                return true;
+            });
+
+            let joyCount = 0, sadCount = 0, angerCount = 0, fearCount = 0;
+            let somaticsMap = {};
+
+            timeFiltered.forEach(m => {
+                if (m.emotions.some(e => ["開心", "快樂", "興奮", "感恩", "滿足", "平靜", "自豪"].includes(e))) joyCount++;
+                if (m.emotions.some(e => ["悲傷", "難過", "失望", "孤單", "內疚", "迷失"].includes(e))) sadCount++;
+                if (m.emotions.some(e => ["生氣", "憤怒", "煩躁", "受冒犯"].includes(e))) angerCount++;
+                if (m.emotions.some(e => ["驚慌", "緊張", "擔憂", "焦慮", "害怕"].includes(e))) fearCount++;
+                if (m.somatics) m.somatics.forEach(s => somaticsMap[s] = (somaticsMap[s] || 0) + 1);
+            });
+
+            document.getElementById('statJoy').innerText = `${joyCount} 顆`;
+            document.getElementById('statSad').innerText = `${sadCount} 顆`;
+            document.getElementById('statAnger').innerText = `${angerCount} 顆`;
+            document.getElementById('statFear').innerText = `${fearCount} 顆`;
+
+            let topSomatic = "無明顯身體反應";
+            let maxCount = 0;
+            for (let [s, c] of Object.entries(somaticsMap)) {
+                if (c > maxCount) { maxCount = c; topSomatic = s; }
+            }
+
+            const insightEl = document.getElementById('insightText');
+            if (timeFiltered.length > 0) {
+                insightEl.innerHTML = `💡 在目前所選時間範圍內，你總共記錄了 <b>${timeFiltered.length}</b> 個情緒事件。其中最常出現的身心感官反應是 <span class="text-amber-300 font-bold">「${topSomatic}」</span>（出現 ${maxCount} 次）。這代表當特定事件觸發時，你的身體會率先透過這個部位向你發出訊號。`;
+            } else {
+                insightEl.innerText = "目前沒有足夠的資料來產生洞察分析。";
+            }
+        }
+
+        function renderMemories() {
+            const filtered = getFilteredMemories();
+            if (currentViewMode === 'universe') {
+                const universeEl = document.getElementById('floatingUniverse');
+                universeEl.innerHTML = '';
+                filtered.forEach((m, index) => {
+                    const node = createMemoryNode(m, index);
+                    universeEl.appendChild(node);
+                });
+            } else {
+                renderTimeline(filtered);
+            }
+            updateAnalytics();
+        }
+
+        function createMemoryNode(m, index) {
+            const floatClass = index % 4 === 0 ? "floating-space-1" : index % 4 === 1 ? "floating-space-2" : index % 4 === 2 ? "floating-space-3" : "floating-space-4";
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex flex-col items-center cursor-pointer group flex-shrink-0 w-full ${floatClass}`;
+
+            let sphereClass = "movie-glass-sphere ";
+            let badge = "";
+            if (m.isMemorial) { sphereClass += "memorial-star-effect "; badge = "💌"; }
+            else if (m.isCore) { sphereClass += "core-gold-glow "; badge = "🌟"; }
+            else if (m.isFlashback) { sphereClass += "flashback-blue-effect "; badge = "⚡"; }
+
+            const bgGrad = getMarbleGradient(m.emotions);
+            const glowColor = getGlowColor(m.emotions);
+            let faceIcon = "😊";
+            if (m.emotions.some(e => ["悲傷", "難過", "失望", "孤單", "內疚", "迷失"].includes(e))) faceIcon = "😢";
+            else if (m.emotions.some(e => ["生氣", "憤怒", "煩躁"].includes(e))) faceIcon = "😡";
+            else if (m.emotions.some(e => ["焦慮", "緊張", "害怕"].includes(e))) faceIcon = "😰";
+
+            let innerContent = m.photo ? `<img src="${m.photo}" class="sphere-photo">` : `<span class="text-2xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">${badge || faceIcon}</span>`;
+
+            wrapper.innerHTML = `
+                <div class="${sphereClass}" style="background: ${bgGrad}; box-shadow: inset 5px 5px 12px rgba(255,255,255,0.65), inset -8px -10px 18px rgba(0,0,0,0.85), 0 0 25px ${glowColor};">
+                    ${innerContent}
+                </div>
+                <div class="text-center mt-2 w-full px-1">
+                    <div class="text-[11px] font-bold text-slate-200 truncate group-hover:text-amber-300 transition">${m.title}</div>
+                    <div class="text-[9px] text-amber-300/80 truncate">${m.date}</div>
+                </div>
+            `;
+            wrapper.onclick = () => openDetailModal(m);
+            return wrapper;
+        }
+
+        function renderTimeline(filtered) {
+            const timeEl = document.getElementById('timelineContainer');
+            timeEl.innerHTML = '';
+            filtered.forEach(m => {
+                const item = document.createElement('div');
+                item.className = "flex items-start space-x-4 p-4 bg-slate-900/80 rounded-2xl border border-amber-500/20 hover:border-amber-400/50 transition cursor-pointer";
+                let badge = m.isMemorial ? '💌 天國寄語' : m.isCore ? '🌟 核心記憶' : m.isFlashback ? '⚡ 閃回記憶' : '🔮 一般記憶';
+                item.innerHTML = `
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0" style="background: ${getMarbleGradient(m.emotions)}">
+                        ${m.photo ? `<img src="${m.photo}" class="w-full h-full object-cover rounded-full">` : (m.isMemorial ? '💌' : m.isCore ? '🌟' : '🔮')}
+                    </div>
+                    <div class="flex-1 space-y-1">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-sm font-bold text-amber-200">${m.title}</h4>
+                            <span class="text-xs text-amber-300/70">${m.date}</span>
+                        </div>
+                        <p class="text-xs text-slate-300 line-clamp-2">${m.trigger || "暫無簡述"}</p>
+                        <div class="flex flex-wrap gap-1.5 pt-1">
+                            <span class="px-2 py-0.5 bg-amber-500/20 text-amber-300 text-[10px] rounded-lg">${badge}</span>
+                            ${m.emotions.map(e => `<span class="px-2 py-0.5 bg-slate-800 text-slate-300 text-[10px] rounded-lg">${e}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+                item.onclick = () => openDetailModal(m);
+                timeEl.appendChild(item);
+            });
+        }
+
+        function toggleViewMode() {
+            const uniEl = document.getElementById('floatingUniverse');
+            const timeEl = document.getElementById('timelineContainer');
+            if (currentViewMode === 'universe') {
+                currentViewMode = 'timeline';
+                uniEl.classList.add('hidden'); timeEl.classList.remove('hidden');
+                document.getElementById('viewModeBtnText').innerText = "🪐 切換至宇宙漂浮視圖";
+                document.getElementById('viewModeTitle').innerText = "Aurosphere · 時間軸記憶日曆";
+                document.getElementById('viewModeIcon').className = "ph ph-calendar-blank text-amber-300";
+            } else {
+                currentViewMode = 'universe';
+                uniEl.classList.remove('hidden'); timeEl.classList.add('hidden');
+                document.getElementById('viewModeBtnText').innerText = "📅 切換至時光軸視圖";
+                document.getElementById('viewModeTitle').innerText = "Aurosphere · 記憶漂浮宇宙";
+                document.getElementById('viewModeIcon').className = "ph ph-planet text-amber-300";
+            }
+            renderMemories();
+        }
+
+        function quickSaveMemory(e) {
+            e.preventDefault();
+            const title = document.getElementById('quickTitle').value;
+            const emotion = document.getElementById('quickEmotion').value;
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            const newMemory = {
+                id: Date.now(), owner: getCurrentUser(), title, date: todayStr,
+                trigger: "快速心情記錄", emotions: [emotion], somatics: ["呼吸平穩", "身體放鬆"],
+                photo: null, isCore: false, isFlashback: false, isMemorial: false
+            };
+
+            memories.unshift(newMemory);
+            renderMemories();
+            syncMemoryToSupabase(newMemory);
+            document.getElementById('quickTitle').value = '';
+            addPlantProgress(10); // 🌿 植物獲得 +10% 養份
+
+            const negativeEmotions = ["生氣", "憤怒", "煩躁", "難過", "悲傷", "焦慮", "緊張"];
+            if (negativeEmotions.includes(emotion)) {
+                const randomQuote = encouragementQuotes[Math.floor(Math.random() * encouragementQuotes.length)];
+                document.getElementById('encouragementText').innerText = randomQuote;
+                document.getElementById('encouragementModal').classList.remove('hidden');
+                document.getElementById('encouragementModal').classList.add('flex');
+            }
+        }
+
+        function finishBreathing() {
+            closeBreathingModal();
+            addPlantProgress(15); // 🌿 植物獲得 +15% 養份
+        }
+
+        function triggerFlashbackRoulette() {
+            if (memories.length === 0) return;
+            openDetailModal(memories[Math.floor(Math.random() * memories.length)]);
+        }
+
+        function filterByTag(tag) { document.getElementById('searchInput').value = tag; renderMemories(); }
+        function resetTagFilter() { document.getElementById('searchInput').value = ''; document.getElementById('typeFilterSelect').value = 'all'; renderMemories(); }
+
+        function openDetailModal(m) {
+            document.getElementById('detailTitle').innerText = m.title;
+            document.getElementById('detailDate').innerText = m.date;
+            document.getElementById('detailTrigger').innerText = m.trigger || "暫無記錄觸發事件。";
+            document.getElementById('detailBadge').innerText = m.isMemorial ? "💌" : m.isCore ? "🌟" : m.isFlashback ? "⚡" : "🔮";
+
+            const photoCont = document.getElementById('detailPhotoContainer');
+            const photoImg = document.getElementById('detailPhoto');
+            if (m.photo) { photoImg.src = m.photo; photoCont.classList.remove('hidden'); } else { photoCont.classList.add('hidden'); }
+
+            document.getElementById('detailEmotions').innerHTML = m.emotions.map(e => `<span class="px-3 py-1 bg-amber-950/90 border border-amber-500/40 text-amber-200 rounded-xl text-xs font-medium">${e}</span>`).join('');
+            document.getElementById('detailSomatics').innerHTML = m.somatics && m.somatics.length ? m.somatics.map(s => `<span class="px-3 py-1 bg-slate-900 border border-amber-500/20 text-slate-300 rounded-xl text-xs">${s}</span>`).join('') : '<span class="text-xs text-slate-500">無記錄身體反應</span>';
+
+            document.getElementById('detailModal').classList.remove('hidden');
+            document.getElementById('detailModal').classList.add('flex');
+        }
+
+        function closeDetailModal() { document.getElementById('detailModal').classList.add('hidden'); document.getElementById('detailModal').classList.remove('flex'); }
+        function openModal() { document.getElementById('memoryModal').classList.remove('hidden'); document.getElementById('memoryModal').classList.add('flex'); }
+        function closeModal() { document.getElementById('memoryModal').classList.add('hidden'); document.getElementById('memoryModal').classList.remove('flex'); }
+        function openBackupModal() { document.getElementById('backupModal').classList.remove('hidden'); document.getElementById('backupModal').classList.add('flex'); }
+        function closeBackupModal() { document.getElementById('backupModal').classList.add('hidden'); document.getElementById('backupModal').classList.remove('flex'); }
+        function closeEncouragement() { document.getElementById('encouragementModal').classList.add('hidden'); document.getElementById('encouragementModal').classList.remove('flex'); }
+        function openBreathingModal() { document.getElementById('breathingModal').classList.remove('hidden'); document.getElementById('breathingModal').classList.add('flex'); }
+        function closeBreathingModal() { document.getElementById('breathingModal').classList.add('hidden'); document.getElementById('breathingModal').classList.remove('flex'); }
+
+        function saveMemory(e) {
+            e.preventDefault();
+            const title = document.getElementById('mTitle').value;
+            const date = document.getElementById('mDate').value;
+            const trigger = document.getElementById('mTrigger').value;
+            const isCore = document.getElementById('mCore').checked;
+            const isFlashback = document.getElementById('mFlashback').checked;
+            const isMemorial = document.getElementById('mMemorial').checked;
+            const selectedEmotions = Array.from(document.querySelectorAll('input[name="emotions"]:checked')).map(el => el.value);
+            const selectedSomatics = Array.from(document.querySelectorAll('input[name="somatics"]:checked')).map(el => el.value);
+            const photoFile = document.getElementById('mPhoto').files[0];
+
+            const finishSave = (photoUrl) => {
+                const newMemory = {
+                    id: Date.now(), owner: getCurrentUser(), title, date, trigger,
+                    emotions: selectedEmotions.length ? selectedEmotions : ["平靜"],
+                    somatics: selectedSomatics, photo: photoUrl, isCore, isFlashback, isMemorial
+                };
+
+                memories.unshift(newMemory);
+                renderMemories();
+                syncMemoryToSupabase(newMemory);
+                closeModal();
+                document.getElementById('memoryForm').reset();
+                addPlantProgress(25); // 🌿 詳細記錄 +25% 養份
+
+                if (isMemorial) {
+                    showPetSpeech('happy', "收到主人寫俾我哋嘅心事信件喇！我和噹噹好開心～ 💌");
+                } else {
+                    const negativeEmotions = ["生氣", "憤怒", "煩躁", "難過", "悲傷", "失望", "孤單", "內疚", "迷失", "驚慌", "緊張", "擔憂", "焦慮", "害怕"];
+                    if (selectedEmotions.some(e => negativeEmotions.includes(e))) {
+                        const randomQuote = encouragementQuotes[Math.floor(Math.random() * encouragementQuotes.length)];
+                        document.getElementById('encouragementText').innerText = randomQuote;
+                        document.getElementById('encouragementModal').classList.remove('hidden');
+                        document.getElementById('encouragementModal').classList.add('flex');
+                    }
+                }
+            };
+
+            if (photoFile) {
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) { finishSave(uploadEvent.target.result); };
+                reader.readAsDataURL(photoFile);
+            } else { finishSave(null); }
+        }
+
+        function filterMemories() { renderMemories(); }
+
+        function saveSupabaseConfig() {
+            const url = document.getElementById('sbUrl').value;
+            const key = document.getElementById('sbKey').value;
+            localStorage.setItem('sb_url', url);
+            localStorage.setItem('sb_key', key);
+            initSupabase();
+            alert('Supabase 連接設定已更新！');
+            closeBackupModal();
+        }
+
+        function displayLastUpdated() {
+            const lastMod = new Date(document.lastModified);
+            if (!isNaN(lastMod)) {
+                document.getElementById('lastUpdatedTime').innerText = `網站 HTML 最後更新時間：${lastMod.toLocaleString('zh-HK', { hour12: false })}`;
+            }
+        }
+
+        initParticles();
+        initSupabase();
+        renderMemories();
+        displayLastUpdated();
+        initRoamingPets();
+        updatePlantUI();
+    </script>
+</body>
+</html>

@@ -306,49 +306,37 @@
                         <!-- 1. 頭部與面部 -->
                         <div>
                             <span class="text-xs text-amber-300 font-medium block mb-1">🧠 頭部與面部</span>
-                            <div class="flex flex-wrap gap-2" id="somaticHead">
-                                <!-- JS checkboxes -->
-                            </div>
+                            <div class="flex flex-wrap gap-2" id="somaticHead"></div>
                         </div>
 
                         <!-- 2. 胸腔與呼吸 -->
                         <div>
                             <span class="text-xs text-rose-300 font-medium block mb-1">🫁 胸腔與呼吸</span>
-                            <div class="flex flex-wrap gap-2" id="somaticChest">
-                                <!-- JS checkboxes -->
-                            </div>
+                            <div class="flex flex-wrap gap-2" id="somaticChest"></div>
                         </div>
 
                         <!-- 3. 胃部與消化 -->
                         <div>
                             <span class="text-xs text-emerald-300 font-medium block mb-1">🫃 胃部與消化</span>
-                            <div class="flex flex-wrap gap-2" id="somaticStomach">
-                                <!-- JS checkboxes -->
-                            </div>
+                            <div class="flex flex-wrap gap-2" id="somaticStomach"></div>
                         </div>
 
                         <!-- 4. 肌肉與四肢 -->
                         <div>
                             <span class="text-xs text-blue-300 font-medium block mb-1">💪 肌肉與四肢</span>
-                            <div class="flex flex-wrap gap-2" id="somaticLimbs">
-                                <!-- JS checkboxes -->
-                            </div>
+                            <div class="flex flex-wrap gap-2" id="somaticLimbs"></div>
                         </div>
 
                         <!-- 5. 皮膚與體溫 -->
                         <div>
                             <span class="text-xs text-orange-300 font-medium block mb-1">🔥 皮膚與體溫</span>
-                            <div class="flex flex-wrap gap-2" id="somaticSkin">
-                                <!-- JS checkboxes -->
-                            </div>
+                            <div class="flex flex-wrap gap-2" id="somaticSkin"></div>
                         </div>
 
                         <!-- 6. 神經與精神狀態 -->
                         <div>
                             <span class="text-xs text-purple-300 font-medium block mb-1">✨ 神經與精神狀態</span>
-                            <div class="flex flex-wrap gap-2" id="somaticMind">
-                                <!-- JS checkboxes -->
-                            </div>
+                            <div class="flex flex-wrap gap-2" id="somaticMind"></div>
                         </div>
                     </div>
                 </div>
@@ -356,31 +344,31 @@
                 <!-- CBT Behavioral Coping Response -->
                 <div>
                     <label class="block text-xs font-semibold text-indigo-300 mb-2 flex items-center gap-1.5">
-                        <i data-lucide="shield" class="w-4 h-4 text-indigo-400"></i> CBT 行為應對反應（內外向/逃避/面對）
+                        <i data-lucide="shield" class="w-4 h-4 text-indigo-400"></i> CBT 行為應對反應（外向行動/內向退縮/逃避迴避/沉思反芻）
                     </label>
                     
                     <div class="space-y-3 bg-slate-900/50 p-4 rounded-xl border border-white/5">
-                        <!-- 外向/表達型 -->
+                        <!-- 外向行動 -->
                         <div>
-                            <span class="text-xs text-sky-300 font-medium block mb-1">📢 外向 / 表達型</span>
+                            <span class="text-xs text-sky-300 font-medium block mb-1">📢 外向行動 / 表達型</span>
                             <div class="flex flex-wrap gap-2" id="cbtExtrovert"></div>
                         </div>
 
-                        <!-- 內向/退縮型 -->
+                        <!-- 內向退縮 -->
                         <div>
-                            <span class="text-xs text-indigo-300 font-medium block mb-1">🧘 內向 / 退縮型</span>
+                            <span class="text-xs text-indigo-300 font-medium block mb-1">🧘 內向退縮 / 獨處型</span>
                             <div class="flex flex-wrap gap-2" id="cbtIntrovert"></div>
                         </div>
 
-                        <!-- 逃避/轉移型 -->
+                        <!-- 逃避迴避 -->
                         <div>
-                            <span class="text-xs text-pink-300 font-medium block mb-1">🏃 逃避 / 轉移型</span>
+                            <span class="text-xs text-pink-300 font-medium block mb-1">🏃 逃避迴避 / 轉移型</span>
                             <div class="flex flex-wrap gap-2" id="cbtAvoidance"></div>
                         </div>
 
-                        <!-- 建設型/面對型 -->
+                        <!-- 沉思反芻 / 理性面對 -->
                         <div>
-                            <span class="text-xs text-teal-300 font-medium block mb-1">🛡️ 建設型 / 面對型</span>
+                            <span class="text-xs text-teal-300 font-medium block mb-1">🛡️ 沉思反芻 / 理性面對型</span>
                             <div class="flex flex-wrap gap-2" id="cbtConfront"></div>
                         </div>
                     </div>
@@ -544,8 +532,16 @@
 
     <script>
         /* ------------------------------------------------------------------
-         * DATA DEFINITIONS & EMOTION TAXONOMY
+         * SUPABASE CLIENT & DATA DEFINITIONS
          * ------------------------------------------------------------------ */
+        const SUPABASE_URL = "https://your-supabase-url.supabase.co"; // 請填入你自己的 Supabase URL
+        const SUPABASE_ANON_KEY = "your-anon-key"; // 請填入你自己的 Anon Key
+
+        let supabase = null;
+        if (window.supabase && SUPABASE_URL.startsWith("https://")) {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        }
+
         const EMOTIONS = [
             { id: 'joy', name: '喜悅', color: '#F59E0B', hex: 0xF59E0B },
             { id: 'calm', name: '平靜', color: '#10B981', hex: 0x10B981 },
@@ -555,7 +551,7 @@
             { id: 'fear', name: '恐懼', color: '#6366F1', hex: 0x6366F1 }
         ];
 
-        // 6 Big Somatic Categories
+        // 6 Big Somatic Categories (生理反應 6 大部位)
         const SOMATIC_OPTIONS = {
             head: ['眼眶發熱', '太陽穴跳動', '面部潮紅', '頭暈腦脹', '咬緊牙關'],
             chest: ['心跳加速', '胸悶氣短', '呼吸平穩', '呼吸急促', '胸口發緊'],
@@ -573,10 +569,9 @@
             confront: ['理性分析問題', '靜心呼吸/冥想', '尋求專業協助', '積極解決問題']
         };
 
-        // Current Active User
         let currentUser = 'ChuiMan';
 
-        // Local State Store
+        // Local Fallback Initial Data
         let memories = [
             {
                 id: 'm1',
@@ -609,23 +604,37 @@
         ];
 
         let selectedMemoryId = null;
-        let viewMode = 'universe'; // 'universe' or 'timeline'
-        let botanicalProgress = 45; // 0 - 100
+        let viewMode = 'universe';
+        let botanicalProgress = 45;
 
         /* ------------------------------------------------------------------
-         * INITIALIZATION & RENDER SETUP
+         * INITIALIZATION & SUPABASE FETCH
          * ------------------------------------------------------------------ */
-        window.onload = function() {
+        window.onload = async function() {
             lucide.createIcons();
             initCheckboxFields();
             initEmotionSelector();
             initThreeJS();
+            await fetchMemoriesFromSupabase();
             renderView();
             initPetAnimations();
             setupBossKey();
         };
 
-        // Populate Somatic and CBT Checkboxes in Form
+        async function fetchMemoriesFromSupabase() {
+            if (!supabase) return;
+            try {
+                const { data, error } = await supabase.from('memories').select('*');
+                if (error) {
+                    console.warn('Supabase fetch error, fallback to local data:', error);
+                } else if (data && data.length > 0) {
+                    memories = data;
+                }
+            } catch (err) {
+                console.warn('Supabase connection failed:', err);
+            }
+        }
+
         function initCheckboxFields() {
             populateCheckboxGroup('somaticHead', SOMATIC_OPTIONS.head, 'somatic');
             populateCheckboxGroup('somaticChest', SOMATIC_OPTIONS.chest, 'somatic');
@@ -673,7 +682,7 @@
         function initThreeJS() {
             const container = document.getElementById('universeContainer');
             scene = new THREE.Scene();
-            
+
             camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
             camera.position.z = 18;
 
@@ -681,7 +690,6 @@
             renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
 
-            // Lighting
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
             scene.add(ambientLight);
 
@@ -689,7 +697,6 @@
             pointLight.position.set(0, 10, 10);
             scene.add(pointLight);
 
-            // Orbit Interaction
             const canvas = document.getElementById('universeCanvas');
             canvas.addEventListener('mousedown', (e) => { isMouseDown = true; mouseX = e.clientX; mouseY = e.clientY; });
             canvas.addEventListener('mouseup', () => isMouseDown = false);
@@ -701,7 +708,6 @@
         }
 
         function updateUniverseOrbs() {
-            // Clear existing orbs
             orbMeshes.forEach(mesh => scene.remove(mesh));
             orbMeshes = [];
 
@@ -721,7 +727,6 @@
 
                 const mesh = new THREE.Mesh(geometry, material);
                 
-                // Position in 3D orbit
                 const phi = Math.acos(-1 + (2 * idx) / userMemories.length);
                 const theta = Math.sqrt(userMemories.length * Math.PI) * phi;
                 const radius = 6 + (idx % 3) * 2;
@@ -738,8 +743,6 @@
 
         function animateUniverse() {
             requestAnimationFrame(animateUniverse);
-            
-            // Slow rotation for cosmos effect
             orbMeshes.forEach(mesh => {
                 mesh.rotation.x += 0.005;
                 mesh.rotation.y += 0.008;
@@ -790,7 +793,7 @@
         }
 
         /* ------------------------------------------------------------------
-         * MEMORY CRUD OPERATIONS (CREATE, READ, EDIT, DELETE)
+         * MEMORY CRUD OPERATIONS (CREATE, READ, EDIT, DELETE + SUPABASE)
          * ------------------------------------------------------------------ */
         function switchUser(newUser) {
             currentUser = newUser;
@@ -844,13 +847,10 @@
             }).join('');
         }
 
-        // Modal Open & Populate Form for Add / Edit
         function openAddModal() {
             document.getElementById('modalTitle').innerHTML = `<i data-lucide="sparkle" class="w-5 h-5 text-purple-400"></i> 凝聚新記憶球`;
             document.getElementById('editMemoryId').value = '';
             document.getElementById('memoryForm').reset();
-            
-            // Clear checked state for custom buttons
             document.querySelectorAll('.tag-checkbox').forEach(cb => cb.checked = false);
 
             document.getElementById('memoryModal').classList.remove('hidden');
@@ -871,16 +871,13 @@
             document.getElementById('inputTrigger').value = mem.trigger || '';
             document.getElementById('inputPhoto').value = mem.photo || '';
 
-            // Emotion Radio
             const emotionRadio = document.querySelector(`input[name="emotion"][value="${mem.emotion}"]`);
             if (emotionRadio) emotionRadio.checked = true;
 
-            // Checkboxes: Somatic & CBT
             document.querySelectorAll('.tag-checkbox').forEach(cb => {
                 cb.checked = (mem.somatic && mem.somatic.includes(cb.value)) || (mem.cbt && mem.cbt.includes(cb.value));
             });
 
-            // Switches
             document.getElementById('checkCore').checked = !!mem.isCore;
             document.getElementById('checkFlashback').checked = !!mem.isFlashback;
             document.getElementById('checkHeaven').checked = !!mem.isHeaven;
@@ -893,7 +890,7 @@
             document.getElementById('memoryModal').classList.add('hidden');
         }
 
-        function handleFormSubmit(e) {
+        async function handleFormSubmit(e) {
             e.preventDefault();
 
             const editId = document.getElementById('editMemoryId').value;
@@ -905,7 +902,6 @@
             const emotionEl = document.querySelector('input[name="emotion"]:checked');
             const emotion = emotionEl ? emotionEl.value : 'calm';
 
-            // Gather checked somatic & cbt items
             const somatic = Array.from(document.querySelectorAll('.somatic-cb:checked')).map(cb => cb.value);
             const cbt = Array.from(document.querySelectorAll('.cbt-cb:checked')).map(cb => cb.value);
 
@@ -913,23 +909,31 @@
             const isFlashback = document.getElementById('checkFlashback').checked;
             const isHeaven = document.getElementById('checkHeaven').checked;
 
+            const payload = {
+                user: currentUser,
+                title, date, trigger, emotion, somatic, cbt, isCore, isFlashback, isHeaven, photo
+            };
+
             if (editId) {
-                // Update Existing
+                // Update Local Memory
                 const idx = memories.findIndex(m => m.id === editId);
                 if (idx !== -1) {
-                    memories[idx] = {
-                        ...memories[idx],
-                        title, date, trigger, emotion, somatic, cbt, isCore, isFlashback, isHeaven, photo
-                    };
+                    memories[idx] = { ...memories[idx], ...payload };
+                }
+                // Sync Supabase Update
+                if (supabase) {
+                    await supabase.from('memories').update(payload).eq('id', editId);
                 }
             } else {
                 // Create New Memory
-                const newMem = {
-                    id: 'm_' + Date.now(),
-                    user: currentUser,
-                    title, date, trigger, emotion, somatic, cbt, isCore, isFlashback, isHeaven, photo
-                };
+                const newMem = { id: 'm_' + Date.now(), ...payload };
                 memories.push(newMem);
+                
+                // Sync Supabase Insert
+                if (supabase) {
+                    await supabase.from('memories').insert([newMem]);
+                }
+
                 botanicalProgress = Math.min(100, botanicalProgress + 10);
                 updateBotanicalUI();
             }
@@ -938,7 +942,6 @@
             renderView();
         }
 
-        // Open Detail Modal (Fully Dynamic Rendering)
         function openDetailModal(memId) {
             selectedMemoryId = memId;
             const mem = memories.find(m => m.id === memId);
@@ -986,7 +989,7 @@
 
                 <div>
                     <h4 class="text-xs font-semibold text-indigo-300 mb-2 flex items-center gap-1">
-                        <i data-lucide="shield" class="w-3.5 h-3.5"></i> CBT 行為應對反應（內外向/逃避/面對）
+                        <i data-lucide="shield" class="w-3.5 h-3.5"></i> CBT 行為應對反應（外向/內向/逃避/面對）
                     </h4>
                     <div class="flex flex-wrap gap-1.5">${cbtBadges}</div>
                 </div>
@@ -1001,17 +1004,26 @@
             document.getElementById('detailModal').classList.add('hidden');
         }
 
-        function confirmDeleteMemory() {
+        async function confirmDeleteMemory() {
             if (!selectedMemoryId) return;
             if (confirm("確定要刪除這顆記憶球嗎？此操作無法復原。")) {
-                memories = memories.filter(m => m.id !== selectedMemoryId);
+                const targetId = selectedMemoryId;
+                
+                // Remove Local Record
+                memories = memories.filter(m => m.id !== targetId);
+                
+                // Delete from Supabase
+                if (supabase) {
+                    await supabase.from('memories').delete().eq('id', targetId);
+                }
+
                 closeDetailModal();
                 renderView();
             }
         }
 
         /* ------------------------------------------------------------------
-         * MINDFUL BREATHING MODAL (+15% NURTURE)
+         * MINDFUL BREATHING & OTHER FEATURES
          * ------------------------------------------------------------------ */
         let breathInterval = null;
         let breathTimeLeft = 60;
@@ -1048,9 +1060,6 @@
             }, 1000);
         }
 
-        /* ------------------------------------------------------------------
-         * BOTANICAL GUIDE (綠墨水植物圖鑑)
-         * ------------------------------------------------------------------ */
         function openBotanicalModal() {
             updateBotanicalUI();
             document.getElementById('botanicalModal').classList.remove('hidden');
@@ -1078,14 +1087,11 @@
             if (botanicalProgress >= 100) {
                 botanicalProgress = 0;
                 updateBotanicalUI();
-                alert("🎉 恭喜！你成功收成 100% 心靈植物能量！精神專注度提升！");
+                alert("🎉 恭喜！你成功收成 100% 心靈植物能量！");
                 closeBotanicalModal();
             }
         }
 
-        /* ------------------------------------------------------------------
-         * AUDIO WHITE NOISE TOGGLE
-         * ------------------------------------------------------------------ */
         let isAudioPlaying = false;
         let audioCtx = null;
 
@@ -1107,7 +1113,6 @@
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
-            // Generate synthetic soft ambient hum
             const bufferSize = audioCtx.sampleRate * 2;
             const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
             const output = noiseBuffer.getChannelData(0);
@@ -1141,9 +1146,6 @@
             }
         }
 
-        /* ------------------------------------------------------------------
-         * 2D PET INTERACTIONS & SPEECH
-         * ------------------------------------------------------------------ */
         function initPetAnimations() {
             const speechesHappy = [
                 "汪！今天記得對自己好一點！",
@@ -1174,9 +1176,6 @@
             }, 16000);
         }
 
-        /* ------------------------------------------------------------------
-         * BOSS KEY (ESC KEY SWITCH)
-         * ------------------------------------------------------------------ */
         function setupBossKey() {
             window.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {

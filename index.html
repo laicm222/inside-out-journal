@@ -529,7 +529,7 @@
         <p id="lastUpdatedTime">頁面版本更新時間載入中...</p>
     </footer>
 
-    <!-- 🔍 詳細資料視窗 (已加入編輯與刪除按鈕) -->
+    <!-- 🔍 詳細資料視窗 -->
     <div id="detailModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
         <div class="dreamy-glass-panel border-amber-400/60 max-w-lg w-full p-6 space-y-5 shadow-[0_0_70px_rgba(250,204,21,0.5)] relative max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-amber-500/30 pb-3">
@@ -554,6 +554,10 @@
                     <p id="detailTrigger" class="mt-1 p-3 bg-slate-950 rounded-2xl border border-amber-500/30 text-slate-200 leading-relaxed"></p>
                 </div>
                 <div>
+                    <span class="text-amber-300 font-bold">💭 當時的腦海想法 (Thoughts)：</span>
+                    <p id="detailThoughts" class="mt-1 p-3 bg-slate-950 rounded-2xl border border-amber-500/30 text-amber-100/90 italic leading-relaxed"></p>
+                </div>
+                <div>
                     <span class="text-amber-300 font-bold">情緒分類：</span>
                     <div id="detailEmotions" class="flex flex-wrap gap-2 mt-1.5"></div>
                 </div>
@@ -564,6 +568,7 @@
                 <div>
                     <span class="text-amber-300 font-bold">CBT 行為應對模式：</span>
                     <div id="detailBehaviors" class="flex flex-wrap gap-2 mt-1.5"></div>
+                    <p id="detailCustomBehavior" class="mt-1 text-xs text-slate-400"></p>
                 </div>
             </div>
 
@@ -626,6 +631,12 @@
                 <div>
                     <label class="block text-sm font-medium text-slate-300 mb-1">觸發事件 / 簡述</label>
                     <textarea id="mTrigger" rows="2" placeholder="發生咗咩事令你有呢種感覺..." class="w-full dreamy-input px-4 py-2.5 text-slate-100"></textarea>
+                </div>
+
+                <!-- 💭 自由輸入腦海想法 -->
+                <div>
+                    <label class="block text-sm font-medium text-amber-300 mb-1">💭 當時的腦海想法 / 自我對話 (Thoughts)</label>
+                    <textarea id="mThoughts" rows="2" placeholder="當時腦海浮現啲咩想法？例如：「我係咪做錯咗...」、「我可以搞得定嘅！」" class="w-full dreamy-input px-4 py-2.5 text-slate-100 border-amber-400/50"></textarea>
                 </div>
 
                 <div>
@@ -728,7 +739,7 @@
                     </div>
                 </div>
 
-                <!-- 🧠 CBT 行為應對分類 -->
+                <!-- 🧠 CBT 行為應對分類 + ✍️ 自由輸入位置 -->
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-emerald-300">🧠 CBT 行為應對模式</label>
                     <div class="bg-slate-950 p-4 rounded-2xl border border-amber-500/30 space-y-3 text-xs">
@@ -759,6 +770,12 @@
                                 <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-purple-500/20"><input type="checkbox" name="behaviors" value="反覆回想細節"> 反覆回想細節</label>
                                 <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-purple-500/20"><input type="checkbox" name="behaviors" value="寫日記/釐清思緒"> 寫日記/釐清思緒</label>
                             </div>
+                        </div>
+
+                        <!-- ✍️ CBT 行為應對自由輸入位置 -->
+                        <div class="pt-2 border-t border-slate-800">
+                            <label class="block text-xs font-bold text-emerald-300 mb-1">✍️ 自由輸入其他行為應對：</label>
+                            <input type="text" id="mCustomBehavior" placeholder="例如：去散步、喝一杯熱茶、打電話給朋友..." class="w-full dreamy-input px-3 py-1.5 text-xs text-slate-100">
                         </div>
                     </div>
                 </div>
@@ -994,12 +1011,12 @@
             }
         }
 
-        let currentActiveMemory = null; // 記錄當前正在檢視的記憶物件
+        let currentActiveMemory = null;
 
         let memories = [
-            { id: 1, owner: "ChuiMan", title: "月夜大樹下的平靜", date: "2026-10-15", trigger: "獨自坐在草地上仰望明月與大樹，雜念沉澱。", emotions: ["平靜", "滿足"], somatics: ["呼吸平穩", "身體放鬆", "思維清晰"], behaviors: ["獨處靜思", "寫日記/釐清思緒"], photo: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=500", isCore: true, isFlashback: false, isMemorial: false },
-            { id: 2, owner: "ChuiMan", title: "DSE 放榜當日", date: "2026-10-14", trigger: "考到期望分數，與同學拍照道別。", emotions: ["開心", "悲傷"], somatics: ["心跳加速", "面部潮紅", "眼眶發熱"], behaviors: ["主動對話/表達"], photo: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400", isCore: true, isFlashback: false, isMemorial: false },
-            { id: 3, owner: "ChuiMan", title: "初次到東京旅行", date: "2026-10-10", trigger: "順利抵達機場並成功 Check-in。", emotions: ["興奮", "焦慮"], somatics: ["心跳加速"], behaviors: ["轉移注意力/聽歌"], photo: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400", isCore: false, isFlashback: false, isMemorial: false }
+            { id: 1, owner: "ChuiMan", title: "月夜大樹下的平靜", date: "2026-10-15", trigger: "獨自坐在草地上仰望明月與大樹，雜念沉澱。", thoughts: "我覺得此刻的平靜彌足珍貴，一切都很安寧。", emotions: ["平靜", "滿足"], somatics: ["呼吸平穩", "身體放鬆", "思維清晰"], behaviors: ["獨處靜思", "寫日記/釐清思緒"], customBehavior: "在草地上靜坐 15 分鐘", photo: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=500", isCore: true, isFlashback: false, isMemorial: false },
+            { id: 2, owner: "ChuiMan", title: "DSE 放榜當日", date: "2026-10-14", trigger: "考到期望分數，與同學拍照道別。", thoughts: "終於鬆了一口氣，過往的努力沒有白費。", emotions: ["開心", "悲傷"], somatics: ["心跳加速", "面部潮紅", "眼眶發熱"], behaviors: ["主動對話/表達"], customBehavior: "同朋友一齊食大餐慶祝", photo: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400", isCore: true, isFlashback: false, isMemorial: false },
+            { id: 3, owner: "ChuiMan", title: "初次到東京旅行", date: "2026-10-10", trigger: "順利抵達機場並成功 Check-in。", thoughts: "期待接下來的冒險！", emotions: ["興奮", "焦慮"], somatics: ["心跳加速"], behaviors: ["轉移注意力/聽歌"], customBehavior: "", photo: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400", isCore: false, isFlashback: false, isMemorial: false }
         ];
 
         const encouragementQuotes = [
@@ -1122,7 +1139,7 @@
             updateAmbientBackground(typeFilter);
 
             return memories.filter(m => {
-                const matchQuery = m.title.toLowerCase().includes(query) || (m.trigger && m.trigger.toLowerCase().includes(query));
+                const matchQuery = m.title.toLowerCase().includes(query) || (m.trigger && m.trigger.toLowerCase().includes(query)) || (m.thoughts && m.thoughts.toLowerCase().includes(query));
                 if (!matchQuery) return false;
                 if (typeFilter === 'all') return true;
                 if (typeFilter === 'core') return m.isCore;
@@ -1337,7 +1354,7 @@
 
             const newMemory = {
                 id: Date.now(), owner: getCurrentUser(), title, date: todayStr,
-                trigger: "快速心情記錄", emotions: [emotion], somatics: ["呼吸平穩", "身體放鬆"], behaviors: ["獨處靜思"],
+                trigger: "快速心情記錄", thoughts: "", emotions: [emotion], somatics: ["呼吸平穩", "身體放鬆"], behaviors: ["獨處靜思"], customBehavior: "",
                 photo: null, isCore: false, isFlashback: false, isMemorial: false
             };
 
@@ -1369,6 +1386,7 @@
             document.getElementById('detailTitle').innerText = m.title;
             document.getElementById('detailDate').innerText = m.date;
             document.getElementById('detailTrigger').innerText = m.trigger || "暫無記錄觸發事件。";
+            document.getElementById('detailThoughts').innerText = m.thoughts || "暫無記錄腦海想法。";
             document.getElementById('detailBadge').innerText = m.isMemorial ? "💌" : m.isCore ? "🌟" : m.isFlashback ? "⚡" : "🔮";
 
             const photoCont = document.getElementById('detailPhotoContainer');
@@ -1378,6 +1396,14 @@
             document.getElementById('detailEmotions').innerHTML = m.emotions.map(e => `<span class="px-3 py-1 bg-amber-950/90 border border-amber-500/40 text-amber-200 rounded-xl text-xs font-medium">${e}</span>`).join('');
             document.getElementById('detailSomatics').innerHTML = m.somatics && m.somatics.length ? m.somatics.map(s => `<span class="px-3 py-1 bg-slate-900 border border-amber-500/20 text-slate-300 rounded-xl text-xs">${s}</span>`).join('') : '<span class="text-xs text-slate-500">無記錄身體反應</span>';
             document.getElementById('detailBehaviors').innerHTML = m.behaviors && m.behaviors.length ? m.behaviors.map(b => `<span class="px-3 py-1 bg-emerald-950 border border-emerald-500/30 text-emerald-300 rounded-xl text-xs font-medium">${b}</span>`).join('') : '<span class="text-xs text-slate-500">無記錄行為應對</span>';
+            
+            const customBehEl = document.getElementById('detailCustomBehavior');
+            if (m.customBehavior) {
+                customBehEl.innerText = `✍️ 其他自訂行為：${m.customBehavior}`;
+                customBehEl.classList.remove('hidden');
+            } else {
+                customBehEl.classList.add('hidden');
+            }
 
             document.getElementById('detailModal').classList.remove('hidden');
             document.getElementById('detailModal').classList.add('flex');
@@ -1390,27 +1416,25 @@
             
             closeDetailModal();
             
-            // 填寫舊有資料入表單
             document.getElementById('editingMemoryId').value = m.id;
             document.getElementById('modalHeaderTitle').innerText = "✏️ 編輯記憶水晶球";
             document.getElementById('mTitle').value = m.title;
             document.getElementById('mDate').value = m.date;
             document.getElementById('mTrigger').value = m.trigger || '';
+            document.getElementById('mThoughts').value = m.thoughts || '';
+            document.getElementById('mCustomBehavior').value = m.customBehavior || '';
             document.getElementById('mCore').checked = !!m.isCore;
             document.getElementById('mFlashback').checked = !!m.isFlashback;
             document.getElementById('mMemorial').checked = !!m.isMemorial;
 
-            // 勾選對應的情緒 Checkbox
             document.querySelectorAll('input[name="emotions"]').forEach(cb => {
                 cb.checked = m.emotions ? m.emotions.includes(cb.value) : false;
             });
 
-            // 勾選對應的生理反應 Checkbox
             document.querySelectorAll('input[name="somatics"]').forEach(cb => {
                 cb.checked = m.somatics ? m.somatics.includes(cb.value) : false;
             });
 
-            // 勾選對應的 CBT 行為 Checkbox
             document.querySelectorAll('input[name="behaviors"]').forEach(cb => {
                 cb.checked = m.behaviors ? m.behaviors.includes(cb.value) : false;
             });
@@ -1458,6 +1482,8 @@
             const title = document.getElementById('mTitle').value;
             const date = document.getElementById('mDate').value;
             const trigger = document.getElementById('mTrigger').value;
+            const thoughts = document.getElementById('mThoughts').value;
+            const customBehavior = document.getElementById('mCustomBehavior').value;
             const isCore = document.getElementById('mCore').checked;
             const isFlashback = document.getElementById('mFlashback').checked;
             const isMemorial = document.getElementById('mMemorial').checked;
@@ -1468,12 +1494,13 @@
 
             const finishSave = (photoUrl) => {
                 if (editingId) {
-                    // 編輯更新模式
                     const idx = memories.findIndex(m => m.id == editingId);
                     if (idx !== -1) {
                         memories[idx].title = title;
                         memories[idx].date = date;
                         memories[idx].trigger = trigger;
+                        memories[idx].thoughts = thoughts;
+                        memories[idx].customBehavior = customBehavior;
                         memories[idx].isCore = isCore;
                         memories[idx].isFlashback = isFlashback;
                         memories[idx].isMemorial = isMemorial;
@@ -1484,9 +1511,8 @@
                         syncMemoryToSupabase(memories[idx]);
                     }
                 } else {
-                    // 新增模式
                     const newMemory = {
-                        id: Date.now(), owner: getCurrentUser(), title, date, trigger,
+                        id: Date.now(), owner: getCurrentUser(), title, date, trigger, thoughts, customBehavior,
                         emotions: selectedEmotions.length ? selectedEmotions : ["平靜"],
                         somatics: selectedSomatics, behaviors: selectedBehaviors,
                         photo: photoUrl, isCore, isFlashback, isMemorial

@@ -3,1396 +3,1189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aurosphere 🔮</title>
+    <title>Aurosphere - Mind & Memory Orb Universe</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Noto+Serif+TC:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Caveat:wght@600;700&display=swap');
-        
-        body { 
-            font-family: 'Noto Sans TC', sans-serif; 
-            background-color: #050a0e; 
-            color: #f8fafc; 
-            overflow-x: hidden; 
-            min-height: 100vh;
-            transition: background 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        :root {
+            --bg-dark: #090A0F;
+            --card-glass: rgba(18, 20, 29, 0.75);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --primary-glow: rgba(139, 92, 246, 0.3);
         }
 
-        .handwritten { font-family: 'Caveat', cursive, 'Noto Sans TC', sans-serif; }
-        .serif-title { font-family: 'Noto Serif TC', serif; }
-
-        /* 🌌 背景與粒子 */
-        .movie-hq-bg {
-            background: 
-                radial-gradient(circle at 12% 10%, rgba(254, 240, 138, 0.25) 0%, transparent 40%),
-                radial-gradient(circle at 85% 15%, rgba(251, 146, 60, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 50% 90%, rgba(34, 197, 94, 0.15) 0%, transparent 60%),
-                linear-gradient(180deg, #091018 0%, #050a0e 100%);
-            min-height: 100vh;
-            position: relative;
+        body {
+            font-family: 'Plus Jakarta Sans', 'Noto Serif TC', sans-serif;
+            background-color: var(--bg-dark);
+            color: #E2E8F0;
+            overflow-x: hidden;
         }
 
-        .particles-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 1; overflow: hidden;
-        }
-        .particle {
-            position: absolute; background: rgba(254, 240, 138, 0.8); border-radius: 50%;
-            animation: riseParticle 8s infinite linear; box-shadow: 0 0 8px rgba(250, 204, 21, 0.8);
-        }
-        @keyframes riseParticle {
-            0% { transform: translateY(100vh) scale(0.2); opacity: 0; }
-            20% { opacity: 0.85; }
-            80% { opacity: 0.85; }
-            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        .cinzel-font {
+            font-family: 'Cinzel', serif;
         }
 
-        .dreamy-glass-panel {
-            background: rgba(10, 22, 30, 0.65);
+        .glass-panel {
+            background: var(--card-glass);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(250, 204, 21, 0.25);
-            box-shadow: 0 0 35px rgba(34, 197, 94, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.05);
-            border-radius: 2rem;
-            position: relative;
-            z-index: 10;
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        .quote-banner {
-            background: linear-gradient(135deg, rgba(10, 22, 30, 0.8) 0%, rgba(15, 30, 42, 0.7) 100%);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(250, 204, 21, 0.2);
-            border-radius: 1.5rem;
-            position: relative; overflow: hidden;
-            box-shadow: 0 0 30px rgba(250, 204, 21, 0.08);
-        }
-        .quote-banner::before {
-            content: ""; position: absolute; right: -20px; top: -40px; width: 220px; height: 220px;
-            background-image: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=500');
-            background-size: cover; background-position: center; opacity: 0.12; border-radius: 50%; pointer-events: none; filter: blur(1px);
+        .glass-input {
+            background: rgba(10, 12, 18, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #F3F4F6;
+            transition: all 0.3s ease;
         }
 
-        /* 📜 復古博物學手繪植物圖鑑 Modal 風格 */
-        .botanical-modal {
-            background: #fdfbf7; color: #2c3531; border: 2px solid #d4c5b9;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.7); border-radius: 1.8rem;
-            background-image: radial-gradient(#e5ded4 0.8px, transparent 0.8px);
-            background-size: 14px 14px;
+        .glass-input:focus {
+            outline: none;
+            border-color: #8B5CF6;
+            box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
         }
 
-        /* 🎈 記憶球漂浮軌道與動畫 */
-        @keyframes floatAround1 { 0% { transform: translate(0px, 0px) rotate(0deg); } 33% { transform: translate(16px, -22px) rotate(3deg); } 66% { transform: translate(-14px, 16px) rotate(-3deg); } 100% { transform: translate(0px, 0px) rotate(0deg); } }
-        @keyframes floatAround2 { 0% { transform: translate(0px, 0px) rotate(0deg); } 33% { transform: translate(-18px, 14px) rotate(-4deg); } 66% { transform: translate(14px, -20px) rotate(3deg); } 100% { transform: translate(0px, 0px) rotate(0deg); } }
-        @keyframes floatAround3 { 0% { transform: translate(0px, 0px) rotate(0deg); } 33% { transform: translate(12px, 20px) rotate(3deg); } 66% { transform: translate(-16px, -14px) rotate(-2deg); } 100% { transform: translate(0px, 0px) rotate(0deg); } }
-        @keyframes floatAround4 { 0% { transform: translate(0px, 0px) rotate(0deg); } 50% { transform: translate(-15px, -18px) rotate(4deg); } 100% { transform: translate(0px, 0px) rotate(0deg); } }
-
-        .floating-space-1 { animation: floatAround1 7s ease-in-out infinite; }
-        .floating-space-2 { animation: floatAround2 8.5s ease-in-out infinite; }
-        .floating-space-3 { animation: floatAround3 7.8s ease-in-out infinite; }
-        .floating-space-4 { animation: floatAround4 9.2s ease-in-out infinite; }
-
-        .floating-universe-grid {
-            display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; padding: 24px 12px; min-height: 480px; align-items: center; justify-items: center; position: relative; z-index: 10;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
-        @media (min-width: 640px) { .floating-universe-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; } }
-        @media (min-width: 1024px) { .floating-universe-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
-
-        .movie-glass-sphere {
-            width: 76px; height: 76px; border-radius: 50%; position: relative; cursor: pointer; overflow: hidden; border: none;
-            box-shadow: inset 5px 5px 12px rgba(255, 255, 255, 0.65), inset -8px -10px 18px rgba(0, 0, 0, 0.85), 0 0 25px rgba(250, 204, 21, 0.35);             
-            display: flex; align-items: center; justify-content: center;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease, box-shadow 0.3s ease;
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
         }
-        .movie-glass-sphere::before {
-            content: ""; position: absolute; top: 6%; left: 15%; width: 70%; height: 40%;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.05) 100%);
-            border-radius: 50%; pointer-events: none; z-index: 10; filter: blur(0.5px);
+        ::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.3);
+            border-radius: 3px;
         }
-        .movie-glass-sphere:hover {
-            transform: scale(1.3) translateY(-8px) !important; filter: brightness(1.25);
-            box-shadow: inset 6px 6px 14px rgba(255, 255, 255, 0.85), inset -8px -10px 18px rgba(0, 0, 0, 0.6), 0 0 45px rgba(250, 204, 21, 0.8);
-            z-index: 50;
-        }
-        .sphere-photo { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; opacity: 0.95; }
-        .core-gold-glow { animation: core-pulse 2.4s infinite alternate ease-in-out; }
-        @keyframes core-pulse {
-            0% { box-shadow: inset 5px 5px 12px rgba(255,255,255,0.7), inset -8px -10px 18px rgba(0,0,0,0.8), 0 0 25px #facc15, 0 0 50px rgba(250,204,21,0.5); }
-            100% { box-shadow: inset 6px 6px 14px rgba(255,255,255,0.9), inset -8px -10px 18px rgba(0,0,0,0.5), 0 0 40px #fde047, 0 0 80px rgba(253,224,71,0.85); }
-        }
-        .flashback-blue-effect { box-shadow: inset 5px 5px 12px rgba(255,255,255,0.7), inset -8px -10px 18px rgba(0,0,0,0.8), 0 0 30px rgba(56, 189, 248, 0.8) !important; }
-        .memorial-star-effect { border: 1.5px dashed rgba(254, 240, 138, 0.8) !important; animation: memorial-glow 3s infinite alternate ease-in-out; }
-        @keyframes memorial-glow {
-            0% { box-shadow: inset 5px 5px 12px rgba(255,255,255,0.8), 0 0 20px rgba(254, 240, 138, 0.6); }
-            100% { box-shadow: inset 6px 6px 14px rgba(255,255,255,1), 0 0 40px rgba(250, 204, 21, 0.9); }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.6);
         }
 
-        .dreamy-input { background: rgba(5, 12, 18, 0.8); border: 1px solid rgba(250, 204, 21, 0.35); border-radius: 1rem; color: #f8fafc; transition: all 0.3s ease; }
-        .dreamy-input:focus { outline: none; border-color: rgba(250, 204, 21, 0.9); box-shadow: 0 0 20px rgba(250, 204, 21, 0.4); }
-
-        .plant-grow-animation { animation: plantPulse 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        @keyframes plantPulse { 0% { transform: scale(1); } 50% { transform: scale(1.35) rotate(-5deg); filter: drop-shadow(0 0 20px #4ade80); } 100% { transform: scale(1); } }
-
-        /* 🐾 全螢幕自由漫步桌寵 */
-        .roaming-pet { position: fixed; z-index: 45; cursor: pointer; transition: left 0.1s linear, top 0.1s linear; user-select: none; }
-        .pet-walking-happy { animation: happyWalk 0.5s infinite alternate ease-in-out; }
-        @keyframes happyWalk { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(-4px) rotate(3deg); } }
-        .pet-walking-dang { animation: dangWalk 0.4s infinite alternate ease-in-out; }
-        @keyframes dangWalk { 0% { transform: translateY(0) scaleY(1); } 100% { transform: translateY(-5px) scaleY(0.96); } }
-
-        .pet-bubble {
-            position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 12px; width: 200px;
-            background: rgba(10, 22, 32, 0.92); backdrop-filter: blur(12px); border: 2px dashed rgba(250, 204, 21, 0.7);
-            border-radius: 1.2rem; padding: 10px 14px; font-size: 11px; color: #f8fafc; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            pointer-events: none; white-space: normal; line-height: 1.4; text-align: center;
-        }
-        .pet-bubble::after {
-            content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
-            border-width: 6px; border-style: solid; border-color: rgba(250, 204, 21, 0.7) transparent transparent transparent;
+        /* Pulsing Glow Animation */
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; filter: drop-shadow(0 0 15px currentColor); }
         }
 
-        @keyframes breathCircle { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(2.2); opacity: 1; } }
-        .animate-breath { animation: breathCircle 12s infinite ease-in-out; }
+        .glow-orb {
+            animation: pulseGlow 4s infinite ease-in-out;
+        }
+
+        /* Excel Boss Mode Overlay */
+        #bossMode {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background-color: #ffffff;
+            color: #000000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Canvas Floating Effect */
+        #universeCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .pet-sprite {
+            position: absolute;
+            pointer-events: auto;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            z-index: 40;
+        }
+
+        .speech-bubble {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            color: #E2E8F0;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .pet-container:hover .speech-bubble,
+        .speech-bubble.active {
+            opacity: 1;
+        }
+
+        /* Breathing Animation Modal */
+        @keyframes breathe {
+            0%, 100% { transform: scale(0.8); opacity: 0.4; }
+            50% { transform: scale(1.25); opacity: 1; box-shadow: 0 0 40px #8B5CF6; }
+        }
+
+        .breathe-circle {
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+        .tag-checkbox:checked + label {
+            background-color: rgba(139, 92, 246, 0.3);
+            border-color: #8B5CF6;
+            color: #DDD6FE;
+        }
     </style>
 </head>
-<body id="bodyBg" class="movie-hq-bg flex flex-col min-h-screen">
+<body class="relative min-h-screen selection:bg-purple-500 selection:text-white">
 
-    <div class="particles-container" id="particlesLayer"></div>
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- 🕶️ 老闆鍵假面具 (Excel 假面) -->
-    <div id="bossMask" class="hidden fixed inset-0 bg-white z-[999] p-6 text-slate-800 font-sans overflow-auto">
-        <div class="max-w-6xl mx-auto space-y-4">
-            <div class="flex justify-between items-center border-b pb-4">
-                <h1 class="text-xl font-bold text-slate-900">📊 Q3 Project Status & KPI Report_final_v2</h1>
-                <button onclick="toggleBossMode()" class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded text-xs font-bold">恢復 Aurosphere (Esc)</button>
+    <!-- Navigation Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between glass-panel border-b border-white/10">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-400 flex items-center justify-center shadow-lg shadow-purple-500/30">
+                <i data-lucide="orbit" class="w-6 h-6 text-white"></i>
             </div>
-            <table class="w-full border-collapse border border-slate-300 text-xs text-left">
-                <thead><tr class="bg-slate-100"><th class="border p-2">Task ID</th><th class="border p-2">Module Name</th><th class="border p-2">Owner</th><th class="border p-2">Status</th></tr></thead>
-                <tbody><tr><td class="border p-2">TSK-101</td><td class="border p-2">Market Analysis</td><td class="border p-2" id="bossOwnerCell">Chui Man</td><td class="border p-2 text-emerald-600 font-bold">Completed</td></tr></tbody>
+            <div>
+                <h1 class="text-xl font-bold tracking-wider text-white cinzel-font">AUROSPHERE</h1>
+                <p class="text-xs text-purple-300/70">Mind & Memory Orb Universe</p>
+            </div>
+        </div>
+
+        <!-- Controls & User Switcher -->
+        <div class="flex items-center gap-4">
+            <!-- User Switcher -->
+            <div class="relative">
+                <select id="userSelect" onchange="switchUser(this.value)" class="glass-input text-xs rounded-lg px-3 py-2 bg-slate-900/80 text-purple-200 border border-purple-500/30 cursor-pointer focus:ring-2 focus:ring-purple-500">
+                    <option value="ChuiMan">👤 用家: ChuiMan</option>
+                    <option value="Sister1">👩‍🦰 用家: Sister1</option>
+                    <option value="Sister2">👩‍🦱 用家: Sister2</option>
+                </select>
+            </div>
+
+            <!-- View Switcher -->
+            <div class="flex glass-panel p-1 rounded-lg">
+                <button onclick="setViewMode('universe')" id="btnViewUniverse" class="px-3 py-1.5 rounded-md text-xs font-medium transition-all bg-purple-600 text-white shadow-sm">
+                    <i data-lucide="globe" class="w-3.5 h-3.5 inline mr-1"></i> 漂浮宇宙
+                </button>
+                <button onclick="setViewMode('timeline')" id="btnViewTimeline" class="px-3 py-1.5 rounded-md text-xs font-medium text-slate-400 hover:text-white transition-all">
+                    <i data-lucide="clock" class="w-3.5 h-3.5 inline mr-1"></i> 時光軸
+                </button>
+            </div>
+
+            <!-- Audio White Noise Toggle -->
+            <button onclick="toggleAudio()" id="btnAudio" class="p-2 glass-panel rounded-lg text-slate-300 hover:text-purple-300 transition-colors" title="切換心靈白噪音">
+                <i data-lucide="volume-x" id="audioIcon" class="w-4 h-4"></i>
+            </button>
+
+            <!-- Mindful Breathing Button -->
+            <button onclick="openBreathingModal()" class="px-3 py-1.5 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/40 text-emerald-200 text-xs font-medium transition-all flex items-center gap-1.5">
+                <i data-lucide="wind" class="w-4 h-4 text-emerald-400"></i> 1分鐘靜心 (+15%養份)
+            </button>
+
+            <!-- Botanical Guide Button -->
+            <button onclick="openBotanicalModal()" class="px-3 py-1.5 rounded-lg bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-500/40 text-indigo-200 text-xs font-medium transition-all flex items-center gap-1.5">
+                <i data-lucide="sprout" class="w-4 h-4 text-indigo-400"></i> 綠墨水植物圖鑑
+            </button>
+
+            <!-- Add Memory Button -->
+            <button onclick="openAddModal()" class="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-semibold shadow-lg shadow-purple-600/30 transition-all flex items-center gap-2">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i> 凝聚記憶球
+            </button>
+
+            <!-- Boss Key Indicator -->
+            <span class="text-[10px] text-slate-500 bg-slate-800/80 px-2 py-1 rounded border border-slate-700" title="按下 Esc 鍵切換工作畫面">
+                Esc 老闆鍵
+            </span>
+        </div>
+    </header>
+
+    <!-- Main Viewport -->
+    <main class="relative w-full h-screen pt-20 overflow-hidden">
+        <!-- Universe 3D Canvas View -->
+        <div id="universeContainer" class="w-full h-full relative">
+            <canvas id="universeCanvas"></canvas>
+            
+            <!-- Canvas Interaction Tip -->
+            <div class="absolute bottom-6 left-6 pointer-events-none glass-panel p-3 rounded-xl border border-white/10 text-xs text-slate-400 max-w-xs z-10">
+                <p class="font-semibold text-purple-300 mb-1"><i data-lucide="sparkles" class="w-3.5 h-3.5 inline mr-1"></i> 宇宙探索操作</p>
+                <p>• 拖曳滑鼠：旋轉宇宙視角</p>
+                <p>• 滾輪縮放：靠近/遠離記憶星雲</p>
+                <p>• 點擊記憶球：開啟詳細心理與生理特徵</p>
+            </div>
+        </div>
+
+        <!-- Timeline View (Hidden by default) -->
+        <div id="timelineContainer" class="w-full h-full overflow-y-auto px-8 py-10 hidden relative z-10 max-w-5xl mx-auto">
+            <h2 class="text-2xl font-bold cinzel-font text-purple-200 mb-6 flex items-center gap-2">
+                <i data-lucide="history" class="w-6 h-6 text-purple-400"></i> 心靈時光軸軌跡
+            </h2>
+            <div id="timelineList" class="relative border-l-2 border-purple-500/30 pl-6 space-y-8">
+                <!-- Timeline items rendered dynamically -->
+            </div>
+        </div>
+
+        <!-- 2D Walking Pets (Happy仔 & 噹噹) -->
+        <div id="petHappy" class="pet-container pet-sprite" style="bottom: 40px; left: 15%;">
+            <div class="speech-bubble" id="bubbleHappy">汪！今晚想聽你分享心事～</div>
+            <div class="w-14 h-14 rounded-full bg-amber-500/20 border-2 border-amber-400/60 flex items-center justify-center text-2xl shadow-lg shadow-amber-500/20 hover:scale-110 transition-transform">
+                🐩
+            </div>
+            <div class="text-[10px] text-center text-amber-300 mt-1 font-semibold">Happy仔</div>
+        </div>
+
+        <div id="petDangDang" class="pet-container pet-sprite" style="bottom: 40px; right: 20%;">
+            <div class="speech-bubble" id="bubbleDangDang">🦔 靜心呼吸，一切都會過得去。</div>
+            <div class="w-14 h-14 rounded-full bg-slate-500/20 border-2 border-slate-400/60 flex items-center justify-center text-2xl shadow-lg shadow-slate-500/20 hover:scale-110 transition-transform">
+                🦔
+            </div>
+            <div class="text-[10px] text-center text-slate-300 mt-1 font-semibold">噹噹</div>
+        </div>
+    </main>
+
+    <!-- Modal: Add / Edit Memory Orb -->
+    <div id="memoryModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md hidden p-4 overflow-y-auto">
+        <div class="glass-panel w-full max-w-3xl rounded-2xl border border-purple-500/30 shadow-2xl overflow-hidden my-8">
+            <div class="px-6 py-4 border-b border-white/10 flex justify-between items-center bg-purple-950/40">
+                <h3 id="modalTitle" class="text-lg font-bold text-purple-200 flex items-center gap-2">
+                    <i data-lucide="sparkle" class="w-5 h-5 text-purple-400"></i> 凝聚新記憶球
+                </h3>
+                <button onclick="closeMemoryModal()" class="text-slate-400 hover:text-white transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="memoryForm" onsubmit="handleFormSubmit(event)" class="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
+                <input type="hidden" id="editMemoryId" value="">
+
+                <!-- Basic Info Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">記憶標題 *</label>
+                        <input type="text" id="inputTitle" required placeholder="例如：深夜無名的焦慮與期待" class="w-full glass-input rounded-lg px-3 py-2 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">發生日期 *</label>
+                        <input type="date" id="inputDate" required class="w-full glass-input rounded-lg px-3 py-2 text-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">觸發事件 / 情境背景</label>
+                    <textarea id="inputTrigger" rows="2" placeholder="當時發生了什麼事？在什麼環境下？" class="w-full glass-input rounded-lg px-3 py-2 text-sm"></textarea>
+                </div>
+
+                <!-- Primary Emotion Selection -->
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-2">主要情緒色彩 *</label>
+                    <div class="grid grid-cols-3 sm:grid-cols-6 gap-2" id="emotionSelector">
+                        <!-- Emotion choices rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- 6 Big Somatic Categories (生理反應 6 大部位) -->
+                <div>
+                    <label class="block text-xs font-semibold text-purple-300 mb-2 flex items-center gap-1.5">
+                        <i data-lucide="activity" class="w-4 h-4 text-purple-400"></i> 6 大部位生理反應細分
+                    </label>
+                    
+                    <div class="space-y-3 bg-slate-900/50 p-4 rounded-xl border border-white/5">
+                        <!-- 1. 頭部與面部 -->
+                        <div>
+                            <span class="text-xs text-amber-300 font-medium block mb-1">🧠 頭部與面部</span>
+                            <div class="flex flex-wrap gap-2" id="somaticHead">
+                                <!-- JS checkboxes -->
+                            </div>
+                        </div>
+
+                        <!-- 2. 胸腔與呼吸 -->
+                        <div>
+                            <span class="text-xs text-rose-300 font-medium block mb-1">🫁 胸腔與呼吸</span>
+                            <div class="flex flex-wrap gap-2" id="somaticChest">
+                                <!-- JS checkboxes -->
+                            </div>
+                        </div>
+
+                        <!-- 3. 胃部與消化 -->
+                        <div>
+                            <span class="text-xs text-emerald-300 font-medium block mb-1">🫃 胃部與消化</span>
+                            <div class="flex flex-wrap gap-2" id="somaticStomach">
+                                <!-- JS checkboxes -->
+                            </div>
+                        </div>
+
+                        <!-- 4. 肌肉與四肢 -->
+                        <div>
+                            <span class="text-xs text-blue-300 font-medium block mb-1">💪 肌肉與四肢</span>
+                            <div class="flex flex-wrap gap-2" id="somaticLimbs">
+                                <!-- JS checkboxes -->
+                            </div>
+                        </div>
+
+                        <!-- 5. 皮膚與體溫 -->
+                        <div>
+                            <span class="text-xs text-orange-300 font-medium block mb-1">🔥 皮膚與體溫</span>
+                            <div class="flex flex-wrap gap-2" id="somaticSkin">
+                                <!-- JS checkboxes -->
+                            </div>
+                        </div>
+
+                        <!-- 6. 神經與精神狀態 -->
+                        <div>
+                            <span class="text-xs text-purple-300 font-medium block mb-1">✨ 神經與精神狀態</span>
+                            <div class="flex flex-wrap gap-2" id="somaticMind">
+                                <!-- JS checkboxes -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CBT Behavioral Coping Response -->
+                <div>
+                    <label class="block text-xs font-semibold text-indigo-300 mb-2 flex items-center gap-1.5">
+                        <i data-lucide="shield" class="w-4 h-4 text-indigo-400"></i> CBT 行為應對反應（內外向/逃避/面對）
+                    </label>
+                    
+                    <div class="space-y-3 bg-slate-900/50 p-4 rounded-xl border border-white/5">
+                        <!-- 外向/表達型 -->
+                        <div>
+                            <span class="text-xs text-sky-300 font-medium block mb-1">📢 外向 / 表達型</span>
+                            <div class="flex flex-wrap gap-2" id="cbtExtrovert"></div>
+                        </div>
+
+                        <!-- 內向/退縮型 -->
+                        <div>
+                            <span class="text-xs text-indigo-300 font-medium block mb-1">🧘 內向 / 退縮型</span>
+                            <div class="flex flex-wrap gap-2" id="cbtIntrovert"></div>
+                        </div>
+
+                        <!-- 逃避/轉移型 -->
+                        <div>
+                            <span class="text-xs text-pink-300 font-medium block mb-1">🏃 逃避 / 轉移型</span>
+                            <div class="flex flex-wrap gap-2" id="cbtAvoidance"></div>
+                        </div>
+
+                        <!-- 建設型/面對型 -->
+                        <div>
+                            <span class="text-xs text-teal-300 font-medium block mb-1">🛡️ 建設型 / 面對型</span>
+                            <div class="flex flex-wrap gap-2" id="cbtConfront"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Special Status Switches -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                    <label class="flex items-center gap-2 p-3 rounded-lg glass-input cursor-pointer hover:bg-purple-900/20">
+                        <input type="checkbox" id="checkCore" class="rounded text-purple-600 focus:ring-purple-500">
+                        <span class="text-xs text-amber-200">💎 核心記憶 (Core)</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-3 rounded-lg glass-input cursor-pointer hover:bg-purple-900/20">
+                        <input type="checkbox" id="checkFlashback" class="rounded text-purple-600 focus:ring-purple-500">
+                        <span class="text-xs text-rose-200">⚡ 閃回體驗 (Flashback)</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-3 rounded-lg glass-input cursor-pointer hover:bg-purple-900/20">
+                        <input type="checkbox" id="checkHeaven" class="rounded text-purple-600 focus:ring-purple-500">
+                        <span class="text-xs text-sky-200">🕊️ 天國寄語 (Heaven)</span>
+                    </label>
+                </div>
+
+                <!-- Photo URL -->
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">相片連結 (Optional Image URL)</label>
+                    <input type="url" id="inputPhoto" placeholder="https://images.unsplash.com/..." class="w-full glass-input rounded-lg px-3 py-2 text-sm">
+                </div>
+
+                <!-- Form Submit Buttons -->
+                <div class="flex justify-end gap-3 pt-4 border-t border-white/10">
+                    <button type="button" onclick="closeMemoryModal()" class="px-4 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition-colors">
+                        取消
+                    </button>
+                    <button type="submit" class="px-6 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold shadow-lg shadow-purple-600/30 transition-all">
+                        儲存記憶球
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Detail View & Quick Actions -->
+    <div id="detailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-4">
+        <div class="glass-panel w-full max-w-2xl rounded-2xl border border-purple-500/40 shadow-2xl overflow-hidden my-6">
+            <div class="p-6 space-y-6 max-h-[85vh] overflow-y-auto" id="detailContent">
+                <!-- Content injected dynamically by JS -->
+            </div>
+            
+            <!-- Detail Footer Buttons: Full Edit & Delete Capability -->
+            <div class="px-6 py-4 bg-slate-900/80 border-t border-white/10 flex justify-between items-center">
+                <button onclick="confirmDeleteMemory()" class="px-4 py-2 rounded-lg bg-rose-600/30 hover:bg-rose-600/60 border border-rose-500/40 text-rose-200 text-xs font-semibold transition-all flex items-center gap-1.5">
+                    <i data-lucide="trash-2" class="w-4 h-4 text-rose-400"></i> 🗑️ 刪除記憶球
+                </button>
+
+                <div class="flex items-center gap-3">
+                    <button onclick="openEditFromDetail()" class="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold shadow-lg shadow-purple-600/30 transition-all flex items-center gap-1.5">
+                        <i data-lucide="edit-3" class="w-4 h-4"></i> ✏️ 編輯記憶球
+                    </button>
+                    <button onclick="closeDetailModal()" class="px-4 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition-colors">
+                        關閉
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Mindful Breathing (1 Min) -->
+    <div id="breathingModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-lg hidden p-4">
+        <div class="glass-panel w-full max-w-md rounded-2xl p-8 border border-emerald-500/30 text-center relative">
+            <button onclick="closeBreathingModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            
+            <h3 class="text-xl font-bold text-emerald-200 cinzel-font mb-2">1 分鐘心靈呼吸靜心</h3>
+            <p class="text-xs text-slate-400 mb-8">跟隨光圈舒緩呼吸，為植物注入 +15% 綠墨水養份</p>
+
+            <div class="relative w-48 h-48 mx-auto flex items-center justify-center mb-8">
+                <div class="absolute inset-0 rounded-full bg-purple-600/20 breathe-circle"></div>
+                <div class="w-32 h-32 rounded-full bg-emerald-500/30 border-2 border-emerald-400 flex items-center justify-center text-emerald-200 text-sm font-semibold tracking-wider" id="breathText">
+                    吸氣...
+                </div>
+            </div>
+
+            <div class="text-2xl font-mono text-emerald-300 font-bold mb-4" id="breathTimer">01:00</div>
+
+            <button id="btnStartBreath" onclick="startBreathingSession()" class="px-6 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-lg shadow-emerald-600/30 transition-all">
+                開始靜心練習
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal: Botanical Guide (綠墨水植物圖鑑) -->
+    <div id="botanicalModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-4">
+        <div class="glass-panel w-full max-w-2xl rounded-2xl border border-indigo-500/30 overflow-hidden">
+            <div class="px-6 py-4 border-b border-white/10 flex justify-between items-center bg-indigo-950/40">
+                <h3 class="text-lg font-bold text-indigo-200 flex items-center gap-2 cinzel-font">
+                    <i data-lucide="sprout" class="w-5 h-5 text-indigo-400"></i> 綠墨水心靈植物圖鑑
+                </h3>
+                <button onclick="closeBotanicalModal()" class="text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-6">
+                <!-- Progress bar -->
+                <div>
+                    <div class="flex justify-between text-xs mb-2">
+                        <span class="text-slate-300 font-medium">心靈滋養成長度</span>
+                        <span id="botanicalProgressText" class="text-indigo-300 font-bold">45%</span>
+                    </div>
+                    <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden border border-white/10">
+                        <div id="botanicalProgressBar" class="bg-gradient-to-r from-emerald-500 to-indigo-500 h-full transition-all duration-500" style="width: 45%;"></div>
+                    </div>
+                </div>
+
+                <!-- Plant Card -->
+                <div class="glass-panel p-4 rounded-xl border border-white/10 flex items-center gap-4 bg-slate-900/60">
+                    <div class="w-20 h-20 rounded-xl bg-indigo-900/40 border border-indigo-400/30 flex items-center justify-center text-4xl" id="plantEmoji">
+                        🪴
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-indigo-200" id="plantName">記憶月季 (Memory Rose)</h4>
+                        <p class="text-xs text-slate-400 mt-1" id="plantDesc">隨著記憶球的累積與靜心呼吸，月季花將漸漸綻放，為心靈提供穩定的療癒力量。</p>
+                        <div class="mt-3 flex items-center gap-3">
+                            <button onclick="harvestPlant()" id="btnHarvest" class="px-3 py-1.5 rounded-lg bg-amber-600/40 hover:bg-amber-600/70 border border-amber-500/40 text-amber-200 text-xs font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                                🌾 100% 收成能量
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Excel Boss Mode Mask (Esc Key Toggle) -->
+    <div id="bossMode">
+        <div class="bg-[#107c41] text-white p-2 text-xs flex justify-between items-center">
+            <span>Microsoft Excel - Financial_Report_2026_Q4.xlsx</span>
+            <span>Esc 鍵退出工作模式</span>
+        </div>
+        <div class="p-4">
+            <table class="w-full text-xs border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="border border-gray-300 p-2">Item</th>
+                        <th class="border border-gray-300 p-2">Q1 Budget</th>
+                        <th class="border border-gray-300 p-2">Q2 Actual</th>
+                        <th class="border border-gray-300 p-2">Variance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="border border-gray-300 p-2">Project Alpha</td><td class="border border-gray-300 p-2">$45,000</td><td class="border border-gray-300 p-2">$42,300</td><td class="border border-gray-300 p-2 text-green-600">+$2,700</td></tr>
+                    <tr><td class="border border-gray-300 p-2">Marketing Operations</td><td class="border border-gray-300 p-2">$12,000</td><td class="border border-gray-300 p-2">$13,500</td><td class="border border-gray-300 p-2 text-red-600">-$1,500</td></tr>
+                    <tr><td class="border border-gray-300 p-2">R&D Investments</td><td class="border border-gray-300 p-2">$88,000</td><td class="border border-gray-300 p-2">$85,000</td><td class="border border-gray-300 p-2 text-green-600">+$3,000</td></tr>
+                </tbody>
             </table>
         </div>
     </div>
 
-    <!-- 頂部導航列 -->
-    <header class="bg-slate-950/85 backdrop-blur-2xl border-b border-amber-500/30 px-6 py-4 space-y-3 sticky top-0 z-50 shadow-[0_4px_35px_rgba(0,0,0,0.7)]">
-        <div class="text-center md:text-left flex flex-col md:flex-row md:items-center md:justify-between">
-            <div class="flex items-center space-x-3 justify-center md:justify-start flex-wrap gap-2">
-                <span class="text-2xl md:text-3xl font-black bg-gradient-to-r from-amber-200 via-yellow-300 to-emerald-400 bg-clip-text text-transparent drop-shadow-[0_2px_20px_rgba(250,204,21,0.6)]">
-                    Aurosphere 🔮
-                </span>
-                <!-- 👤 用家身分切換選單 -->
-                <div class="flex items-center space-x-1 bg-slate-900 px-3 py-1 rounded-2xl border border-slate-700">
-                    <span class="text-xs text-amber-300 font-bold">👤 當前用家：</span>
-                    <select id="currentUserSelect" onchange="switchUser()" class="bg-transparent text-amber-100 text-xs focus:outline-none font-bold">
-                        <option value="ChuiMan">翠敏 (Chui Man)</option>
-                        <option value="Sister1">家姐 (Sister 1)</option>
-                        <option value="Sister2">妹妹 (Sister 2)</option>
-                    </select>
-                </div>
-                <span id="syncStatusBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">未連線 Supabase</span>
-            </div>
-            <div class="flex flex-wrap items-center justify-center gap-2 mt-2 md:mt-0">
-                <button onclick="toggleBossMode()" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-400/50 px-3 py-1.5 rounded-2xl text-xs font-bold flex items-center space-x-1.5 transition">
-                    <i class="ph ph-eye-slash text-sm"></i>
-                    <span>🕶️ 隱形 (Esc)</span>
-                </button>
-                <button onclick="openForestModal()" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 border border-emerald-400/50 px-3 py-1.5 rounded-2xl text-xs font-bold flex items-center space-x-1.5 transition">
-                    <i class="ph ph-tree text-sm"></i>
-                    <span>🌿 植物手繪圖鑑</span>
-                </button>
-                <button onclick="toggleAudio()" id="audioBtn" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 border border-emerald-400/50 px-3 py-1.5 rounded-2xl text-xs font-bold flex items-center space-x-1.5 transition">
-                    <i class="ph ph-speaker-high text-sm" id="audioIcon"></i>
-                    <span id="audioText">🎵 音效</span>
-                </button>
-                <button onclick="openBreathingModal()" class="bg-sky-500/20 hover:bg-sky-500/30 text-sky-200 border border-sky-400/50 px-3 py-1.5 rounded-2xl text-xs font-bold flex items-center space-x-1.5 transition">
-                    <i class="ph ph-wind text-sm"></i>
-                    <span>🍃 靜心呼吸</span>
-                </button>
-                <button onclick="triggerFlashbackRoulette()" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-400/50 px-3 py-1.5 rounded-2xl text-xs font-bold flex items-center space-x-1.5 transition">
-                    <i class="ph ph-shuffle text-sm animate-spin"></i>
-                    <span>🎲 隨機記憶</span>
-                </button>
-            </div>
-        </div>
-        <div class="flex items-center justify-center md:justify-start space-x-4">
-            <button onclick="openBackupModal()" class="bg-slate-900/90 hover:bg-slate-800 text-amber-100 px-4 py-2 rounded-2xl text-xs md:text-sm font-medium flex items-center space-x-2 border border-amber-500/40 transition shadow-md">
-                <i class="ph ph-database text-lg text-amber-300"></i>
-                <span>雲端同步</span>
-            </button>
-            <button onclick="openModal()" class="bg-gradient-to-r from-amber-300 to-yellow-500 hover:from-amber-200 hover:to-yellow-400 text-slate-950 px-5 py-2 rounded-2xl text-xs md:text-sm font-bold flex items-center space-x-2 shadow-[0_0_25px_rgba(250,204,21,0.6)] transition">
-                <i class="ph ph-plus-circle text-lg"></i>
-                <span>詳細新增記憶球</span>
-            </button>
-        </div>
-    </header>
-
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 space-y-6 relative z-10 pb-36">
-        
-        <!-- 🪴 心靈植物動態灌溉培育區 -->
-        <section class="dreamy-glass-panel p-4 flex items-center justify-between border-emerald-500/30 shadow-[0_0_25px_rgba(52,211,153,0.15)]">
-            <div class="flex items-center space-x-3">
-                <div id="plantAvatar" class="w-12 h-12 rounded-2xl bg-slate-950 border border-emerald-400/40 flex items-center justify-center text-2xl shadow-[0_0_15px_rgba(52,211,153,0.3)]">🌱</div>
-                <div>
-                    <div class="flex items-center space-x-2">
-                        <span id="plantName" class="font-bold text-emerald-300 text-xs sm:text-sm">層層蓮 (Echeveria) 🪴</span>
-                        <span id="plantStage" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-200 border border-emerald-500/30">種子階段</span>
-                    </div>
-                    <div class="w-40 sm:w-56 bg-slate-950 h-2 rounded-full overflow-hidden border border-emerald-500/20 mt-1.5">
-                        <div id="plantProgressBar" class="bg-gradient-to-r from-emerald-400 to-teal-300 h-full transition-all duration-500" style="width: 20%;"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="text-right">
-                <span id="plantPercent" class="text-sm font-black text-emerald-300 block">20%</span>
-                <span class="text-[10px] text-slate-400">灌溉心靈養份</span>
-            </div>
-        </section>
-
-        <!-- 🌳 心靈語錄列 -->
-        <section class="quote-banner p-4 sm:p-5 flex items-center justify-between">
-            <div class="space-y-1 relative z-10 max-w-2xl">
-                <div class="flex items-center space-x-2">
-                    <span class="text-xs text-amber-300 font-bold">✨ Aurosphere 心靈大氣層</span>
-                </div>
-                <p class="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed">
-                    「如同月夜與平原上獨自屹立的大樹，無論情緒如暴風雨般來襲，抑或如月光般平靜，這裡永遠是你安放靈魂的避風港。」
-                </p>
-            </div>
-        </section>
-
-        <!-- ✨ 快速心情投入框 -->
-        <section class="dreamy-glass-panel p-5 sm:p-6 space-y-3">
-            <h3 class="text-sm font-bold text-amber-300 flex items-center space-x-2 drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]">
-                <i class="ph ph-sparkle text-lg text-yellow-300"></i>
-                <span>此時此刻，你的大腦總部發生咗咩事？（快速投遞記憶球，同時灌溉植物 +10%）</span>
-            </h3>
-            <form onsubmit="quickSaveMemory(event)" class="flex flex-col sm:flex-row gap-3">
-                <input type="text" id="quickTitle" required placeholder="例如：在月夜下安靜喝茶 / 剛剛開會順利完成..." class="flex-1 dreamy-input px-4 py-2.5 text-xs md:text-sm placeholder-amber-200/40">
-                <select id="quickEmotion" class="dreamy-input text-amber-100 text-xs px-3 py-2">
-                    <option value="平靜">💛 平靜 / 滿足</option>
-                    <option value="開心">💛 開心 / 快樂</option>
-                    <option value="興奮">💛 興奮 / 期待</option>
-                    <option value="悲傷">💙 難過 / 悲傷</option>
-                    <option value="焦慮">🔵 焦慮 / 緊張</option>
-                    <option value="生氣">🔴 生氣 / 煩躁</option>
-                </select>
-                <button type="submit" class="bg-amber-300 hover:bg-amber-200 text-slate-950 px-5 py-2.5 rounded-2xl text-xs font-bold transition shadow-[0_0_20px_rgba(253,224,71,0.6)] flex items-center justify-center space-x-1">
-                    <i class="ph ph-paper-plane-tilt text-base"></i>
-                    <span>瞬間投遞</span>
-                </button>
-            </form>
-        </section>
-
-        <!-- 搜尋列與多重類型篩選區 -->
-        <div class="dreamy-glass-panel p-4 flex flex-col sm:flex-row gap-3 items-center justify-between">
-            <div class="relative w-full sm:w-80">
-                <i class="ph ph-magnifying-glass absolute left-4 top-3 text-amber-300 text-lg"></i>
-                <input type="text" id="searchInput" oninput="filterMemories()" placeholder="搜尋記憶標題、觸發事件..." class="w-full dreamy-input pl-11 pr-4 py-2 text-xs md:text-sm placeholder-amber-200/40">
-            </div>
-
-            <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
-                <span class="text-xs text-amber-300 font-bold flex items-center space-x-1">
-                    <i class="ph ph-funnel text-amber-300"></i>
-                    <span>記憶篩選：</span>
-                </span>
-                <select id="typeFilterSelect" onchange="filterMemories()" class="dreamy-input text-amber-100 text-xs px-3 py-2">
-                    <option value="all">所有記憶球</option>
-                    <option value="core">🌟 核心記憶 (Core)</option>
-                    <option value="flashback">⚡ 閃回記憶 (Flashback)</option>
-                    <option value="joy">💛 喜悅 / 快樂事件</option>
-                    <option value="sad">💙 哀傷 / 悲傷事件</option>
-                    <option value="anger">🔴 憤怒 / 煩躁事件</option>
-                    <option value="fear">🔵 焦慮 / 恐懼事件</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- 🏷️ 常用觸發標籤雲 -->
-        <div class="flex flex-wrap items-center gap-2 px-1 text-xs">
-            <span class="text-amber-300 font-bold"><i class="ph ph-tag"></i> 常用觸發標籤：</span>
-            <button onclick="filterByTag('獨處')" class="px-3 py-1.5 bg-slate-900/90 hover:bg-amber-950 border border-amber-500/40 text-amber-200 rounded-xl transition shadow-sm">#獨處靜心</button>
-            <button onclick="filterByTag('工作')" class="px-3 py-1.5 bg-slate-900/90 hover:bg-amber-950 border border-amber-500/40 text-amber-200 rounded-xl transition shadow-sm">#工作壓力</button>
-            <button onclick="filterByTag('朋友')" class="px-3 py-1.5 bg-slate-900/90 hover:bg-amber-950 border border-amber-500/40 text-amber-200 rounded-xl transition shadow-sm">#朋友聚會</button>
-            <button onclick="filterByTag('旅行')" class="px-3 py-1.5 bg-slate-900/90 hover:bg-amber-950 border border-amber-500/40 text-amber-200 rounded-xl transition shadow-sm">#旅行探索</button>
-            <button onclick="resetTagFilter()" class="px-3 py-1.5 bg-slate-800 text-slate-400 hover:text-white rounded-xl transition">清除標籤</button>
-        </div>
-
-        <!-- 🌐 記憶展示區 (宇宙 / 時光軸模式) -->
-        <section class="dreamy-glass-panel p-4 sm:p-6 space-y-3">
-            <div class="flex items-center justify-between px-2">
-                <h2 class="text-md sm:text-lg font-bold text-amber-200 flex items-center space-x-2 drop-shadow-[0_0_12px_rgba(250,204,21,0.6)]">
-                    <i class="ph ph-planet text-amber-300" id="viewModeIcon"></i>
-                    <span id="viewModeTitle">Aurosphere · 記憶漂浮宇宙</span>
-                </h2>
-                <button onclick="toggleViewMode()" class="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-400/40 rounded-xl text-xs font-bold transition flex items-center space-x-1.5">
-                    <i class="ph ph-arrows-clockwise text-sm"></i>
-                    <span id="viewModeBtnText">📅 切換至時光軸視圖</span>
-                </button>
-            </div>
-
-            <!-- 漂浮宇宙視圖 -->
-            <div id="floatingUniverse" class="floating-universe-grid"></div>
-
-            <!-- 時光軸視圖 (預設隱藏) -->
-            <div id="timelineContainer" class="hidden space-y-4 py-4 px-2 max-h-[600px] overflow-y-auto pr-2"></div>
-        </section>
-
-        <!-- 📊 統計數據面板 -->
-        <section class="space-y-4 pt-4 border-t border-amber-500/30">
-            <div class="dreamy-glass-panel p-4 flex flex-col sm:flex-row gap-4 items-center justify-between">
-                <h3 class="text-md font-bold text-amber-200 flex items-center space-x-2">
-                    <i class="ph ph-chart-donut text-lg text-amber-300"></i>
-                    <span>情緒統計儀表板</span>
-                </h3>
-                <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
-                    <span class="text-xs text-amber-300 font-bold">時間範圍：</span>
-                    <select id="timeRangeSelect" onchange="updateAnalytics()" class="dreamy-input text-amber-100 text-xs px-3 py-2">
-                        <option value="all">全部時間</option>
-                        <option value="year">本年度 (2026)</option>
-                        <option value="month">本月份 (10月)</option>
-                        <option value="week">最近一週</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div class="dreamy-glass-panel p-4 flex items-center space-x-4 border-yellow-500/40 shadow-[0_0_20px_rgba(250,204,21,0.15)]">
-                    <div class="w-10 h-10 rounded-2xl bg-yellow-500/25 flex items-center justify-center text-yellow-300 text-xl font-bold">💛</div>
-                    <div>
-                        <div class="text-xs text-slate-400">喜悅 / 快樂</div>
-                        <div id="statJoy" class="text-xl font-black text-yellow-200">0 顆</div>
-                    </div>
-                </div>
-                <div class="dreamy-glass-panel p-4 flex items-center space-x-4 border-sky-500/40 shadow-[0_0_20px_rgba(56,189,248,0.15)]">
-                    <div class="w-10 h-10 rounded-2xl bg-sky-500/25 flex items-center justify-center text-sky-300 text-xl font-bold">💙</div>
-                    <div>
-                        <div class="text-xs text-slate-400">哀傷 / 悲傷</div>
-                        <div id="statSad" class="text-xl font-black text-sky-200">0 顆</div>
-                    </div>
-                </div>
-                <div class="dreamy-glass-panel p-4 flex items-center space-x-4 border-red-500/40 shadow-[0_0_20px_rgba(239,68,68,0.15)]">
-                    <div class="w-10 h-10 rounded-2xl bg-red-500/25 flex items-center justify-center text-red-300 text-xl font-bold">🔴</div>
-                    <div>
-                        <div class="text-xs text-slate-400">憤怒 / 煩躁</div>
-                        <div id="statAnger" class="text-xl font-black text-red-200">0 顆</div>
-                    </div>
-                </div>
-                <div class="dreamy-glass-panel p-4 flex items-center space-x-4 border-cyan-500/40 shadow-[0_0_20px_rgba(6,182,212,0.15)]">
-                    <div class="w-10 h-10 rounded-2xl bg-cyan-500/25 flex items-center justify-center text-cyan-300 text-xl font-bold">🔵</div>
-                    <div>
-                        <div class="text-xs text-slate-400">焦慮 / 恐懼</div>
-                        <div id="statFear" class="text-xl font-black text-cyan-200">0 顆</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dreamy-glass-panel p-5 space-y-2 border-amber-500/40">
-                <h4 class="text-xs font-bold text-amber-300 flex items-center space-x-2">
-                    <i class="ph ph-brain text-base text-amber-300"></i>
-                    <span>身心覺察洞察 (Mind-Body Pattern Insights)</span>
-                </h4>
-                <p id="insightText" class="text-xs text-slate-300 leading-relaxed">
-                    載入中... 系統正在分析你最近的情緒與身體感官連動關係。
-                </p>
-            </div>
-        </section>
-    </main>
-
-    <!-- 🐾 全螢幕漫步桌寵：Happy仔 -->
-    <div id="happyPet" class="roaming-pet pet-walking-happy" style="left: 10%; top: 75%;" onclick="clickPet('happy')">
-        <div id="happyBubble" class="pet-bubble hidden">
-            <span class="font-bold text-amber-300 handwritten text-xs block mb-1">Happy仔 🐩</span>
-            <span id="happySpeech">「主人，記得養大棵樹呀～」</span>
-        </div>
-        <div class="w-16 h-16 relative filter drop-shadow-[0_5px_15px_rgba(0,0,0,0.6)]">
-            <svg viewBox="0 0 100 100" class="w-full h-full">
-                <circle cx="50" cy="55" r="32" fill="#ffffff" stroke="#222" stroke-width="3.5"/>
-                <ellipse cx="36" cy="84" rx="9" ry="7" fill="#ffffff" stroke="#222" stroke-width="3"/>
-                <ellipse cx="64" cy="84" rx="9" ry="7" fill="#ffffff" stroke="#222" stroke-width="3"/>
-                <circle cx="50" cy="40" r="30" fill="#ffffff" stroke="#222" stroke-width="3.5"/>
-                <circle cx="24" cy="36" r="12" fill="#ffffff" stroke="#222" stroke-width="3"/>
-                <circle cx="76" cy="36" r="12" fill="#ffffff" stroke="#222" stroke-width="3"/>
-                <circle cx="38" cy="38" r="4.5" fill="#111"/>
-                <circle cx="62" cy="38" r="4.5" fill="#111"/>
-                <ellipse cx="50" cy="46" rx="5.5" ry="4" fill="#111"/>
-                <path d="M 45 52 Q 50 56 55 52" fill="none" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>
-                <circle cx="30" cy="45" r="5" fill="#fca5a5" opacity="0.6"/>
-                <circle cx="70" cy="45" r="5" fill="#fca5a5" opacity="0.6"/>
-                <path d="M 32 58 Q 50 72 68 58 Q 50 64 32 58 Z" fill="#93c5fd" stroke="#1d4ed8" stroke-width="2"/>
-                <circle cx="50" cy="64" r="2.5" fill="#ef4444"/>
-                <circle cx="54" cy="64" r="2.5" fill="#ef4444"/>
-            </svg>
-        </div>
-    </div>
-
-    <!-- 🐾 全螢幕漫步桌寵：噹噹 -->
-    <div id="dangPet" class="roaming-pet pet-walking-dang" style="left: 80%; top: 60%;" onclick="clickPet('dang')">
-        <div id="dangBubble" class="pet-bubble hidden">
-            <span class="font-bold text-slate-300 handwritten text-xs block mb-1">噹噹 🦔</span>
-            <span id="dangSpeech">「咕嚕～ 深呼吸給植物灌溉水份！ 🍃」</span>
-        </div>
-        <div class="w-16 h-16 relative filter drop-shadow-[0_5px_15px_rgba(0,0,0,0.6)]">
-            <svg viewBox="0 0 100 100" class="w-full h-full">
-                <ellipse cx="50" cy="58" rx="34" ry="32" fill="#94a3b8" stroke="#1e293b" stroke-width="3.5"/>
-                <ellipse cx="32" cy="24" rx="8" ry="18" fill="#94a3b8" stroke="#1e293b" stroke-width="3"/>
-                <ellipse cx="68" cy="24" rx="8" ry="18" fill="#94a3b8" stroke="#1e293b" stroke-width="3"/>
-                <ellipse cx="32" cy="25" rx="4" ry="11" fill="#cbd5e1"/>
-                <ellipse cx="68" cy="25" rx="4" ry="11" fill="#cbd5e1"/>
-                <path d="M 78 68 Q 96 60 90 40 Q 82 48 74 60" fill="#94a3b8" stroke="#1e293b" stroke-width="3"/>
-                <ellipse cx="50" cy="65" rx="20" ry="18" fill="#f1f5f9"/>
-                <circle cx="36" cy="46" r="3.5" fill="#0f172a"/>
-                <circle cx="64" cy="46" r="3.5" fill="#0f172a"/>
-                <ellipse cx="50" cy="48" rx="3.5" ry="2.5" fill="#0f172a"/>
-                <line x1="14" y1="48" x2="28" y2="50" stroke="#1e293b" stroke-width="2"/>
-                <line x1="12" y1="56" x2="28" y2="54" stroke="#1e293b" stroke-width="2"/>
-                <line x1="86" y1="48" x2="72" y2="50" stroke="#1e293b" stroke-width="2"/>
-                <line x1="88" y1="56" x2="72" y2="54" stroke="#1e293b" stroke-width="2"/>
-                <ellipse cx="50" cy="68" rx="7" ry="8" fill="#b45309" stroke="#78350f" stroke-width="2"/>
-                <path d="M 43 62 Q 50 58 57 62" fill="#78350f"/>
-            </svg>
-        </div>
-    </div>
-
-    <!-- 📜 復古手繪植物圖鑑 Modal (Botanical Guide) -->
-    <div id="forestModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="botanical-modal max-w-2xl w-full p-6 space-y-5 max-h-[90vh] overflow-y-auto relative shadow-[0_0_50px_rgba(212,197,185,0.4)]">
-            <button onclick="closeForestModal()" class="absolute top-4 right-4 text-stone-500 hover:text-stone-900"><i class="ph ph-x text-xl"></i></button>
-
-            <!-- 圖鑑標題 Header -->
-            <div class="text-center border-b-2 border-stone-300 pb-3 space-y-1">
-                <span class="text-[10px] tracking-widest text-stone-500 uppercase">GreenInk Botanical Guide Vol.1</span>
-                <h3 class="text-2xl font-bold serif-title text-stone-800">綠墨水心靈植物圖鑑</h3>
-                <p class="text-xs text-stone-600 handwritten">每一步記憶記錄，都是灌溉靈魂植物的溫柔光芒</p>
-            </div>
-
-            <!-- 植物網格（手繪圖鑑風） -->
-            <div id="forestList" class="grid grid-cols-2 sm:grid-cols-3 gap-3 p-1"></div>
-
-            <!-- 詳情展示卡 (Selected Plant Detail) -->
-            <div id="plantDetailCard" class="bg-stone-100/90 border border-stone-300 p-4 rounded-xl space-y-2">
-                <div class="flex items-center space-x-3">
-                    <span id="cardIcon" class="text-3xl">🪴</span>
-                    <div>
-                        <div id="cardLatin" class="text-[10px] italic text-stone-500">Echeveria</div>
-                        <div id="cardName" class="font-bold text-stone-800 text-sm serif-title">層層蓮</div>
-                    </div>
-                </div>
-                <div class="text-xs text-stone-700 space-y-1.5 pt-1 border-t border-stone-200">
-                    <div><span class="font-bold text-stone-900">🌸 寓意象徵：</span><span id="cardSymbol">包容與漸進，溫柔接納自己的每一個層面。</span></div>
-                    <div><span class="font-bold text-stone-900">📖 心靈介紹：</span><span id="cardDesc">層層疊疊的厚實葉片，象徵你在生活中慢慢累積的內在力量。不需要急於盛開，安心按照自己的節奏生長。</span></div>
-                </div>
-            </div>
-
-            <button onclick="closeForestModal()" class="w-full py-2.5 bg-stone-800 hover:bg-stone-900 text-stone-100 font-bold rounded-xl text-xs transition">關閉圖鑑</button>
-        </div>
-    </div>
-
-    <!-- 🌸 收成慶祝 Modal -->
-    <div id="harvestModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="dreamy-glass-panel border-emerald-400/80 max-w-sm w-full p-6 space-y-4 text-center shadow-[0_0_80px_rgba(52,211,153,0.5)]">
-            <div class="text-4xl animate-bounce">🎉</div>
-            <h3 class="text-base font-black text-emerald-200">植物完全成熟收成喇！</h3>
-            <div class="p-4 bg-slate-950 rounded-2xl border border-emerald-500/40 space-y-2">
-                <div id="harvestIcon" class="text-4xl">🪴</div>
-                <div id="harvestName" class="font-bold text-emerald-300 text-sm">層層蓮</div>
-                <p class="text-[11px] text-slate-300">「這棵植物已成功移栽至你的綠墨水植物圖鑑！」</p>
-            </div>
-            <button onclick="closeHarvestModal()" class="w-full py-2 bg-gradient-to-r from-emerald-400 to-teal-500 text-slate-950 font-bold rounded-xl text-xs">收下並培育新種子 ✨</button>
-        </div>
-    </div>
-
-    <!-- 🧘 靜心呼吸引導 Modal -->
-    <div id="breathingModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="dreamy-glass-panel border-sky-400/60 max-w-md w-full p-8 space-y-6 text-center relative shadow-[0_0_80px_rgba(56,189,248,0.4)]">
-            <button onclick="closeBreathingModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="ph ph-x text-xl"></i></button>
-
-            <div class="space-y-1">
-                <h3 class="text-xl font-black text-sky-200">🍃 1 分鐘靜心呼吸引導 (+15% 養份)</h3>
-                <p class="text-xs text-slate-300">噹噹與 Happy仔 在天空中陪你慢慢放鬆身體。</p>
-            </div>
-
-            <div class="relative w-48 h-48 mx-auto flex items-center justify-center my-6">
-                <div class="absolute inset-0 rounded-full bg-gradient-to-r from-sky-400/30 to-emerald-400/30 animate-breath"></div>
-                <div class="w-28 h-28 rounded-full bg-slate-950/80 border-2 border-sky-300 flex items-center justify-center z-10 shadow-inner">
-                    <span id="breathText" class="text-base font-bold text-sky-200">吸氣...</span>
-                </div>
-            </div>
-
-            <button onclick="finishBreathing()" class="w-full py-3 bg-gradient-to-r from-sky-400 to-blue-600 text-slate-950 font-bold rounded-2xl shadow-lg hover:brightness-110 transition text-xs">
-                完成練習並灌溉植物 💧
-            </button>
-        </div>
-    </div>
-
-    <footer class="text-center py-6 border-t border-amber-500/30 text-xs text-amber-300/70 space-y-1 relative z-10">
-        <p>Aurosphere &copy; 2026 Inside Out HQ</p>
-        <p id="lastUpdatedTime">頁面版本更新時間載入中...</p>
-    </footer>
-
-    <!-- 🔍 詳細資料視窗 -->
-    <div id="detailModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="dreamy-glass-panel border-amber-400/60 max-w-lg w-full p-6 space-y-6 shadow-[0_0_70px_rgba(250,204,21,0.5)] relative">
-            <div class="flex justify-between items-center border-b border-amber-500/30 pb-3">
-                <div class="flex items-center space-x-3">
-                    <div id="detailBadge" class="text-2xl">🌟</div>
-                    <h3 id="detailTitle" class="text-xl font-black text-amber-200">記憶標題</h3>
-                </div>
-                <button onclick="closeDetailModal()" class="text-slate-400 hover:text-white"><i class="ph ph-x text-xl"></i></button>
-            </div>
-
-            <div id="detailPhotoContainer" class="hidden w-full h-56 rounded-2xl overflow-hidden border border-amber-500/40">
-                <img id="detailPhoto" src="" class="w-full h-full object-cover">
-            </div>
-
-            <div class="space-y-4 text-sm text-slate-300">
-                <div>
-                    <span class="text-amber-300 font-bold">發生時間：</span>
-                    <span id="detailDate"></span>
-                </div>
-                <div>
-                    <span class="text-amber-300 font-bold">觸發事件 / 簡述：</span>
-                    <p id="detailTrigger" class="mt-1 p-3 bg-slate-950 rounded-2xl border border-amber-500/30 text-slate-200 leading-relaxed"></p>
-                </div>
-                <div>
-                    <span class="text-amber-300 font-bold">情緒分類：</span>
-                    <div id="detailEmotions" class="flex flex-wrap gap-2 mt-1.5"></div>
-                </div>
-                <div>
-                    <span class="text-amber-300 font-bold">身體感官反應：</span>
-                    <div id="detailSomatics" class="flex flex-wrap gap-2 mt-1.5"></div>
-                </div>
-            </div>
-
-            <button onclick="closeDetailModal()" class="w-full py-3 bg-gradient-to-r from-amber-300 to-yellow-500 text-slate-950 font-bold rounded-2xl shadow-[0_0_25px_rgba(250,204,21,0.6)] hover:brightness-110 transition">
-                關閉
-            </button>
-        </div>
-    </div>
-
-    <!-- 💙 心靈鼓勵彈窗 -->
-    <div id="encouragementModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="dreamy-glass-panel border-amber-400/60 max-w-md w-full p-8 space-y-6 shadow-[0_0_70px_rgba(250,204,21,0.5)] text-center relative">
-            <div class="w-16 h-16 bg-amber-500/25 border border-amber-400 rounded-full flex items-center justify-center mx-auto text-3xl text-amber-300 shadow-[0_0_25px_rgba(250,204,21,0.6)]">
-                💙
-            </div>
-            <div class="space-y-2">
-                <h3 class="text-xl font-black text-amber-200">大腦總部心靈悄悄話</h3>
-                <p id="encouragementText" class="text-sm text-slate-300 leading-relaxed px-4">
-                    「哭泣其實沒關係，這代表你正在釋放那些過重的負荷。允許自己脆弱，也是一種強大。」
-                </p>
-            </div>
-            <button onclick="closeEncouragement()" class="w-full py-3 bg-gradient-to-r from-amber-300 to-yellow-500 text-slate-950 font-bold rounded-2xl shadow-[0_0_25px_rgba(250,204,21,0.6)] hover:brightness-110 transition">
-                收到，多謝陪伴！ ✨
-            </button>
-        </div>
-    </div>
-
-    <!-- 詳細新增記憶 Modal -->
-    <div id="memoryModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="dreamy-glass-panel border-amber-500/50 max-w-xl w-full p-6 space-y-6 shadow-2xl max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b border-amber-500/30 pb-4">
-                <h3 class="text-lg font-bold text-amber-200">✨ 建立新記憶水晶球 (+25% 養份)</h3>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-white"><i class="ph ph-x text-xl"></i></button>
-            </div>
-
-            <form id="memoryForm" onsubmit="saveMemory(event)" class="space-y-5">
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-1">記憶標題</label>
-                    <input type="text" id="mTitle" required placeholder="例如：大樹下的沉思" class="w-full dreamy-input px-4 py-2.5 text-slate-100">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-1">發生時間</label>
-                    <input type="text" id="mDate" required placeholder="例如：2026-10-15" class="w-full dreamy-input px-4 py-2.5 text-slate-100">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-1">觸發事件 / 簡述</label>
-                    <textarea id="mTrigger" rows="2" placeholder="發生咗咩事令你有呢種感覺..." class="w-full dreamy-input px-4 py-2.5 text-slate-100"></textarea>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-1">📷 記憶相片 (支援直接存入雲端)</label>
-                    <input type="file" id="mPhoto" accept="image/*" class="w-full dreamy-input px-4 py-2 text-xs text-slate-300 file:mr-4 file:py-1 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-amber-300 file:text-slate-950 hover:file:bg-amber-200">
-                </div>
-
-                <!-- 情緒分類 -->
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-slate-300">情緒分類</label>
-                    <div class="bg-slate-950 p-4 rounded-2xl border border-amber-500/30 space-y-3 text-sm">
-                        <div>
-                            <span class="text-yellow-300 font-bold">💛 喜悅 / 快樂：</span>
-                            <div class="flex flex-wrap gap-3 mt-1">
-                                <label><input type="checkbox" name="emotions" value="平靜"> 平靜</label>
-                                <label><input type="checkbox" name="emotions" value="開心"> 開心</label>
-                                <label><input type="checkbox" name="emotions" value="快樂"> 快樂</label>
-                                <label><input type="checkbox" name="emotions" value="興奮"> 興奮</label>
-                                <label><input type="checkbox" name="emotions" value="感恩"> 感恩</label>
-                                <label><input type="checkbox" name="emotions" value="滿足"> 滿足</label>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="text-red-400 font-bold">🔴 憤怒 / 煩躁：</span>
-                            <div class="flex flex-wrap gap-3 mt-1">
-                                <label><input type="checkbox" name="emotions" value="生氣"> 生氣</label>
-                                <label><input type="checkbox" name="emotions" value="憤怒"> 憤怒</label>
-                                <label><input type="checkbox" name="emotions" value="煩躁"> 煩躁</label>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="text-sky-300 font-bold">💙 哀傷 / 悲傷：</span>
-                            <div class="flex flex-wrap gap-3 mt-1">
-                                <label><input type="checkbox" name="emotions" value="難過"> 難過</label>
-                                <label><input type="checkbox" name="emotions" value="悲傷"> 悲傷</label>
-                                <label><input type="checkbox" name="emotions" value="失望"> 失望</label>
-                                <label><input type="checkbox" name="emotions" value="孤單"> 孤單</label>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="text-cyan-300 font-bold">🔵 懼怕 / 焦慮：</span>
-                            <div class="flex flex-wrap gap-3 mt-1">
-                                <label><input type="checkbox" name="emotions" value="緊張"> 緊張</label>
-                                <label><input type="checkbox" name="emotions" value="焦慮"> 焦慮</label>
-                                <label><input type="checkbox" name="emotions" value="害怕"> 害怕</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 🔄 身體感官反應分類 -->
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-amber-300">🔄 身體感官反應 (6大部位細分)</label>
-                    <div class="bg-slate-950 p-4 rounded-2xl border border-amber-500/30 space-y-3 text-xs">
-                        <div>
-                            <span class="text-amber-300 font-bold">🧠 1. 頭部與面部：</span>
-                            <div class="flex flex-wrap gap-2 mt-1">
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-amber-500/20"><input type="checkbox" name="somatics" value="眼眶發熱"> 眼眶發熱</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-amber-500/20"><input type="checkbox" name="somatics" value="太陽穴跳動"> 太陽穴跳動</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-amber-500/20"><input type="checkbox" name="somatics" value="面部潮紅"> 面部潮紅</label>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="text-amber-300 font-bold">🫁 2. 胸腔與呼吸：</span>
-                            <div class="flex flex-wrap gap-2 mt-1">
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-amber-500/20"><input type="checkbox" name="somatics" value="心跳加速"> 心跳加速</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-amber-500/20"><input type="checkbox" name="somatics" value="胸悶氣短"> 胸悶氣短</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-amber-500/20"><input type="checkbox" name="somatics" value="呼吸平穩"> 呼吸平穩</label>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="text-amber-300 font-bold">🫃 3. 胃部與消化：</span>
-                            <div class="flex flex-wrap gap-2 mt-1">
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-amber-500/20"><input type="checkbox" name="somatics" value="胃部不適"> 胃部不適</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-amber-500/20"><input type="checkbox" name="somatics" value="胃部緊縮"> 胃部緊縮</label>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="text-amber-300 font-bold">💪 4. 肌肉與四肢：</span>
-                            <div class="flex flex-wrap gap-2 mt-1">
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-amber-500/20"><input type="checkbox" name="somatics" value="肌肉緊繃"> 肌肉緊繃</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-amber-500/20"><input type="checkbox" name="somatics" value="身體顫抖"> 身體顫抖</label>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="text-amber-300 font-bold">🔥 5. 皮膚與體溫：</span>
-                            <div class="flex flex-wrap gap-2 mt-1">
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-amber-500/20"><input type="checkbox" name="somatics" value="體溫升高"> 體溫升高</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-amber-500/20"><input type="checkbox" name="somatics" value="手心冒汗"> 手心冒汗</label>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="text-amber-300 font-bold">✨ 6. 神經與精神狀態：</span>
-                            <div class="flex flex-wrap gap-2 mt-1">
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-amber-500/20"><input type="checkbox" name="somatics" value="無力感"> 無力感</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-amber-500/20"><input type="checkbox" name="somatics" value="思維清晰"> 思維清晰</label>
-                                <label class="px-2 py-1 bg-slate-900 rounded-xl cursor-pointer border border-amber-500/20"><input type="checkbox" name="somatics" value="身體放鬆"> 身體放鬆</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-2 bg-slate-950 p-4 rounded-2xl border border-amber-500/30">
-                    <label class="flex items-center space-x-3 cursor-pointer">
-                        <input type="checkbox" id="mCore" class="w-4 h-4 rounded text-yellow-400">
-                        <span class="text-sm font-medium text-yellow-300">🌟 設為核心記憶球 (Core Memory - 金色光暈)</span>
-                    </label>
-                    <label class="flex items-center space-x-3 cursor-pointer">
-                        <input type="checkbox" id="mFlashback" class="w-4 h-4 rounded text-sky-400">
-                        <span class="text-sm font-medium text-sky-300">⚡ 閃回記憶 / 突然想起的舊回憶 (Flashback)</span>
-                    </label>
-                    <label class="flex items-center space-x-3 cursor-pointer border-t border-amber-500/20 pt-2">
-                        <input type="checkbox" id="mMemorial" class="w-4 h-4 rounded text-amber-200">
-                        <span class="text-sm font-medium text-amber-200">💌 寄給天上的 Happy仔 & 噹噹 (專屬星光光澤)</span>
-                    </label>
-                </div>
-
-                <div class="flex justify-end space-x-3 pt-4 border-t border-amber-500/30">
-                    <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-900 text-slate-300 rounded-2xl text-sm font-medium hover:bg-slate-800">取消</button>
-                    <button type="submit" class="px-5 py-2 bg-amber-300 text-slate-950 rounded-2xl text-sm font-bold shadow-[0_0_20px_rgba(250,204,21,0.6)] hover:bg-amber-200">儲存記憶球並灌溉</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- 雲端備份設定 Modal -->
-    <div id="backupModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-4">
-        <div class="dreamy-glass-panel border-amber-500/50 max-w-md w-full p-6 space-y-4">
-            <div class="flex justify-between items-center border-b border-amber-500/30 pb-3">
-                <h3 class="text-lg font-bold text-amber-200">☁️ Supabase 雲端同步設定</h3>
-                <button onclick="closeBackupModal()" class="text-slate-400 hover:text-white"><i class="ph ph-x text-xl"></i></button>
-            </div>
-            <div class="space-y-3 text-sm">
-                <div>
-                    <label class="block text-slate-300 mb-1">Supabase URL</label>
-                    <input type="text" id="sbUrl" value="https://edqiijtguqgdtwtunfug.supabase.co" class="w-full dreamy-input px-3 py-2 text-slate-200">
-                </div>
-                <div>
-                    <label class="block text-slate-300 mb-1">Supabase Anon Key</label>
-                    <input type="text" id="sbKey" value="sb_publishable_imxjz7hPH0aCTamxVIsZ7Q_6YvurVqe" class="w-full dreamy-input px-3 py-2 text-slate-200">
-                </div>
-                <button onclick="saveSupabaseConfig()" class="w-full py-2.5 bg-amber-300 text-slate-950 rounded-2xl font-bold shadow-[0_0_20px_rgba(250,204,21,0.6)] hover:bg-amber-200 transition">儲存並連接雲端</button>
-            </div>
-        </div>
-    </div>
+    <!-- 3D Physics & Render Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <script>
-        // --- 🕶️ 辦公室老闆鍵 (Esc 變 Excel) ---
-        function toggleBossMode() {
-            const mask = document.getElementById('bossMask');
-            mask.classList.toggle('hidden');
-            document.getElementById('bossOwnerCell').innerText = getCurrentUser();
-        }
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') toggleBossMode(); });
-
-        // --- 👤 用家切換與資料隔離 ---
-        function getCurrentUser() { return document.getElementById('currentUserSelect').value; }
-        function switchUser() { fetchMemoriesFromSupabase(); }
-
-        // --- 🌿 綠墨水手繪植物圖鑑數據（包含拉丁名、花語象徵、心靈介紹） ---
-        const plantLibrary = [
-            { id: 'p1', name: '層層蓮', latin: 'Echeveria', icon: '🪴', symbol: '包容與漸進', desc: '厚實層疊的葉片，象徵你在生活中默默累積的內在安定力量。' },
-            { id: 'p2', name: '玉露', latin: 'Haworthia', icon: '🌿', symbol: '晶瑩與純淨', desc: '半透明的葉肉折射微光，代表隨時間沉澱後內心的清澈與平靜。' },
-            { id: 'p3', name: '紐倫堡珍珠', latin: 'Perle von Nürnberg', icon: '🌸', symbol: '優雅與堅韌', desc: '帶著紫色微光的多肉，寄託著釋放情緒過後的優雅與自我修復。' },
-            { id: 'p4', name: '薄荷花', latin: 'Mentha', icon: '🌱', symbol: '清爽與明朗', desc: '帶來清新空氣的香草，提醒你在繁雜日常中隨時做深呼吸。' },
-            { id: 'p5', name: '松樹', latin: 'Pinus', icon: '🌲', symbol: '長青與復原力', desc: '挺拔堅毅的松針，代表經歷風霜後依然昂首的心靈底氣。' },
-            { id: 'p6', name: '觀音蓮', latin: 'Sempervivum', icon: '🪷', symbol: '永恆的陪伴', desc: '宛如蓮花般的形態，陪伴你靜觀內心情緒的起伏與轉化。' }
+        /* ------------------------------------------------------------------
+         * DATA DEFINITIONS & EMOTION TAXONOMY
+         * ------------------------------------------------------------------ */
+        const EMOTIONS = [
+            { id: 'joy', name: '喜悅', color: '#F59E0B', hex: 0xF59E0B },
+            { id: 'calm', name: '平靜', color: '#10B981', hex: 0x10B981 },
+            { id: 'anxiety', name: '焦慮', color: '#8B5CF6', hex: 0x8B5CF6 },
+            { id: 'sadness', name: '悲傷', color: '#3B82F6', hex: 0x3B82F6 },
+            { id: 'anger', name: '憤怒', color: '#EF4444', hex: 0xEF4444 },
+            { id: 'fear', name: '恐懼', color: '#6366F1', hex: 0x6366F1 }
         ];
 
-        let plantState = JSON.parse(localStorage.getItem('aurosphere_plant')) || { typeIndex: 0, progress: 20, unlockedForest: ['p1'] };
+        // 6 Big Somatic Categories
+        const SOMATIC_OPTIONS = {
+            head: ['眼眶發熱', '太陽穴跳動', '面部潮紅', '頭暈腦脹', '咬緊牙關'],
+            chest: ['心跳加速', '胸悶氣短', '呼吸平穩', '呼吸急促', '胸口發緊'],
+            stomach: ['胃部不適', '胃部緊縮', '反胃噁心', '胃痛腸痙攣'],
+            limbs: ['肌肉緊繃', '身體顫抖', '雙手發抖', '手腳冰冷', '肩頸僵硬'],
+            skin: ['體溫升高', '手心冒汗', '出冷汗', '皮膚發麻'],
+            mind: ['無力感', '思維清晰', '身體放鬆', '注意力分散', '腦袋空白']
+        };
 
-        function updatePlantUI() {
-            const currentPlant = plantLibrary[plantState.typeIndex];
-            document.getElementById('plantName').innerText = `${currentPlant.name} (${currentPlant.latin}) 🪴`;
-            document.getElementById('plantProgressBar').style.width = `${plantState.progress}%`;
-            document.getElementById('plantPercent').innerText = `${plantState.progress}%`;
-            document.getElementById('plantAvatar').innerText = plantState.progress >= 75 ? currentPlant.icon : "🌱";
-            localStorage.setItem('aurosphere_plant', JSON.stringify(plantState));
+        // CBT Behavioral Coping Responses
+        const CBT_OPTIONS = {
+            extrovert: ['尋求陪伴/傾訴', '哭泣宣洩', '語言爆發/抱怨', '肢體動作/運動'],
+            introvert: ['自我封閉/獨處', '沉默不語', '壓抑情緒', '自我批判'],
+            avoidance: ['逃避現場/離開', '轉移注意力(看影片/聽歌)', '過度飲食/爆食', '拖延逃避'],
+            confront: ['理性分析問題', '靜心呼吸/冥想', '尋求專業協助', '積極解決問題']
+        };
+
+        // Current Active User
+        let currentUser = 'ChuiMan';
+
+        // Local State Store
+        let memories = [
+            {
+                id: 'm1',
+                user: 'ChuiMan',
+                title: '夜深星空下的漫步與放鬆',
+                date: '2026-10-20',
+                trigger: '完成了一整週的繁重專案後獨自散步。',
+                emotion: 'calm',
+                somatic: ['呼吸平穩', '身體放鬆', '思維清晰'],
+                cbt: ['靜心呼吸/冥想', '理性分析問題'],
+                isCore: true,
+                isFlashback: false,
+                isHeaven: false,
+                photo: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500'
+            },
+            {
+                id: 'm2',
+                user: 'ChuiMan',
+                title: '突如其來的簡報挑戰',
+                date: '2026-10-21',
+                trigger: '主管臨時要求上台簡報未來三年的業務規劃。',
+                emotion: 'anxiety',
+                somatic: ['心跳加速', '手心冒汗', '肌肉緊繃'],
+                cbt: ['逃避現場/離開', '沉默不語'],
+                isCore: false,
+                isFlashback: true,
+                isHeaven: false,
+                photo: ''
+            }
+        ];
+
+        let selectedMemoryId = null;
+        let viewMode = 'universe'; // 'universe' or 'timeline'
+        let botanicalProgress = 45; // 0 - 100
+
+        /* ------------------------------------------------------------------
+         * INITIALIZATION & RENDER SETUP
+         * ------------------------------------------------------------------ */
+        window.onload = function() {
+            lucide.createIcons();
+            initCheckboxFields();
+            initEmotionSelector();
+            initThreeJS();
+            renderView();
+            initPetAnimations();
+            setupBossKey();
+        };
+
+        // Populate Somatic and CBT Checkboxes in Form
+        function initCheckboxFields() {
+            populateCheckboxGroup('somaticHead', SOMATIC_OPTIONS.head, 'somatic');
+            populateCheckboxGroup('somaticChest', SOMATIC_OPTIONS.chest, 'somatic');
+            populateCheckboxGroup('somaticStomach', SOMATIC_OPTIONS.stomach, 'somatic');
+            populateCheckboxGroup('somaticLimbs', SOMATIC_OPTIONS.limbs, 'somatic');
+            populateCheckboxGroup('somaticSkin', SOMATIC_OPTIONS.skin, 'somatic');
+            populateCheckboxGroup('somaticMind', SOMATIC_OPTIONS.mind, 'somatic');
+
+            populateCheckboxGroup('cbtExtrovert', CBT_OPTIONS.extrovert, 'cbt');
+            populateCheckboxGroup('cbtIntrovert', CBT_OPTIONS.introvert, 'cbt');
+            populateCheckboxGroup('cbtAvoidance', CBT_OPTIONS.avoidance, 'cbt');
+            populateCheckboxGroup('cbtConfront', CBT_OPTIONS.confront, 'cbt');
         }
 
-        function addPlantProgress(points) {
-            plantState.progress += points;
-            const avatar = document.getElementById('plantAvatar');
-            avatar.classList.remove('plant-grow-animation'); void avatar.offsetWidth; avatar.classList.add('plant-grow-animation');
-            if (plantState.progress >= 100) {
-                plantState.progress = 100; updatePlantUI();
-                setTimeout(triggerHarvest, 600);
-            } else { updatePlantUI(); }
+        function populateCheckboxGroup(containerId, options, groupName) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = options.map((opt, idx) => `
+                <input type="checkbox" id="${groupName}_${containerId}_${idx}" value="${opt}" class="hidden tag-checkbox ${groupName}-cb">
+                <label for="${groupName}_${containerId}_${idx}" class="text-[11px] px-2.5 py-1 rounded-md glass-input border border-white/10 text-slate-300 cursor-pointer select-none hover:border-purple-400/50 transition-all">
+                    ${opt}
+                </label>
+            `).join('');
         }
 
-        function triggerHarvest() {
-            const currentPlant = plantLibrary[plantState.typeIndex];
-            document.getElementById('harvestIcon').innerText = currentPlant.icon;
-            document.getElementById('harvestName').innerText = currentPlant.name;
-            if (!plantState.unlockedForest.includes(currentPlant.id)) plantState.unlockedForest.push(currentPlant.id);
-            document.getElementById('harvestModal').classList.remove('hidden');
-            document.getElementById('harvestModal').classList.add('flex');
+        function initEmotionSelector() {
+            const container = document.getElementById('emotionSelector');
+            container.innerHTML = EMOTIONS.map(emo => `
+                <label class="cursor-pointer">
+                    <input type="radio" name="emotion" value="${emo.id}" class="hidden peer" required>
+                    <div class="p-2 rounded-xl text-center border border-white/10 bg-slate-900/60 peer-checked:border-purple-500 peer-checked:bg-purple-900/30 transition-all">
+                        <div class="w-4 h-4 rounded-full mx-auto mb-1" style="background-color: ${emo.color}"></div>
+                        <span class="text-xs font-medium text-slate-300">${emo.name}</span>
+                    </div>
+                </label>
+            `).join('');
         }
 
-        function closeHarvestModal() {
-            document.getElementById('harvestModal').classList.add('hidden');
-            document.getElementById('harvestModal').classList.remove('flex');
-            plantState.typeIndex = (plantState.typeIndex + 1) % plantLibrary.length;
-            plantState.progress = 10; updatePlantUI();
+        /* ------------------------------------------------------------------
+         * THREE.JS UNIVERSE SIMULATION
+         * ------------------------------------------------------------------ */
+        let scene, camera, renderer, orbMeshes = [];
+        let isMouseDown = false, mouseX = 0, mouseY = 0;
+
+        function initThreeJS() {
+            const container = document.getElementById('universeContainer');
+            scene = new THREE.Scene();
+            
+            camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.z = 18;
+
+            renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('universeCanvas'), antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambientLight);
+
+            const pointLight = new THREE.PointLight(0xa855f7, 2, 50);
+            pointLight.position.set(0, 10, 10);
+            scene.add(pointLight);
+
+            // Orbit Interaction
+            const canvas = document.getElementById('universeCanvas');
+            canvas.addEventListener('mousedown', (e) => { isMouseDown = true; mouseX = e.clientX; mouseY = e.clientY; });
+            canvas.addEventListener('mouseup', () => isMouseDown = false);
+            canvas.addEventListener('mousemove', onCanvasMouseMove);
+            canvas.addEventListener('click', onCanvasClick);
+
+            window.addEventListener('resize', onWindowResize);
+            animateUniverse();
         }
 
-        function openForestModal() {
-            const listEl = document.getElementById('forestList');
-            listEl.innerHTML = plantLibrary.map(p => {
-                const unlocked = plantState.unlockedForest.includes(p.id);
+        function updateUniverseOrbs() {
+            // Clear existing orbs
+            orbMeshes.forEach(mesh => scene.remove(mesh));
+            orbMeshes = [];
+
+            const userMemories = memories.filter(m => m.user === currentUser);
+
+            userMemories.forEach((mem, idx) => {
+                const emotionObj = EMOTIONS.find(e => e.id === mem.emotion) || EMOTIONS[0];
+                const geometry = new THREE.SphereGeometry(mem.isCore ? 1.2 : 0.8, 32, 32);
+                
+                const material = new THREE.MeshStandardMaterial({
+                    color: emotionObj.hex,
+                    roughness: 0.2,
+                    metalness: 0.8,
+                    emissive: emotionObj.hex,
+                    emissiveIntensity: mem.isFlashback ? 0.6 : 0.2
+                });
+
+                const mesh = new THREE.Mesh(geometry, material);
+                
+                // Position in 3D orbit
+                const phi = Math.acos(-1 + (2 * idx) / userMemories.length);
+                const theta = Math.sqrt(userMemories.length * Math.PI) * phi;
+                const radius = 6 + (idx % 3) * 2;
+
+                mesh.position.x = radius * Math.cos(theta) * Math.sin(phi);
+                mesh.position.y = radius * Math.sin(theta) * Math.sin(phi);
+                mesh.position.z = radius * Math.cos(phi);
+
+                mesh.userData = { memoryId: mem.id };
+                scene.add(mesh);
+                orbMeshes.push(mesh);
+            });
+        }
+
+        function animateUniverse() {
+            requestAnimationFrame(animateUniverse);
+            
+            // Slow rotation for cosmos effect
+            orbMeshes.forEach(mesh => {
+                mesh.rotation.x += 0.005;
+                mesh.rotation.y += 0.008;
+            });
+
+            if (!isMouseDown) {
+                scene.rotation.y += 0.001;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        function onCanvasMouseMove(e) {
+            if (!isMouseDown) return;
+            const deltaX = e.clientX - mouseX;
+            const deltaY = e.clientY - mouseY;
+
+            scene.rotation.y += deltaX * 0.005;
+            scene.rotation.x += deltaY * 0.005;
+
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        }
+
+        function onCanvasClick(e) {
+            const rect = renderer.domElement.getBoundingClientRect();
+            const mouse = new THREE.Vector2(
+                ((e.clientX - rect.left) / rect.width) * 2 - 1,
+                -((e.clientY - rect.top) / rect.height) * 2 + 1
+            );
+
+            const raycaster = new THREE.Raycaster();
+            raycaster.setFromCamera(mouse, camera);
+
+            const intersects = raycaster.intersectObjects(orbMeshes);
+            if (intersects.length > 0) {
+                const memId = intersects[0].object.userData.memoryId;
+                openDetailModal(memId);
+            }
+        }
+
+        function onWindowResize() {
+            const container = document.getElementById('universeContainer');
+            if (!container) return;
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
+
+        /* ------------------------------------------------------------------
+         * MEMORY CRUD OPERATIONS (CREATE, READ, EDIT, DELETE)
+         * ------------------------------------------------------------------ */
+        function switchUser(newUser) {
+            currentUser = newUser;
+            renderView();
+        }
+
+        function setViewMode(mode) {
+            viewMode = mode;
+            document.getElementById('universeContainer').classList.toggle('hidden', mode !== 'universe');
+            document.getElementById('timelineContainer').classList.toggle('hidden', mode !== 'timeline');
+
+            document.getElementById('btnViewUniverse').className = mode === 'universe' 
+                ? 'px-3 py-1.5 rounded-md text-xs font-medium transition-all bg-purple-600 text-white shadow-sm'
+                : 'px-3 py-1.5 rounded-md text-xs font-medium text-slate-400 hover:text-white transition-all';
+            
+            document.getElementById('btnViewTimeline').className = mode === 'timeline'
+                ? 'px-3 py-1.5 rounded-md text-xs font-medium transition-all bg-purple-600 text-white shadow-sm'
+                : 'px-3 py-1.5 rounded-md text-xs font-medium text-slate-400 hover:text-white transition-all';
+
+            renderView();
+        }
+
+        function renderView() {
+            updateUniverseOrbs();
+            renderTimeline();
+        }
+
+        function renderTimeline() {
+            const container = document.getElementById('timelineList');
+            const userMemories = memories.filter(m => m.user === currentUser);
+
+            if (userMemories.length === 0) {
+                container.innerHTML = `<div class="text-slate-500 text-sm italic">此用家暫無記憶球紀錄。點擊上方「凝聚記憶球」開始。</div>`;
+                return;
+            }
+
+            container.innerHTML = userMemories.map(mem => {
+                const emotion = EMOTIONS.find(e => e.id === mem.emotion) || EMOTIONS[0];
                 return `
-                    <div onclick="selectPlantCard('${p.id}')" class="p-3 bg-white/80 border border-stone-300 rounded-xl text-center cursor-pointer hover:border-stone-500 transition shadow-sm">
-                        <div class="text-3xl">${unlocked ? p.icon : '🔒'}</div>
-                        <div class="font-bold text-xs text-stone-800 serif-title mt-1">${unlocked ? p.name : '未解鎖'}</div>
-                        <div class="text-[9px] italic text-stone-500">${p.latin}</div>
+                    <div onclick="openDetailModal('${mem.id}')" class="glass-panel p-4 rounded-xl border border-white/10 hover:border-purple-500/50 cursor-pointer transition-all relative group">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs text-purple-300 font-mono">${mem.date}</span>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold text-white" style="background-color: ${emotion.color}">
+                                ${emotion.name}
+                            </span>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-100 group-hover:text-purple-300 transition-colors">${mem.title}</h3>
+                        <p class="text-xs text-slate-400 line-clamp-2 mt-1">${mem.trigger || '無特定觸發事件'}</p>
                     </div>
                 `;
             }).join('');
-            selectPlantCard(plantLibrary[plantState.typeIndex].id);
-            document.getElementById('forestModal').classList.remove('hidden');
-            document.getElementById('forestModal').classList.add('flex');
         }
 
-        function selectPlantCard(plantId) {
-            const p = plantLibrary.find(item => item.id === plantId);
-            const unlocked = plantState.unlockedForest.includes(p.id);
-            const card = document.getElementById('plantDetailCard');
-            card.classList.remove('hidden');
-            document.getElementById('cardIcon').innerText = unlocked ? p.icon : '🔒';
-            document.getElementById('cardName').innerText = unlocked ? p.name : '未解鎖植物';
-            document.getElementById('cardLatin').innerText = p.latin;
-            document.getElementById('cardSymbol').innerText = unlocked ? p.symbol : '繼續投入記憶球解鎖這棵植物的花語象徵。';
-            document.getElementById('cardDesc').innerText = unlocked ? p.desc : '尚待灌溉成長...';
-        }
-
-        function closeForestModal() { document.getElementById('forestModal').classList.add('hidden'); document.getElementById('forestModal').classList.remove('flex'); }
-
-        // --- ☁️ Supabase 對接初始化 ---
-        let supabaseClient = null;
-        let defaultSbUrl = "https://edqiijtguqgdtwtunfug.supabase.co";
-        let defaultSbKey = "sb_publishable_imxjz7hPH0aCTamxVIsZ7Q_6YvurVqe";
-
-        function saveSupabaseConfig() {
-            const url = document.getElementById('sbUrl').value.trim();
-            const key = document.getElementById('sbKey').value.trim();
-            if (url && key) {
-                localStorage.setItem('sb_url', url);
-                localStorage.setItem('sb_key', key);
-                closeBackupModal();
-                initSupabase();
-            }
-        }
-
-        function initSupabase() {
-            const url = localStorage.getItem('sb_url') || defaultSbUrl;
-            const key = localStorage.getItem('sb_key') || defaultSbKey;
+        // Modal Open & Populate Form for Add / Edit
+        function openAddModal() {
+            document.getElementById('modalTitle').innerHTML = `<i data-lucide="sparkle" class="w-5 h-5 text-purple-400"></i> 凝聚新記憶球`;
+            document.getElementById('editMemoryId').value = '';
+            document.getElementById('memoryForm').reset();
             
-            if (url && key) {
-                try {
-                    supabaseClient = supabase.createClient(url, key);
-                    document.getElementById('syncStatusBadge').innerText = "☁️ 已連線 Supabase";
-                    document.getElementById('syncStatusBadge').className = "text-[10px] px-2 py-0.5 rounded-full bg-emerald-900/80 text-emerald-300 border border-emerald-500/40";
-                    fetchMemoriesFromSupabase();
-                } catch(e) {
-                    console.error("Supabase 連線失敗:", e);
-                }
-            }
+            // Clear checked state for custom buttons
+            document.querySelectorAll('.tag-checkbox').forEach(cb => cb.checked = false);
+
+            document.getElementById('memoryModal').classList.remove('hidden');
+            lucide.createIcons();
         }
 
-        async function fetchMemoriesFromSupabase() {
-            if (!supabaseClient) return;
-            try {
-                const { data, error } = await supabaseClient
-                    .from('memories')
-                    .select('*')
-                    .order('id', { ascending: false });
+        function openEditFromDetail() {
+            if (!selectedMemoryId) return;
+            const mem = memories.find(m => m.id === selectedMemoryId);
+            if (!mem) return;
 
-                if (error) {
-                    console.error("下載 Supabase 資料失敗:", error);
-                } else if (data && data.length > 0) {
-                    const user = getCurrentUser();
-                    memories = data.map(row => row.data).filter(m => (m.owner || 'ChuiMan') === user);
-                    renderMemories();
-                } else {
-                    memories = [];
-                    renderMemories();
-                }
-            } catch(e) {
-                console.error(e);
-            }
+            closeDetailModal();
+
+            document.getElementById('modalTitle').innerHTML = `<i data-lucide="edit-3" class="w-5 h-5 text-purple-400"></i> ✏️ 編輯記憶球`;
+            document.getElementById('editMemoryId').value = mem.id;
+            document.getElementById('inputTitle').value = mem.title;
+            document.getElementById('inputDate').value = mem.date;
+            document.getElementById('inputTrigger').value = mem.trigger || '';
+            document.getElementById('inputPhoto').value = mem.photo || '';
+
+            // Emotion Radio
+            const emotionRadio = document.querySelector(`input[name="emotion"][value="${mem.emotion}"]`);
+            if (emotionRadio) emotionRadio.checked = true;
+
+            // Checkboxes: Somatic & CBT
+            document.querySelectorAll('.tag-checkbox').forEach(cb => {
+                cb.checked = (mem.somatic && mem.somatic.includes(cb.value)) || (mem.cbt && mem.cbt.includes(cb.value));
+            });
+
+            // Switches
+            document.getElementById('checkCore').checked = !!mem.isCore;
+            document.getElementById('checkFlashback').checked = !!mem.isFlashback;
+            document.getElementById('checkHeaven').checked = !!mem.isHeaven;
+
+            document.getElementById('memoryModal').classList.remove('hidden');
+            lucide.createIcons();
         }
 
-        async function syncMemoryToSupabase(memoryItem) {
-            if (!supabaseClient) return;
-            try {
-                memoryItem.owner = getCurrentUser();
-                const payload = {
-                    id: memoryItem.id,
-                    data: memoryItem,
-                    updated_at: new Date().toISOString()
+        function closeMemoryModal() {
+            document.getElementById('memoryModal').classList.add('hidden');
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const editId = document.getElementById('editMemoryId').value;
+            const title = document.getElementById('inputTitle').value;
+            const date = document.getElementById('inputDate').value;
+            const trigger = document.getElementById('inputTrigger').value;
+            const photo = document.getElementById('inputPhoto').value;
+            
+            const emotionEl = document.querySelector('input[name="emotion"]:checked');
+            const emotion = emotionEl ? emotionEl.value : 'calm';
+
+            // Gather checked somatic & cbt items
+            const somatic = Array.from(document.querySelectorAll('.somatic-cb:checked')).map(cb => cb.value);
+            const cbt = Array.from(document.querySelectorAll('.cbt-cb:checked')).map(cb => cb.value);
+
+            const isCore = document.getElementById('checkCore').checked;
+            const isFlashback = document.getElementById('checkFlashback').checked;
+            const isHeaven = document.getElementById('checkHeaven').checked;
+
+            if (editId) {
+                // Update Existing
+                const idx = memories.findIndex(m => m.id === editId);
+                if (idx !== -1) {
+                    memories[idx] = {
+                        ...memories[idx],
+                        title, date, trigger, emotion, somatic, cbt, isCore, isFlashback, isHeaven, photo
+                    };
+                }
+            } else {
+                // Create New Memory
+                const newMem = {
+                    id: 'm_' + Date.now(),
+                    user: currentUser,
+                    title, date, trigger, emotion, somatic, cbt, isCore, isFlashback, isHeaven, photo
                 };
-
-                const { error } = await supabaseClient
-                    .from('memories')
-                    .upsert(payload);
-
-                if (error) {
-                    console.error("寫入 Supabase 失敗:", error);
-                }
-            } catch(e) {
-                console.error(e);
-            }
-        }
-
-        function initParticles() {
-            const container = document.getElementById('particlesLayer');
-            const particleCount = 25;
-            for (let i = 0; i < particleCount; i++) {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                const size = Math.random() * 4 + 2;
-                p.style.width = `${size}px`;
-                p.style.height = `${size}px`;
-                p.style.left = `${Math.random() * 100}%`;
-                p.style.animationDuration = `${Math.random() * 6 + 6}s`;
-                p.style.animationDelay = `${Math.random() * 5}s`;
-                container.appendChild(p);
-            }
-        }
-
-        let memories = [
-            { id: 1, owner: "ChuiMan", title: "月夜大樹下的平靜", date: "2026-10-15", trigger: "獨自坐在草地上仰望明月與大樹，雜念沉澱。", emotions: ["平靜", "滿足"], somatics: ["呼吸平穩", "身體放鬆", "思維清晰"], photo: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=500", isCore: true, isFlashback: false, isMemorial: false },
-            { id: 2, owner: "ChuiMan", title: "DSE 放榜當日", date: "2026-10-14", trigger: "考到期望分數，與同學拍照道別。", emotions: ["開心", "悲傷"], somatics: ["心跳加速", "面帶微笑", "眼眶發熱"], photo: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400", isCore: true, isFlashback: false, isMemorial: false },
-            { id: 3, owner: "ChuiMan", title: "初次到東京旅行", date: "2026-10-10", trigger: "順利抵達機場並成功 Check-in。", emotions: ["興奮", "焦慮"], somatics: ["心跳加速", "步伐輕盈"], photo: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400", isCore: false, isFlashback: false, isMemorial: false }
-        ];
-
-        const encouragementQuotes = [
-            "「哭泣其實沒關係，這代表你正在釋放那些過重的負荷。允許自己脆弱，也是一種強大。」—— 憂憂",
-            "「當你感到憤怒或煩躁時，記得深呼吸。你的情緒在提醒你：某些界限需要被守護。」—— 怒怒",
-            "「焦慮與害怕是為了保護你免受傷害。摸摸胸口告訴自己：現在很安全，我們一起面對。」—— 驚驚",
-            "「即使今天烏雲密布，每一種情緒的存在都是為了讓你更完整。你做得很好！」—— 樂樂"
-        ];
-
-        const happyQuotes = [
-            "「主人！今日記得飲多啲水呀！我一直喺彩虹橋上面陪住你搖尾巴～ 🐾」",
-            "「摸摸我！無論你遇到咩難關，Happy仔都相信你一定搞得定！」",
-            "「今日有冇好好食飯呀？最想見到你露出甜甜嘅笑容喇～ ✨」",
-            "「累咗就休息下啦，我會一直趴喺你腳邊守護你～ 🐩」"
-        ];
-
-        const dangQuotes = [
-            "「咕嚕～ 主人，深呼吸一口氣，你已經做得很棒很棒喇！ 🍃」",
-            "「就算外面暴風雨，我和 Happy仔 喺呢度為你撐一把樹葉小傘～ 🦔」",
-            "「今晚記得早啲休息，夢裡我帶你去天空森林散步！ 🌟」",
-            "「心裡覺得悶嘅時候，記得摸摸我，我一直喺度聽你說心事。」"
-        ];
-
-        const emotionColorMap = {
-            "開心": "rgba(253,224,71,0.85)", "快樂": "rgba(253,224,71,0.85)", "興奮": "rgba(250,204,21,0.85)", "感恩": "rgba(254,240,138,0.85)", "滿足": "rgba(253,224,71,0.85)", "平靜": "rgba(254,240,138,0.85)", "自豪": "rgba(250,204,21,0.85)",
-            "生氣": "rgba(248,113,113,0.85)", "憤怒": "rgba(239,68,68,0.85)", "煩躁": "rgba(248,113,113,0.85)", "受冒犯": "rgba(239,68,68,0.85)",
-            "難過": "rgba(56,189,248,0.85)", "悲傷": "rgba(14,165,233,0.85)", "失望": "rgba(56,189,248,0.85)", "孤單": "rgba(14,165,233,0.85)", "內疚": "rgba(56,189,248,0.85)", "迷失": "rgba(14,165,233,0.85)",
-            "驚慌": "rgba(165,243,252,0.85)", "緊張": "rgba(103,232,249,0.85)", "擔憂": "rgba(165,243,252,0.85)", "焦慮": "rgba(103,232,249,0.85)", "害怕": "rgba(165,243,252,0.85)"
-        };
-
-        let currentViewMode = 'universe';
-        let isAudioPlaying = false;
-
-        /* 🐾 全螢幕 2D 自由漫步 AI 系統 */
-        let pets = {
-            happy: { x: 10, y: 70, dirX: 1, dirY: -0.3, speed: 0.12, el: null, bubble: null, textEl: null },
-            dang: { x: 80, y: 50, dirX: -1, dirY: 0.4, speed: 0.10, el: null, bubble: null, textEl: null }
-        };
-
-        function initRoamingPets() {
-            pets.happy.el = document.getElementById('happyPet');
-            pets.happy.bubble = document.getElementById('happyBubble');
-            pets.happy.textEl = document.getElementById('happySpeech');
-
-            pets.dang.el = document.getElementById('dangPet');
-            pets.dang.bubble = document.getElementById('dangBubble');
-            pets.dang.textEl = document.getElementById('dangSpeech');
-
-            setInterval(movePets, 80);
-            setInterval(randomPetSpeech, 14000);
-        }
-
-        function movePets() {
-            ['happy', 'dang'].forEach(key => {
-                let p = pets[key];
-                if (Math.random() < 0.05) p.dirY = (Math.random() - 0.5) * 0.8;
-                p.x += p.dirX * p.speed;
-                p.y += p.dirY * p.speed;
-
-                if (p.x > 88) { p.x = 88; p.dirX = -1; }
-                if (p.x < 2) { p.x = 2; p.dirX = 1; }
-                if (p.y > 85) { p.y = 85; p.dirY = -p.dirY; }
-                if (p.y < 12) { p.y = 12; p.dirY = -p.dirY; }
-
-                p.el.style.left = p.x + '%';
-                p.el.style.top = p.y + '%';
-
-                if (p.dirX === -1) p.el.querySelector('svg').style.transform = 'scaleX(-1)';
-                else p.el.querySelector('svg').style.transform = 'scaleX(1)';
-            });
-        }
-
-        function randomPetSpeech() {
-            showPetSpeech(Math.random() > 0.5 ? 'happy' : 'dang');
-        }
-
-        function showPetSpeech(petKey, customText) {
-            let p = pets[petKey];
-            let quotes = petKey === 'happy' ? happyQuotes : dangQuotes;
-            let msg = customText || quotes[Math.floor(Math.random() * quotes.length)];
-            p.textEl.innerText = msg;
-            p.bubble.classList.remove('hidden');
-            setTimeout(() => { p.bubble.classList.add('hidden'); }, 6000);
-        }
-
-        function clickPet(petKey) {
-            let p = pets[petKey];
-            p.el.style.transform = 'scale(1.25) translateY(-10px)';
-            setTimeout(() => { p.el.style.transform = 'none'; }, 300);
-            showPetSpeech(petKey, petKey === 'happy' ? "主人摸摸我！Happy仔永遠最愛你～ 🐾" : "咕嚕～ 噹噹一直喺度陪住你！ 🍃");
-        }
-
-        function getMarbleGradient(emotions) {
-            if (!emotions || emotions.length === 0) return "radial-gradient(circle at 35% 35%, rgba(253,224,71,0.7) 0%, rgba(202,138,4,0.8) 100%)";
-            const colors = emotions.map(e => emotionColorMap[e] || "rgba(250,204,21,0.85)");
-            if (colors.length === 1) return `radial-gradient(circle at 35% 35%, ${colors[0]} 0%, rgba(15,23,42,0.9) 100%)`;
-            return `linear-gradient(135deg, ${colors[0]} 0%, ${colors[0]} 45%, ${colors[1]} 55%, ${colors[1]} 80%, ${colors[2] || colors[0]} 100%)`;
-        }
-
-        function getGlowColor(emotions) {
-            if (!emotions || emotions.length === 0) return "rgba(250,204,21,0.4)";
-            if (emotions.some(e => ["生氣", "憤怒", "煩躁"].includes(e))) return "rgba(239,68,68,0.5)";
-            if (emotions.some(e => ["悲傷", "難過", "失望", "孤單"].includes(e))) return "rgba(56,189,248,0.5)";
-            if (emotions.some(e => ["焦慮", "緊張", "驚慌"].includes(e))) return "rgba(103,232,249,0.5)";
-            return "rgba(250,204,21,0.4)";
-        }
-
-        function updateAmbientBackground(filterType) {
-            const body = document.getElementById('bodyBg');
-            if (filterType === 'joy') body.style.background = "radial-gradient(circle at 50% 20%, rgba(250, 204, 21, 0.35) 0%, transparent 60%), #050a0e";
-            else if (filterType === 'sad') body.style.background = "radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.35) 0%, transparent 60%), #050a0e";
-            else if (filterType === 'anger') body.style.background = "radial-gradient(circle at 50% 20%, rgba(239, 68, 68, 0.35) 0%, transparent 60%), #050a0e";
-            else if (filterType === 'fear') body.style.background = "radial-gradient(circle at 50% 20%, rgba(103, 232, 249, 0.35) 0%, transparent 60%), #050a0e";
-            else body.style.background = "radial-gradient(circle at 12% 10%, rgba(254, 240, 138, 0.25) 0%, transparent 40%), radial-gradient(circle at 85% 15%, rgba(251, 146, 60, 0.2) 0%, transparent 50%), linear-gradient(180deg, #091018 0%, #050a0e 100%)";
-        }
-
-        function filterMemories() {
-            renderMemories();
-        }
-
-        function getFilteredMemories() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const typeFilter = document.getElementById('typeFilterSelect').value;
-            updateAmbientBackground(typeFilter);
-
-            return memories.filter(m => {
-                const matchQuery = m.title.toLowerCase().includes(query) || (m.trigger && m.trigger.toLowerCase().includes(query));
-                if (!matchQuery) return false;
-                if (typeFilter === 'all') return true;
-                if (typeFilter === 'core') return m.isCore;
-                if (typeFilter === 'flashback') return m.isFlashback;
-                if (typeFilter === 'joy') return m.emotions.some(e => ["開心", "快樂", "興奮", "感恩", "滿足", "平靜", "自豪"].includes(e));
-                if (typeFilter === 'sad') return m.emotions.some(e => ["悲傷", "難過", "失望", "孤單", "內疚", "迷失"].includes(e));
-                if (typeFilter === 'anger') return m.emotions.some(e => ["生氣", "憤怒", "煩躁", "受冒犯"].includes(e));
-                if (typeFilter === 'fear') return m.emotions.some(e => ["驚慌", "緊張", "擔憂", "焦慮", "害怕"].includes(e));
-                return true;
-            });
-        }
-
-        function updateAnalytics() {
-            const range = document.getElementById('timeRangeSelect').value;
-            const now = new Date();
-            const timeFiltered = memories.filter(m => {
-                if (range === 'all') return true;
-                const mDate = new Date(m.date);
-                if (isNaN(mDate)) return true;
-                if (range === 'year') return mDate.getFullYear() === now.getFullYear();
-                if (range === 'month') return mDate.getFullYear() === now.getFullYear() && mDate.getMonth() === now.getMonth();
-                if (range === 'week') return Math.abs(now - mDate) / (1000 * 60 * 60 * 24) <= 7;
-                return true;
-            });
-
-            let joyCount = 0, sadCount = 0, angerCount = 0, fearCount = 0;
-            let somaticsMap = {};
-
-            timeFiltered.forEach(m => {
-                if (m.emotions.some(e => ["開心", "快樂", "興奮", "感恩", "滿足", "平靜", "自豪"].includes(e))) joyCount++;
-                if (m.emotions.some(e => ["悲傷", "難過", "失望", "孤單", "內疚", "迷失"].includes(e))) sadCount++;
-                if (m.emotions.some(e => ["生氣", "憤怒", "煩躁", "受冒犯"].includes(e))) angerCount++;
-                if (m.emotions.some(e => ["驚慌", "緊張", "擔憂", "焦慮", "害怕"].includes(e))) fearCount++;
-                if (m.somatics) m.somatics.forEach(s => somaticsMap[s] = (somaticsMap[s] || 0) + 1);
-            });
-
-            document.getElementById('statJoy').innerText = `${joyCount} 顆`;
-            document.getElementById('statSad').innerText = `${sadCount} 顆`;
-            document.getElementById('statAnger').innerText = `${angerCount} 顆`;
-            document.getElementById('statFear').innerText = `${fearCount} 顆`;
-
-            let topSomatic = "無明顯身體反應";
-            let maxCount = 0;
-            for (let [s, c] of Object.entries(somaticsMap)) {
-                if (c > maxCount) { maxCount = c; topSomatic = s; }
+                memories.push(newMem);
+                botanicalProgress = Math.min(100, botanicalProgress + 10);
+                updateBotanicalUI();
             }
 
-            const insightEl = document.getElementById('insightText');
-            if (timeFiltered.length > 0) {
-                insightEl.innerHTML = `💡 在目前所選時間範圍內，你總共記錄了 <b>${timeFiltered.length}</b> 個情緒事件。其中最常出現的身心感官反應是 <span class="text-amber-300 font-bold">「${topSomatic}」</span>（出現 ${maxCount} 次）。這代表當特定事件觸發時，你的身體會率先透過這個部位向你發出訊號。`;
-            } else {
-                insightEl.innerText = "目前沒有足夠的資料來產生洞察分析。";
-            }
+            closeMemoryModal();
+            renderView();
         }
 
-        function renderMemories() {
-            const filtered = getFilteredMemories();
-            if (currentViewMode === 'universe') {
-                const universeEl = document.getElementById('floatingUniverse');
-                universeEl.innerHTML = '';
-                filtered.forEach((m, index) => {
-                    const node = createMemoryNode(m, index);
-                    universeEl.appendChild(node);
-                });
-            } else {
-                renderTimeline(filtered);
-            }
-            updateAnalytics();
-        }
+        // Open Detail Modal (Fully Dynamic Rendering)
+        function openDetailModal(memId) {
+            selectedMemoryId = memId;
+            const mem = memories.find(m => m.id === memId);
+            if (!mem) return;
 
-        function createMemoryNode(m, index) {
-            const floatClass = index % 4 === 0 ? "floating-space-1" : index % 4 === 1 ? "floating-space-2" : index % 4 === 2 ? "floating-space-3" : "floating-space-4";
-            const wrapper = document.createElement('div');
-            wrapper.className = `flex flex-col items-center cursor-pointer group flex-shrink-0 w-full ${floatClass}`;
+            const emotion = EMOTIONS.find(e => e.id === mem.emotion) || EMOTIONS[0];
 
-            let sphereClass = "movie-glass-sphere ";
-            let badge = "";
-            if (m.isMemorial) { sphereClass += "memorial-star-effect "; badge = "💌"; }
-            else if (m.isCore) { sphereClass += "core-gold-glow "; badge = "🌟"; }
-            else if (m.isFlashback) { sphereClass += "flashback-blue-effect "; badge = "⚡"; }
+            const somaticBadges = mem.somatic && mem.somatic.length > 0 
+                ? mem.somatic.map(s => `<span class="px-2 py-1 bg-purple-900/40 border border-purple-500/30 rounded text-[11px] text-purple-200">${s}</span>`).join(' ')
+                : '<span class="text-xs text-slate-500 italic">無紀錄生理特徵</span>';
 
-            const bgGrad = getMarbleGradient(m.emotions);
-            const glowColor = getGlowColor(m.emotions);
-            let faceIcon = "😊";
-            if (m.emotions.some(e => ["悲傷", "難過", "失望", "孤單", "內疚", "迷失"].includes(e))) faceIcon = "😢";
-            else if (m.emotions.some(e => ["生氣", "憤怒", "煩躁"].includes(e))) faceIcon = "😡";
-            else if (m.emotions.some(e => ["焦慮", "緊張", "害怕"].includes(e))) faceIcon = "😰";
+            const cbtBadges = mem.cbt && mem.cbt.length > 0 
+                ? mem.cbt.map(c => `<span class="px-2 py-1 bg-indigo-900/40 border border-indigo-500/30 rounded text-[11px] text-indigo-200">${c}</span>`).join(' ')
+                : '<span class="text-xs text-slate-500 italic">無紀錄 CBT 行為應對</span>';
 
-            let innerContent = m.photo ? `<img src="${m.photo}" class="sphere-photo">` : `<span class="text-2xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">${badge || faceIcon}</span>`;
-
-            wrapper.innerHTML = `
-                <div class="${sphereClass}" style="background: ${bgGrad}; box-shadow: inset 5px 5px 12px rgba(255,255,255,0.65), inset -8px -10px 18px rgba(0,0,0,0.85), 0 0 25px ${glowColor};">
-                    ${innerContent}
+            const content = `
+                <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                    <div>
+                        <span class="px-2.5 py-1 rounded-full text-xs font-semibold text-white" style="background-color: ${emotion.color}">
+                            ${emotion.name}
+                        </span>
+                        <h2 class="text-xl font-bold text-white mt-2">${mem.title}</h2>
+                        <p class="text-xs text-purple-300/70 mt-0.5">日期：${mem.date} | 用家：${mem.user}</p>
+                    </div>
+                    <div class="flex flex-col gap-1 text-right">
+                        ${mem.isCore ? '<span class="text-xs font-semibold text-amber-300">💎 核心記憶</span>' : ''}
+                        ${mem.isFlashback ? '<span class="text-xs font-semibold text-rose-300">⚡ 閃回體驗</span>' : ''}
+                        ${mem.isHeaven ? '<span class="text-xs font-semibold text-sky-300">🕊️ 天國寄語</span>' : ''}
+                    </div>
                 </div>
-                <div class="text-center mt-2 w-full px-1">
-                    <div class="text-[11px] font-bold text-slate-200 truncate group-hover:text-amber-300 transition">${m.title}</div>
-                    <div class="text-[9px] text-amber-300/80 truncate">${m.date}</div>
+
+                ${mem.photo ? `<img src="${mem.photo}" alt="Memory" class="w-full h-48 object-cover rounded-xl border border-white/10">` : ''}
+
+                <div>
+                    <h4 class="text-xs font-semibold text-slate-400 mb-1">情境背景與觸發事件</h4>
+                    <p class="text-sm text-slate-200 bg-slate-900/50 p-3 rounded-lg border border-white/5">${mem.trigger || '未填寫情境背景。'}</p>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-semibold text-purple-300 mb-2 flex items-center gap-1">
+                        <i data-lucide="activity" class="w-3.5 h-3.5"></i> 6 大部位生理反應細分
+                    </h4>
+                    <div class="flex flex-wrap gap-1.5">${somaticBadges}</div>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-semibold text-indigo-300 mb-2 flex items-center gap-1">
+                        <i data-lucide="shield" class="w-3.5 h-3.5"></i> CBT 行為應對反應（內外向/逃避/面對）
+                    </h4>
+                    <div class="flex flex-wrap gap-1.5">${cbtBadges}</div>
                 </div>
             `;
-            wrapper.onclick = () => openDetailModal(m);
-            return wrapper;
+
+            document.getElementById('detailContent').innerHTML = content;
+            document.getElementById('detailModal').classList.remove('hidden');
+            lucide.createIcons();
         }
 
-        function renderTimeline(filtered) {
-            const timeEl = document.getElementById('timelineContainer');
-            timeEl.innerHTML = '';
-            filtered.forEach(m => {
-                const item = document.createElement('div');
-                item.className = "flex items-start space-x-4 p-4 bg-slate-900/80 rounded-2xl border border-amber-500/20 hover:border-amber-400/50 transition cursor-pointer";
-                let badge = m.isMemorial ? '💌 天國寄語' : m.isCore ? '🌟 核心記憶' : m.isFlashback ? '⚡ 閃回記憶' : '🔮 一般記憶';
-                item.innerHTML = `
-                    <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0" style="background: ${getMarbleGradient(m.emotions)}">
-                        ${m.photo ? `<img src="${m.photo}" class="w-full h-full object-cover rounded-full">` : (m.isMemorial ? '💌' : m.isCore ? '🌟' : '🔮')}
-                    </div>
-                    <div class="flex-1 space-y-1">
-                        <div class="flex items-center justify-between">
-                            <h4 class="text-sm font-bold text-amber-200">${m.title}</h4>
-                            <span class="text-xs text-amber-300/70">${m.date}</span>
-                        </div>
-                        <p class="text-xs text-slate-300 line-clamp-2">${m.trigger || "暫無簡述"}</p>
-                        <div class="flex flex-wrap gap-1.5 pt-1">
-                            <span class="px-2 py-0.5 bg-amber-500/20 text-amber-300 text-[10px] rounded-lg">${badge}</span>
-                            ${m.emotions.map(e => `<span class="px-2 py-0.5 bg-slate-800 text-slate-300 text-[10px] rounded-lg">${e}</span>`).join('')}
-                        </div>
-                    </div>
-                `;
-                item.onclick = () => openDetailModal(m);
-                timeEl.appendChild(item);
-            });
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.add('hidden');
         }
 
-        function toggleViewMode() {
-            const uniEl = document.getElementById('floatingUniverse');
-            const timeEl = document.getElementById('timelineContainer');
-            if (currentViewMode === 'universe') {
-                currentViewMode = 'timeline';
-                uniEl.classList.add('hidden'); timeEl.classList.remove('hidden');
-                document.getElementById('viewModeBtnText').innerText = "🪐 切換至宇宙漂浮視圖";
-                document.getElementById('viewModeTitle').innerText = "Aurosphere · 時間軸記憶日曆";
-                document.getElementById('viewModeIcon').className = "ph ph-calendar-blank text-amber-300";
-            } else {
-                currentViewMode = 'universe';
-                uniEl.classList.remove('hidden'); timeEl.classList.add('hidden');
-                document.getElementById('viewModeBtnText').innerText = "📅 切換至時光軸視圖";
-                document.getElementById('viewModeTitle').innerText = "Aurosphere · 記憶漂浮宇宙";
-                document.getElementById('viewModeIcon').className = "ph ph-planet text-amber-300";
+        function confirmDeleteMemory() {
+            if (!selectedMemoryId) return;
+            if (confirm("確定要刪除這顆記憶球嗎？此操作無法復原。")) {
+                memories = memories.filter(m => m.id !== selectedMemoryId);
+                closeDetailModal();
+                renderView();
             }
-            renderMemories();
         }
+
+        /* ------------------------------------------------------------------
+         * MINDFUL BREATHING MODAL (+15% NURTURE)
+         * ------------------------------------------------------------------ */
+        let breathInterval = null;
+        let breathTimeLeft = 60;
 
         function openBreathingModal() {
             document.getElementById('breathingModal').classList.remove('hidden');
-            document.getElementById('breathingModal').classList.add('flex');
-            const txt = document.getElementById('breathText');
-            let phase = 0;
-            window.breathTimer = setInterval(() => {
-                phase = (phase + 1) % 3;
-                if (phase === 0) txt.innerText = "吸氣...";
-                else if (phase === 1) txt.innerText = "閉氣...";
-                else txt.innerText = "呼氣...";
-            }, 4000);
         }
 
         function closeBreathingModal() {
             document.getElementById('breathingModal').classList.add('hidden');
-            document.getElementById('breathingModal').classList.remove('flex');
-            if (window.breathTimer) clearInterval(window.breathTimer);
+            if (breathInterval) clearInterval(breathInterval);
         }
 
-        function finishBreathing() {
-            closeBreathingModal();
-            addPlantProgress(15);
+        function startBreathingSession() {
+            document.getElementById('btnStartBreath').disabled = true;
+            breathTimeLeft = 60;
+
+            breathInterval = setInterval(() => {
+                breathTimeLeft--;
+                const mins = String(Math.floor(breathTimeLeft / 60)).padStart(2, '0');
+                const secs = String(breathTimeLeft % 60).padStart(2, '0');
+                document.getElementById('breathTimer').innerText = `${mins}:${secs}`;
+
+                const breathCycle = breathTimeLeft % 8;
+                document.getElementById('breathText').innerText = breathCycle > 4 ? "吸氣..." : "呼氣...";
+
+                if (breathTimeLeft <= 0) {
+                    clearInterval(breathInterval);
+                    botanicalProgress = Math.min(100, botanicalProgress + 15);
+                    updateBotanicalUI();
+                    alert("🧘 靜心完成！成功注入 +15% 綠墨水養份！");
+                    closeBreathingModal();
+                }
+            }, 1000);
         }
+
+        /* ------------------------------------------------------------------
+         * BOTANICAL GUIDE (綠墨水植物圖鑑)
+         * ------------------------------------------------------------------ */
+        function openBotanicalModal() {
+            updateBotanicalUI();
+            document.getElementById('botanicalModal').classList.remove('hidden');
+        }
+
+        function closeBotanicalModal() {
+            document.getElementById('botanicalModal').classList.add('hidden');
+        }
+
+        function updateBotanicalUI() {
+            document.getElementById('botanicalProgressText').innerText = `${botanicalProgress}%`;
+            document.getElementById('botanicalProgressBar').style.width = `${botanicalProgress}%`;
+            
+            const btnHarvest = document.getElementById('btnHarvest');
+            if (botanicalProgress >= 100) {
+                btnHarvest.disabled = false;
+                btnHarvest.classList.add('animate-bounce');
+            } else {
+                btnHarvest.disabled = true;
+                btnHarvest.classList.remove('animate-bounce');
+            }
+        }
+
+        function harvestPlant() {
+            if (botanicalProgress >= 100) {
+                botanicalProgress = 0;
+                updateBotanicalUI();
+                alert("🎉 恭喜！你成功收成 100% 心靈植物能量！精神專注度提升！");
+                closeBotanicalModal();
+            }
+        }
+
+        /* ------------------------------------------------------------------
+         * AUDIO WHITE NOISE TOGGLE
+         * ------------------------------------------------------------------ */
+        let isAudioPlaying = false;
+        let audioCtx = null;
 
         function toggleAudio() {
-            const btnText = document.getElementById('audioText');
+            isAudioPlaying = !isAudioPlaying;
             const icon = document.getElementById('audioIcon');
-            if (!isAudioPlaying) {
-                try {
-                    let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    const bufferSize = audioContext.sampleRate * 2;
-                    const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-                    const output = noiseBuffer.getChannelData(0);
-                    for (let i = 0; i < bufferSize; i++) output[i] = Math.random() * 2 - 1;
-
-                    const whiteNoise = audioContext.createBufferSource();
-                    whiteNoise.buffer = noiseBuffer; whiteNoise.loop = true;
-                    const filter = audioContext.createBiquadFilter();
-                    filter.type = 'bandpass'; filter.frequency.value = 400; filter.Q.value = 1.0;
-                    const gainNode = audioContext.createGain(); gainNode.gain.value = 0.03;
-
-                    whiteNoise.connect(filter); filter.connect(gainNode); gainNode.connect(audioContext.destination);
-                    whiteNoise.start();
-                    window.noiseNode = whiteNoise;
-                    isAudioPlaying = true;
-                    btnText.innerText = "🎵 音效：播放中";
-                    icon.className = "ph ph-speaker-high text-sm text-emerald-300 animate-pulse";
-                } catch(e) { console.log(e); }
+            
+            if (isAudioPlaying) {
+                icon.setAttribute('data-lucide', 'volume-2');
+                startWhiteNoise();
             } else {
-                if (window.noiseNode) window.noiseNode.stop();
-                isAudioPlaying = false;
-                btnText.innerText = "🎵 音效";
-                icon.className = "ph ph-speaker-slash text-sm";
+                icon.setAttribute('data-lucide', 'volume-x');
+                stopWhiteNoise();
+            }
+            lucide.createIcons();
+        }
+
+        function startWhiteNoise() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            // Generate synthetic soft ambient hum
+            const bufferSize = audioCtx.sampleRate * 2;
+            const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+
+            const whiteNoise = audioCtx.createBufferSource();
+            whiteNoise.buffer = noiseBuffer;
+            whiteNoise.loop = true;
+
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(400, audioCtx.currentTime);
+
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+
+            whiteNoise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            whiteNoise.start();
+            window.activeNoiseSource = whiteNoise;
+        }
+
+        function stopWhiteNoise() {
+            if (window.activeNoiseSource) {
+                window.activeNoiseSource.stop();
             }
         }
 
-        function quickSaveMemory(e) {
-            e.preventDefault();
-            const title = document.getElementById('quickTitle').value;
-            const emotion = document.getElementById('quickEmotion').value;
-            const todayStr = new Date().toISOString().split('T')[0];
+        /* ------------------------------------------------------------------
+         * 2D PET INTERACTIONS & SPEECH
+         * ------------------------------------------------------------------ */
+        function initPetAnimations() {
+            const speechesHappy = [
+                "汪！今天記得對自己好一點！",
+                "深呼吸... 感受當下的寧靜。",
+                "有什麼心事都可以寫進記憶球喔！",
+                "Happy仔一直陪在你身邊！"
+            ];
 
-            const newMemory = {
-                id: Date.now(), owner: getCurrentUser(), title, date: todayStr,
-                trigger: "快速心情記錄", emotions: [emotion], somatics: ["呼吸平穩", "身體放鬆"],
-                photo: null, isCore: false, isFlashback: false, isMemorial: false
-            };
+            const speechesDang = [
+                "🦔 慢慢來，最快。",
+                "情緒就像烏雲，總會散去的。",
+                "要試試 1 分鐘呼吸靜心嗎？",
+                "收成綠墨水植物可以累積療癒能量喔！"
+            ];
 
-            memories.unshift(newMemory);
-            renderMemories();
-            syncMemoryToSupabase(newMemory);
-            document.getElementById('quickTitle').value = '';
-            addPlantProgress(10);
+            setInterval(() => {
+                const bubbleH = document.getElementById('bubbleHappy');
+                bubbleH.innerText = speechesHappy[Math.floor(Math.random() * speechesHappy.length)];
+                bubbleH.classList.add('active');
+                setTimeout(() => bubbleH.classList.remove('active'), 4000);
+            }, 12000);
 
-            const negativeEmotions = ["生氣", "憤怒", "煩躁", "難過", "悲傷", "焦慮", "緊張"];
-            if (negativeEmotions.includes(emotion)) {
-                const randomQuote = encouragementQuotes[Math.floor(Math.random() * encouragementQuotes.length)];
-                document.getElementById('encouragementText').innerText = randomQuote;
-                document.getElementById('encouragementModal').classList.remove('hidden');
-                document.getElementById('encouragementModal').classList.add('flex');
-            }
+            setInterval(() => {
+                const bubbleD = document.getElementById('bubbleDangDang');
+                bubbleD.innerText = speechesDang[Math.floor(Math.random() * speechesDang.length)];
+                bubbleD.classList.add('active');
+                setTimeout(() => bubbleD.classList.remove('active'), 4000);
+            }, 16000);
         }
 
-        function triggerFlashbackRoulette() {
-            if (memories.length === 0) return;
-            openDetailModal(memories[Math.floor(Math.random() * memories.length)]);
-        }
-
-        function filterByTag(tag) { document.getElementById('searchInput').value = tag; renderMemories(); }
-        function resetTagFilter() { document.getElementById('searchInput').value = ''; document.getElementById('typeFilterSelect').value = 'all'; renderMemories(); }
-
-        function openDetailModal(m) {
-            document.getElementById('detailTitle').innerText = m.title;
-            document.getElementById('detailDate').innerText = m.date;
-            document.getElementById('detailTrigger').innerText = m.trigger || "暫無記錄觸發事件。";
-            document.getElementById('detailBadge').innerText = m.isMemorial ? "💌" : m.isCore ? "🌟" : m.isFlashback ? "⚡" : "🔮";
-
-            const photoCont = document.getElementById('detailPhotoContainer');
-            const photoImg = document.getElementById('detailPhoto');
-            if (m.photo) { photoImg.src = m.photo; photoCont.classList.remove('hidden'); } else { photoCont.classList.add('hidden'); }
-
-            document.getElementById('detailEmotions').innerHTML = m.emotions.map(e => `<span class="px-3 py-1 bg-amber-950/90 border border-amber-500/40 text-amber-200 rounded-xl text-xs font-medium">${e}</span>`).join('');
-            document.getElementById('detailSomatics').innerHTML = m.somatics && m.somatics.length ? m.somatics.map(s => `<span class="px-3 py-1 bg-slate-900 border border-amber-500/20 text-slate-300 rounded-xl text-xs">${s}</span>`).join('') : '<span class="text-xs text-slate-500">無記錄身體反應</span>';
-
-            document.getElementById('detailModal').classList.remove('hidden');
-            document.getElementById('detailModal').classList.add('flex');
-        }
-
-        function closeDetailModal() { document.getElementById('detailModal').classList.add('hidden'); document.getElementById('detailModal').classList.remove('flex'); }
-        function openModal() { document.getElementById('memoryModal').classList.remove('hidden'); document.getElementById('memoryModal').classList.add('flex'); }
-        function closeModal() { document.getElementById('memoryModal').classList.add('hidden'); document.getElementById('memoryModal').classList.remove('flex'); }
-        function openBackupModal() { document.getElementById('backupModal').classList.remove('hidden'); document.getElementById('backupModal').classList.add('flex'); }
-        function closeBackupModal() { document.getElementById('backupModal').classList.add('hidden'); document.getElementById('backupModal').classList.remove('flex'); }
-        function closeEncouragement() { document.getElementById('encouragementModal').classList.add('hidden'); document.getElementById('encouragementModal').classList.remove('flex'); }
-
-        function saveMemory(e) {
-            e.preventDefault();
-            const title = document.getElementById('mTitle').value;
-            const date = document.getElementById('mDate').value;
-            const trigger = document.getElementById('mTrigger').value;
-            const isCore = document.getElementById('mCore').checked;
-            const isFlashback = document.getElementById('mFlashback').checked;
-            const isMemorial = document.getElementById('mMemorial').checked;
-            const selectedEmotions = Array.from(document.querySelectorAll('input[name="emotions"]:checked')).map(el => el.value);
-            const selectedSomatics = Array.from(document.querySelectorAll('input[name="somatics"]:checked')).map(el => el.value);
-            const photoFile = document.getElementById('mPhoto').files[0];
-
-            const finishSave = (photoUrl) => {
-                const newMemory = {
-                    id: Date.now(), owner: getCurrentUser(), title, date, trigger,
-                    emotions: selectedEmotions.length ? selectedEmotions : ["平靜"],
-                    somatics: selectedSomatics, photo: photoUrl, isCore, isFlashback, isMemorial
-                };
-
-                memories.unshift(newMemory);
-                renderMemories();
-                syncMemoryToSupabase(newMemory);
-                closeModal();
-                document.getElementById('memoryForm').reset();
-                addPlantProgress(25);
-
-                if (isMemorial) {
-                    showPetSpeech('happy', "收到主人寫俾我哋嘅心事信件喇！我和噹噹好開心～ 💌");
-                } else {
-                    const negativeEmotions = ["生氣", "憤怒", "煩躁", "難過", "悲傷", "焦慮", "緊張"];
-                    if (selectedEmotions.some(e => negativeEmotions.includes(e))) {
-                        const randomQuote = encouragementQuotes[Math.floor(Math.random() * encouragementQuotes.length)];
-                        document.getElementById('encouragementText').innerText = randomQuote;
-                        document.getElementById('encouragementModal').classList.remove('hidden');
-                        document.getElementById('encouragementModal').classList.add('flex');
-                    }
+        /* ------------------------------------------------------------------
+         * BOSS KEY (ESC KEY SWITCH)
+         * ------------------------------------------------------------------ */
+        function setupBossKey() {
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const bossMode = document.getElementById('bossMode');
+                    const isHidden = bossMode.style.display === 'none' || bossMode.style.display === '';
+                    bossMode.style.display = isHidden ? 'block' : 'none';
                 }
-            };
-
-            if (photoFile) {
-                const reader = new FileReader();
-                reader.onload = function(evt) {
-                    finishSave(evt.target.result);
-                };
-                reader.readAsDataURL(photoFile);
-            } else {
-                finishSave(null);
-            }
+            });
         }
-
-        window.onload = () => {
-            initParticles();
-            initSupabase();
-            updatePlantUI();
-            initRoamingPets();
-            renderMemories();
-            document.getElementById('lastUpdatedTime').innerText = `最後更新時間: ${new Date().toLocaleString('zh-HK')}`;
-        };
     </script>
 </body>
 </html>
